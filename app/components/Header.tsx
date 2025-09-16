@@ -126,7 +126,7 @@ export default function Header() {
         <div className="h-14 flex items-center justify-between">
           <Link
             href="/"
-            className={`select-none inline-flex items-center transition-colors duration-200 ${
+            className={`select-none inline-flex items-center transition-colors duration-300 ${
               onLightBackground ? "text-black" : "text-white"
             }`}
             aria-label="Portal Home"
@@ -137,7 +137,7 @@ export default function Header() {
               width={150}
               height={22}
               priority
-              className={`transition duration-200 ${
+              className={`transition duration-300 ${
                 onLightBackground ? "" : "invert"
               }`}
             />
@@ -157,7 +157,7 @@ export default function Header() {
               width={22}
               height={22}
               aria-hidden
-              className={`transition-transform duration-200 will-change-transform inline-block ${
+              className={`transition-transform duration-300 will-change-transform inline-block ${
                 onLightBackground ? "" : "invert"
               } ${open ? "rotate-90" : "rotate-0"}`}
             />
@@ -165,7 +165,7 @@ export default function Header() {
 
           {/* desktop nav */}
           <nav
-            className={`hidden md:flex items-center gap-8 text-sm transition-colors duration-200 ${
+            className={`hidden md:flex items-center gap-8 text-sm transition-colors duration-300 ${
               onLightBackground ? "text-black" : "text-white"
             }`}
           >
@@ -182,7 +182,7 @@ export default function Header() {
               Download
             </Link>
             <Link href="#know" className="hover:underline underline-offset-4">
-              Know P+RTAL
+              Know PORTAL
             </Link>
           </nav>
         </div>
@@ -202,59 +202,75 @@ export default function Header() {
           onKeyDown={(e) => {
             if (e.key === "Escape") setOpen(false);
           }}
-          className={`absolute inset-0 z-[40] transition-opacity duration-300 ${
+          className={`absolute inset-0 z-[40] transition-opacity duration-500 ${
             open ? "opacity-100" : "opacity-0"
           }`}
         />
 
         {/* animated panel fills from under header to bottom with skew/scale */}
         <div
-          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-300 ease-out will-change-transform ${
+          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform ${
             open ? "scale-y-100 skew-y-0" : "scale-y-0 skew-y-3"
           }`}
           style={{ transformOrigin: "top" }}
         >
-          <div className="flex-1 rounded-t-md text-foreground ring-1 ring-black/5">
+          <div
+            className={`flex-1 rounded-t-md transition-colors duration-300 ${
+              onLightBackground ? "text-black" : "text-white"
+            }`}
+          >
             {/* links (not scrollable) */}
             <div className="divide-y-8 divide-transparent pt-6 px-4 sm:px-6">
-              <div className="py-5 border-b-4 border-foreground/70">
+              <div
+                className={`my-16 py-5 border-b-2 transition-colors duration-300 ${
+                  onLightBackground ? "border-black/70" : "border-white/70"
+                }`}
+              >
                 <Link
                   href="#banking"
                   className="flex items-center justify-between"
                   onClick={() => setOpen(false)}
                 >
-                  <span className="text-left text-lg font-medium">
+                  <span className="text-left text-lg font-medium underline underline-offset-4">
                     The Banking System and Wallet Paradox
                   </span>
-                  <span aria-hidden className="text-xl">
+                  <span aria-hidden className="text-2xl">
                     ↗
                   </span>
                 </Link>
               </div>
-              <div className="py-5 border-b-4 border-foreground/70">
+              <div
+                className={`my-16 py-5 border-b-2 transition-colors duration-300 ${
+                  onLightBackground ? "border-black/70" : "border-white/70"
+                }`}
+              >
                 <Link
                   href="#download"
                   className="flex items-center justify-between"
                   onClick={() => setOpen(false)}
                 >
-                  <span className="text-left text-lg font-medium">
+                  <span className="text-left text-lg font-medium underline underline-offset-4">
                     Download
                   </span>
-                  <span aria-hidden className="text-xl">
+                  <span aria-hidden className="text-2xl">
                     ↗
                   </span>
                 </Link>
               </div>
-              <div className="py-5 border-b-4 border-foreground/70">
+              <div
+                className={`my-16 py-5 border-b-2 transition-colors duration-300 ${
+                  onLightBackground ? "border-black/70" : "border-white/70"
+                }`}
+              >
                 <Link
                   href="#know"
                   className="flex items-center justify-between"
                   onClick={() => setOpen(false)}
                 >
-                  <span className="text-left text-lg font-medium">
-                    Know P+RTAL
+                  <span className="text-left text-lg font-medium underline underline-offset-4">
+                    Know Portal
                   </span>
-                  <span aria-hidden className="text-xl">
+                  <span aria-hidden className="text-2xl">
                     ↗
                   </span>
                 </Link>
@@ -263,8 +279,14 @@ export default function Header() {
           </div>
 
           {/* social footer pinned bottom with extra bottom margin */}
-          <div className="py-6 px-4 sm:px-6 mb-4 flex items-center justify-between border-b-4 border-foreground/70">
-            <span className="text-sm font-medium">Follow us</span>
+          <div
+            className={`py-6 px-4 sm:px-6 mb-4 flex items-center justify-between border-b-2 transition-colors duration-300 ${
+              onLightBackground
+                ? "border-black/70 text-black"
+                : "border-white/70 text-white"
+            }`}
+          >
+            <span className="text-base font-medium">Follow us</span>
             <div className="flex items-center gap-4">
               <Link
                 href="https://instagram.com"
