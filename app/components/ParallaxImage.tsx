@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 export default function ParallaxImage() {
@@ -34,7 +34,7 @@ export default function ParallaxImage() {
       );
 
       // Apply parallax transform with speed multiplier
-      const speedMultiplier = 5; // Image moves 1.5x faster than scroll
+      const speedMultiplier = 3; // Image moves 1.5x faster than scroll
       const translateY = progress * -100 * speedMultiplier; // Move up faster than scroll
       imageRef.current.style.transform = `translateY(${translateY}vh)`;
     };
@@ -57,7 +57,7 @@ export default function ParallaxImage() {
   return (
     <div
       ref={imageRef}
-      className="fixed bottom-0 left-0 w-full h-screen pointer-events-none z-10"
+      className="absolute bottom-0 left-0 w-full h-screen pointer-events-none z-10"
       style={{
         transform: "translateY(0vh)",
         transition: "transform 0.1s ease-out",
@@ -72,7 +72,7 @@ export default function ParallaxImage() {
           alt="Parallax cross"
           width={800}
           height={800}
-          className="opacity-100 w-auto h-[35rem] object-cover"
+          className="opacity-100 w-auto h-[50vh] sm:h-[60vh] md:h-[40vh] lg:h-[35rem] object-cover"
           priority
         />
       </div>

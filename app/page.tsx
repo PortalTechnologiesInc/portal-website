@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <div className="h-dvh overflow-y-scroll overflow-x-hidden scroll-smooth snap-y snap-mandatory">
-      <ParallaxImage />
+      <ContactCarousel />
       <section
         ref={(el) => {
           sectionRefs.current[0] = el;
@@ -56,6 +56,9 @@ export default function Home() {
         className="relative min-h-dvh snap-start bg-white pt-20"
         style={{ color: "#141416" }}
       >
+        {/* Parallax Image */}
+        <ParallaxImage />
+
         {/* Background SVG Vector */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <Image
@@ -68,7 +71,7 @@ export default function Home() {
             priority
           />
         </div>
-        <div className="px-6 text-left max-w-4xl m-2 relative z-10">
+        <div className="px-6 text-left max-w-4xl m-2 relative z-50">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight font-eurostile">
             BE THE ONE IN CONTROL, TRUST NOTHING
           </h1>
@@ -93,9 +96,6 @@ export default function Home() {
             Discover More
           </button>
         </div>
-
-        {/* Contact Carousel */}
-        <ContactCarousel />
       </section>
 
       <section
