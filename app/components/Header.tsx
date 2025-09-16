@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [onLightBackground, setOnLightBackground] = useState(false);
+  const [onLightBackground, setOnLightBackground] = useState(true);
 
   useEffect(() => {
     if (open) {
@@ -57,12 +57,18 @@ export default function Header() {
           }
         }
 
-        if (secondActive) setOnLightBackground(true);
-        else if (firstActive) setOnLightBackground(false);
+        if (firstActive) {
+          setOnLightBackground(true);
+        } else if (secondActive) {
+          setOnLightBackground(false);
+        } else {
+          // Default to dark background when neither section is active
+          setOnLightBackground(false);
+        }
       },
       {
         root: scrollContainer || null,
-        threshold: [0, 1],
+        threshold: [0, 0.1, 0.5, 1],
       }
     );
 
@@ -87,8 +93,14 @@ export default function Header() {
         secondRect.top <= triggerY + lead &&
         secondRect.bottom > triggerY + lead;
 
-      if (secondActive) setOnLightBackground(true);
-      else if (firstActive) setOnLightBackground(false);
+      if (firstActive) {
+        setOnLightBackground(true);
+      } else if (secondActive) {
+        setOnLightBackground(false);
+      } else {
+        // Default to dark background when neither section is active
+        setOnLightBackground(false);
+      }
     };
 
     let ticking = false;
@@ -121,14 +133,15 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 z-50 bg-white/20 dark:bg-black/20 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[5px]">
+    <header className="w-full fixed top-0 z-50 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.625rem]">
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6">
         <div className="h-14 flex items-center justify-between">
           <Link
             href="/"
             className={`select-none inline-flex items-center transition-colors duration-300 ${
-              onLightBackground ? "text-black" : "text-white"
+              onLightBackground ? "" : "text-white"
             }`}
+            style={onLightBackground ? { color: "#141416" } : {}}
             aria-label="Portal Home"
           >
             <Image
@@ -166,8 +179,9 @@ export default function Header() {
           {/* desktop nav */}
           <nav
             className={`hidden md:flex items-center gap-8 text-sm transition-colors duration-300 ${
-              onLightBackground ? "text-black" : "text-white"
+              onLightBackground ? "" : "text-white"
             }`}
+            style={onLightBackground ? { color: "#141416" } : {}}
           >
             <Link
               href="#banking"
@@ -190,7 +204,7 @@ export default function Header() {
 
       {/* mobile dropdown wrapper covers full viewport minus header */}
       <div
-        className={`md:hidden fixed inset-x-0 top-14 z-40 h-[calc(100dvh-56px)] ${
+        className={`md:hidden fixed inset-x-0 top-14 z-40 h-[calc(100dvh-3.5rem)] ${
           open ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
@@ -202,29 +216,35 @@ export default function Header() {
           onKeyDown={(e) => {
             if (e.key === "Escape") setOpen(false);
           }}
-          className={`absolute inset-0 z-[40] transition-opacity duration-500 backdrop-blur-[5px]-xl backdrop-force bg-white/20 dark:bg-black/20 ${
+          className={`absolute inset-0 z-[40] transition-opacity duration-500 backdrop-blur-[0.625rem] ${
             open ? "opacity-100" : "opacity-0"
           }`}
         />
 
         {/* animated panel fills from under header to bottom with skew/scale */}
         <div
-          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform bg-white/20 dark:bg-black/20 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[5px] ${
+          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.625rem] ${
             open ? "scale-y-100 skew-y-0" : "scale-y-0 skew-y-3"
           }`}
           style={{ transformOrigin: "top" }}
         >
           <div
             className={`flex-1 rounded-t-md transition-colors duration-300 ${
-              onLightBackground ? "text-black" : "text-white"
+              onLightBackground ? "" : "text-white"
             }`}
+            style={onLightBackground ? { color: "#141416" } : {}}
           >
             {/* links (not scrollable) */}
             <div className="divide-y-8 divide-transparent pt-6 px-4 sm:px-6">
               <div
                 className={`my-16 py-5 border-b-2 transition-colors duration-300 ${
-                  onLightBackground ? "border-black/70" : "border-white/70"
+                  onLightBackground ? "" : "border-white/70"
                 }`}
+                style={
+                  onLightBackground
+                    ? { borderColor: "rgba(20, 20, 22, 0.7)" }
+                    : {}
+                }
               >
                 <Link
                   href="#banking"
@@ -246,8 +266,13 @@ export default function Header() {
               </div>
               <div
                 className={`my-16 py-5 border-b-2 transition-colors duration-300 ${
-                  onLightBackground ? "border-black/70" : "border-white/70"
+                  onLightBackground ? "" : "border-white/70"
                 }`}
+                style={
+                  onLightBackground
+                    ? { borderColor: "rgba(20, 20, 22, 0.7)" }
+                    : {}
+                }
               >
                 <Link
                   href="#download"
@@ -269,8 +294,13 @@ export default function Header() {
               </div>
               <div
                 className={`my-16 py-5 border-b-2 transition-colors duration-300 ${
-                  onLightBackground ? "border-black/70" : "border-white/70"
+                  onLightBackground ? "" : "border-white/70"
                 }`}
+                style={
+                  onLightBackground
+                    ? { borderColor: "rgba(20, 20, 22, 0.7)" }
+                    : {}
+                }
               >
                 <Link
                   href="#know"
@@ -296,10 +326,13 @@ export default function Header() {
           {/* social footer pinned bottom with extra bottom margin */}
           <div
             className={`py-6 px-4 sm:px-6 mb-4 flex items-center justify-between border-b-2 transition-colors duration-300 ${
-              onLightBackground
-                ? "border-black/70 text-black"
-                : "border-white/70 text-white"
+              onLightBackground ? "" : "border-white/70 text-white"
             }`}
+            style={
+              onLightBackground
+                ? { borderColor: "rgba(20, 20, 22, 0.7)", color: "#141416" }
+                : {}
+            }
           >
             <span className="text-lg font-medium">Follow us</span>
             <div className="flex items-center gap-4">
