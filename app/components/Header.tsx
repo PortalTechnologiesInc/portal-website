@@ -20,7 +20,7 @@ export default function Header() {
   }, [open]);
 
   useEffect(() => {
-    // Scroll-driven color switch with small lead so transition completes on contact
+    // IntersectionObserver-based color switch for performance
     const scrollContainer = (document.querySelector(
       "div.h-dvh.overflow-y-scroll"
     ) || null) as HTMLElement | null;
@@ -33,13 +33,51 @@ export default function Header() {
 
     if (!firstSection || !secondSection) return;
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const headerHeight = 56; // h-14
+        const lead = 56; // start at header height for instant switch
+
+        const rootTop = entries[0]?.rootBounds ? entries[0].rootBounds.top : 0;
+        const triggerY = rootTop + headerHeight;
+
+        let firstActive = false;
+        let secondActive = false;
+
+        for (const entry of entries) {
+          const top = entry.boundingClientRect.top;
+          const bottom = entry.boundingClientRect.bottom;
+
+          if (entry.target === firstSection) {
+            const y = triggerY - lead;
+            firstActive = top <= y && bottom > y;
+          } else if (entry.target === secondSection) {
+            const y = triggerY + lead;
+            secondActive = top <= y && bottom > y;
+          }
+        }
+
+        if (secondActive) setOnLightBackground(true);
+        else if (firstActive) setOnLightBackground(false);
+      },
+      {
+        root: scrollContainer || null,
+        threshold: [0, 1],
+      }
+    );
+
+    observer.observe(firstSection);
+    observer.observe(secondSection);
+
+    // Add a tiny rAF-throttled scroll handler to remove any perceived IO delay
     const handleScroll = () => {
       const headerHeight = 56;
-      const lead = 40;
+      const lead = 56;
       const containerRect = (
         scrollContainer || document.documentElement
       ).getBoundingClientRect();
       const triggerY = containerRect.top + headerHeight;
+
       const firstRect = firstSection.getBoundingClientRect();
       const secondRect = secondSection.getBoundingClientRect();
 
@@ -49,14 +87,10 @@ export default function Header() {
         secondRect.top <= triggerY + lead &&
         secondRect.bottom > triggerY + lead;
 
-      if (secondActive) {
-        setOnLightBackground(true);
-      } else if (firstActive) {
-        setOnLightBackground(false);
-      }
+      if (secondActive) setOnLightBackground(true);
+      else if (firstActive) setOnLightBackground(false);
     };
 
-    // rAF throttle
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
@@ -74,10 +108,10 @@ export default function Header() {
     window.addEventListener("resize", onScroll, {
       passive: true,
     } as AddEventListenerOptions);
-    // initialize
     handleScroll();
 
     return () => {
+      observer.disconnect();
       (scrollContainer || window).removeEventListener(
         "scroll",
         onScroll as EventListener
@@ -92,7 +126,7 @@ export default function Header() {
         <div className="h-14 flex items-center justify-between">
           <Link
             href="/"
-            className={`select-none inline-flex items-center transition-colors duration-300 ${
+            className={`select-none inline-flex items-center transition-colors duration-200 ${
               onLightBackground ? "text-black" : "text-white"
             }`}
             aria-label="Portal Home"
@@ -103,7 +137,7 @@ export default function Header() {
               width={150}
               height={22}
               priority
-              className={`transition duration-300 ${
+              className={`transition duration-200 ${
                 onLightBackground ? "" : "invert"
               }`}
             />
@@ -123,7 +157,7 @@ export default function Header() {
               width={22}
               height={22}
               aria-hidden
-              className={`transition duration-300 will-change-transform inline-block ${
+              className={`transition-transform duration-200 will-change-transform inline-block ${
                 onLightBackground ? "" : "invert"
               } ${open ? "rotate-90" : "rotate-0"}`}
             />
@@ -131,7 +165,7 @@ export default function Header() {
 
           {/* desktop nav */}
           <nav
-            className={`hidden md:flex items-center gap-8 text-sm transition-colors duration-300 ${
+            className={`hidden md:flex items-center gap-8 text-sm transition-colors duration-200 ${
               onLightBackground ? "text-black" : "text-white"
             }`}
           >
