@@ -121,7 +121,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 z-50 backdrop-blur-3xl backdrop-force bg-white/10 dark:bg-black/10">
+    <header className="w-full fixed top-0 z-50 bg-white/20 dark:bg-black/20 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[5px]">
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6">
         <div className="h-14 flex items-center justify-between">
           <Link
@@ -202,14 +202,14 @@ export default function Header() {
           onKeyDown={(e) => {
             if (e.key === "Escape") setOpen(false);
           }}
-          className={`absolute inset-0 z-[40] transition-opacity duration-500 backdrop-blur-3xl backdrop-force bg-white/10 dark:bg-black/10 ${
+          className={`absolute inset-0 z-[40] transition-opacity duration-500 backdrop-blur-[5px]-xl backdrop-force bg-white/20 dark:bg-black/20 ${
             open ? "opacity-100" : "opacity-0"
           }`}
         />
 
         {/* animated panel fills from under header to bottom with skew/scale */}
         <div
-          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform bg-white/10 dark:bg-black/10 backdrop-blur-3xl backdrop-force ${
+          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform bg-white/20 dark:bg-black/20 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[5px] ${
             open ? "scale-y-100 skew-y-0" : "scale-y-0 skew-y-3"
           }`}
           style={{ transformOrigin: "top" }}
