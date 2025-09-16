@@ -48,7 +48,6 @@ export default function Home() {
 
   return (
     <div className="h-dvh overflow-y-scroll overflow-x-hidden scroll-smooth snap-y snap-mandatory">
-      <ContactCarousel />
       <section
         ref={(el) => {
           sectionRefs.current[0] = el;
@@ -96,6 +95,9 @@ export default function Home() {
             Discover More
           </button>
         </div>
+
+        {/* Contact Carousel */}
+        <ContactCarousel />
       </section>
 
       <section
