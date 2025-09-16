@@ -121,7 +121,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 z-50 backdrop-blur-2xl">
+    <header className="w-full fixed top-0 z-50 backdrop-blur-3xl backdrop-force bg-white/10 dark:bg-black/10">
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6">
         <div className="h-14 flex items-center justify-between">
           <Link
@@ -202,14 +202,14 @@ export default function Header() {
           onKeyDown={(e) => {
             if (e.key === "Escape") setOpen(false);
           }}
-          className={`absolute inset-0 z-[40] transition-opacity duration-500 ${
+          className={`absolute inset-0 z-[40] transition-opacity duration-500 backdrop-blur-3xl backdrop-force bg-white/10 dark:bg-black/10 ${
             open ? "opacity-100" : "opacity-0"
           }`}
         />
 
         {/* animated panel fills from under header to bottom with skew/scale */}
         <div
-          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform ${
+          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform bg-white/10 dark:bg-black/10 backdrop-blur-3xl backdrop-force ${
             open ? "scale-y-100 skew-y-0" : "scale-y-0 skew-y-3"
           }`}
           style={{ transformOrigin: "top" }}
@@ -234,9 +234,14 @@ export default function Header() {
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     The Banking System and Wallet Paradox
                   </span>
-                  <span aria-hidden className="text-2xl">
-                    ↗
-                  </span>
+                  <Image
+                    src="/arrow.svg"
+                    alt=""
+                    width={24}
+                    height={24}
+                    aria-hidden
+                    className={`${onLightBackground ? "" : "invert"}`}
+                  />
                 </Link>
               </div>
               <div
@@ -252,9 +257,14 @@ export default function Header() {
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     Download
                   </span>
-                  <span aria-hidden className="text-2xl">
-                    ↗
-                  </span>
+                  <Image
+                    src="/arrow.svg"
+                    alt=""
+                    width={24}
+                    height={24}
+                    aria-hidden
+                    className={`${onLightBackground ? "" : "invert"}`}
+                  />
                 </Link>
               </div>
               <div
@@ -270,9 +280,14 @@ export default function Header() {
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     Know Portal
                   </span>
-                  <span aria-hidden className="text-2xl">
-                    ↗
-                  </span>
+                  <Image
+                    src="/arrow.svg"
+                    alt=""
+                    width={24}
+                    height={24}
+                    aria-hidden
+                    className={`${onLightBackground ? "" : "invert"}`}
+                  />
                 </Link>
               </div>
             </div>
@@ -286,23 +301,37 @@ export default function Header() {
                 : "border-white/70 text-white"
             }`}
           >
-            <span className="text-base font-medium">Follow us</span>
+            <span className="text-lg font-medium">Follow us</span>
             <div className="flex items-center gap-4">
               <Link
                 href="https://instagram.com"
                 target="_blank"
                 aria-label="Instagram"
-                className="underline decoration-2 underline-offset-4"
+                className="inline-flex items-center"
               >
-                Instagram
+                <Image
+                  src="/ig.svg"
+                  alt=""
+                  width={40}
+                  height={40}
+                  aria-hidden
+                  className={`${onLightBackground ? "" : "invert"}`}
+                />
               </Link>
               <Link
                 href="https://x.com"
                 target="_blank"
                 aria-label="X"
-                className="underline decoration-2 underline-offset-4"
+                className="inline-flex items-center"
               >
-                X
+                <Image
+                  src="/x.svg"
+                  alt=""
+                  width={40}
+                  height={40}
+                  aria-hidden
+                  className={`${onLightBackground ? "" : "invert"}`}
+                />
               </Link>
             </div>
           </div>
