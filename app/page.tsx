@@ -57,12 +57,21 @@ export default function Home() {
     // Get elements
     const euroSvg = document.querySelector("[data-euro-svg]") as HTMLElement;
     const lockSvg = document.querySelector("[data-lock-svg]") as HTMLElement;
+    const sadSvg = document.querySelector("[data-sad-svg]") as HTMLElement;
     const initialText = document.querySelector(
       "[data-initial-text]"
     ) as HTMLElement;
     const newText = document.querySelector("[data-new-text]") as HTMLElement;
+    const sadText = document.querySelector("[data-sad-text]") as HTMLElement;
 
-    if (!euroSvg || !lockSvg || !initialText || !newText) {
+    if (
+      !euroSvg ||
+      !lockSvg ||
+      !sadSvg ||
+      !initialText ||
+      !newText ||
+      !sadText
+    ) {
       console.log("❌ Missing animation elements");
       return;
     }
@@ -75,65 +84,156 @@ export default function Home() {
       return Math.abs(rect.top) < 100;
     };
 
-    // Animation function using anime.js properly
+    // Animation function using anime.js properly - THREE STATE CHAIN
     const animateToLockStep = (targetStep: number) => {
       if (isAnimating.current) return;
       isAnimating.current = true;
 
       if (targetStep === 1) {
-        // Euro -> Lock
+        // Sad -> Lock (or Euro -> Lock)
+        if (euroLockStep.current === 2) {
+          // Sad -> Lock
+          animate(sadSvg, {
+            translateX: 200,
+            opacity: 0,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(lockSvg, {
+            translateX: 0,
+            filter: "blur(0px)",
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(euroSvg, {
+            translateX: -180,
+            filter: "blur(10px)",
+            opacity: 0.5,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(sadText, {
+            opacity: 0,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(newText, {
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+        } else {
+          // Euro -> Lock
+          animate(euroSvg, {
+            translateX: -180,
+            filter: "blur(10px)",
+            opacity: 0.5,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(lockSvg, {
+            translateX: 0,
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(initialText, {
+            opacity: 0,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(newText, {
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+        }
+      } else if (targetStep === 2) {
+        // Lock -> Sad
         animate(euroSvg, {
-          translateX: -200,
+          translateX: -300,
+          filter: "blur(15px)",
+          opacity: 0.3,
+          duration: 600,
+          easing: "easeOutQuad",
+        });
+        animate(lockSvg, {
+          translateX: -180,
           filter: "blur(10px)",
           opacity: 0.5,
           duration: 600,
           easing: "easeOutQuad",
         });
-        animate(lockSvg, {
+        animate(sadSvg, {
           translateX: 0,
           opacity: 1,
           duration: 600,
           easing: "easeOutQuad",
         });
-        animate(initialText, {
-          opacity: 0,
-          translateY: -20,
-          duration: 600,
-          easing: "easeOutQuad",
-        });
-        animate(newText, {
-          opacity: 1,
-          translateY: 0,
-          duration: 600,
-          easing: "easeOutQuad",
-        });
-      } else {
-        // Lock -> Euro
-        animate(euroSvg, {
-          translateX: 0,
-          filter: "blur(0px)",
-          opacity: 1,
-          duration: 600,
-          easing: "easeOutQuad",
-        });
-        animate(lockSvg, {
-          translateX: 200,
-          opacity: 0,
-          duration: 600,
-          easing: "easeOutQuad",
-        });
-        animate(initialText, {
-          opacity: 1,
-          translateY: 0,
-          duration: 600,
-          easing: "easeOutQuad",
-        });
         animate(newText, {
           opacity: 0,
-          translateY: 20,
           duration: 600,
           easing: "easeOutQuad",
         });
+        animate(sadText, {
+          opacity: 1,
+          duration: 600,
+          easing: "easeOutQuad",
+        });
+      } else if (targetStep === 0) {
+        // Sad -> Euro (or Lock -> Euro)
+        if (euroLockStep.current === 2) {
+          // Sad -> Euro
+          animate(sadSvg, {
+            translateX: 200,
+            opacity: 0,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(euroSvg, {
+            translateX: 0,
+            filter: "blur(0px)",
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(sadText, {
+            opacity: 0,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(initialText, {
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+        } else {
+          // Lock -> Euro
+          animate(lockSvg, {
+            translateX: 200,
+            opacity: 0,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(euroSvg, {
+            translateX: 0,
+            filter: "blur(0px)",
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(newText, {
+            opacity: 0,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+          animate(initialText, {
+            opacity: 1,
+            duration: 600,
+            easing: "easeOutQuad",
+          });
+        }
       }
 
       setTimeout(() => {
@@ -159,10 +259,18 @@ export default function Home() {
         // Swipe up -> Euro to Lock
         e.preventDefault();
         animateToLockStep(1);
+      } else if (swipeDistance > 0 && euroLockStep.current === 1) {
+        // Swipe up -> Lock to Sad
+        e.preventDefault();
+        animateToLockStep(2);
       } else if (swipeDistance < 0 && euroLockStep.current === 1) {
         // Swipe down -> Lock to Euro
         e.preventDefault();
         animateToLockStep(0);
+      } else if (swipeDistance < 0 && euroLockStep.current === 2) {
+        // Swipe down -> Sad to Lock
+        e.preventDefault();
+        animateToLockStep(1);
       }
     };
 
@@ -174,10 +282,18 @@ export default function Home() {
         // Scroll down -> Euro to Lock
         e.preventDefault();
         animateToLockStep(1);
+      } else if (e.deltaY > 0 && euroLockStep.current === 1) {
+        // Scroll down -> Lock to Sad
+        e.preventDefault();
+        animateToLockStep(2);
       } else if (e.deltaY < 0 && euroLockStep.current === 1) {
         // Scroll up -> Lock to Euro
         e.preventDefault();
         animateToLockStep(0);
+      } else if (e.deltaY < 0 && euroLockStep.current === 2) {
+        // Scroll up -> Sad to Lock
+        e.preventDefault();
+        animateToLockStep(1);
       }
     };
 
@@ -198,7 +314,7 @@ export default function Home() {
   // Block ALL scrolling from Lock step (prevents going to step 2 or next section)
   useEffect(() => {
     const handleScroll = (e: Event) => {
-      if (euroLockStep.current === 1) {
+      if (euroLockStep.current === 1 || euroLockStep.current === 2) {
         e.preventDefault();
         e.stopPropagation();
         return false;
@@ -206,7 +322,7 @@ export default function Home() {
     };
 
     const handleWheel = (e: WheelEvent) => {
-      if (euroLockStep.current === 1) {
+      if (euroLockStep.current === 1 || euroLockStep.current === 2) {
         e.preventDefault();
         e.stopPropagation();
         return false;
@@ -214,7 +330,7 @@ export default function Home() {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (euroLockStep.current === 1) {
+      if (euroLockStep.current === 1 || euroLockStep.current === 2) {
         e.preventDefault();
         e.stopPropagation();
         return false;
@@ -370,6 +486,24 @@ export default function Home() {
                 className="w-[7.03125rem] h-[7.03125rem]"
               />
             </div>
+
+            {/* Sad SVG - comes from right */}
+            <div
+              data-sad-svg
+              className="absolute transition-all duration-1000 ease-out"
+              style={{
+                transform: "translateX(200px)",
+                opacity: 0,
+              }}
+            >
+              <Image
+                src="/sentiment_sad.svg"
+                alt="Sad symbol"
+                width={112.5}
+                height={112.5}
+                className="w-[7.03125rem] h-[7.03125rem]"
+              />
+            </div>
           </div>
 
           {/* Text Container */}
@@ -394,16 +528,33 @@ export default function Home() {
               className="absolute top-0 left-0 w-full transition-all duration-1000 ease-out"
               style={{
                 opacity: 0,
-                transform: "translateY(20px)",
               }}
             >
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight font-eurostile text-white">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight font-eurostile text-white">
                 Technological "Lock-in"
               </h1>
               <p className="text-lg md:text-xl font-normal mb-8 max-w-2xl mx-auto leading-tight text-white opacity-90">
                 Companies are often trapped in proprietary ecosystems, which
                 limit their freedom and make it difficult to change providers or
                 integrate new solutions.
+              </p>
+            </div>
+
+            {/* Sad Text */}
+            <div
+              data-sad-text
+              className="absolute top-0 left-0 w-full transition-all duration-1000 ease-out"
+              style={{
+                opacity: 0,
+              }}
+            >
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight font-eurostile text-white">
+                Poor user experience
+              </h1>
+              <p className="text-lg md:text-xl font-normal mb-8 max-w-2xl mx-auto leading-tight text-white opacity-90">
+                Authentication and payment systems are often clunky and
+                unintuitive, creating friction for customers and leading to a
+                high percentage of abandoned carts.
               </p>
             </div>
           </div>
