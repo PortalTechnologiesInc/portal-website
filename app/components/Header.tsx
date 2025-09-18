@@ -252,7 +252,7 @@ export default function Header() {
                   onClick={() => setOpen(false)}
                 >
                   <span className="text-left text-lg font-medium underline underline-offset-4">
-                    The Banking System and Wallet Paradox
+                    The Banking System Paradox
                   </span>
                   <Image
                     src="/arrow.svg"
