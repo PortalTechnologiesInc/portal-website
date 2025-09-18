@@ -133,7 +133,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 z-50 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.625rem]">
+    <header className="w-full fixed top-0 z-50 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.7rem]">
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6">
         <div className="h-14 flex items-center justify-between">
           <Link
@@ -216,14 +216,14 @@ export default function Header() {
           onKeyDown={(e) => {
             if (e.key === "Escape") setOpen(false);
           }}
-          className={`absolute inset-0 z-[40] transition-opacity duration-500 backdrop-blur-[0.625rem] ${
+          className={`absolute inset-0 z-[40] transition-opacity duration-500 backdrop-blur-[0.7rem] ${
             open ? "opacity-100" : "opacity-0"
           }`}
         />
 
         {/* animated panel fills from under header to bottom with skew/scale */}
         <div
-          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.625rem] ${
+          className={`absolute inset-0 z-[41] mx-auto max-w-screen-2xl px-4 sm:px-6 flex flex-col h-full transform-gpu transition-transform duration-500 ease-out will-change-transform before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.7rem] ${
             open ? "scale-y-100 skew-y-0" : "scale-y-0 skew-y-3"
           }`}
           style={{ transformOrigin: "top" }}
@@ -325,7 +325,7 @@ export default function Header() {
 
           {/* social footer pinned bottom with extra bottom margin */}
           <div
-            className={`py-6 px-4 sm:px-6 mb-4 flex items-center justify-between border-b-2 transition-colors duration-300 ${
+            className={`py-6 mx-4 sm:mx-6 mb-4 flex items-center justify-between border-b-2 transition-colors duration-300 ${
               onLightBackground ? "" : "border-white/70 text-white"
             }`}
             style={
