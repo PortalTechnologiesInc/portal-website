@@ -370,11 +370,18 @@ export default function Home() {
     ) as HTMLElement | null;
     if (!euroParallax) return;
 
-    // Fallback: use requestAnimationFrame to drive transform/opacity without timeline imports
+    // Initial state
     euroParallax.style.transform = "translateY(-200px)";
     euroParallax.style.opacity = "0";
-    const startY = -200;
-    const endY = 40; // compensation to match Lock/Sad height
+
+    // Create a paused animation we can seek (anime.js)
+    const tl = animate(euroParallax, {
+      translateY: [-200, 40],
+      opacity: [0, 1],
+      duration: 1000,
+      easing: "easeInOutQuad",
+      autoplay: false,
+    });
 
     let ticking = false;
     const handleScroll = () => {
@@ -417,11 +424,8 @@ export default function Home() {
           (progress - eurStartThreshold) /
           (eurEndThreshold - eurStartThreshold);
         eurProgress = Math.min(Math.max(eurProgress, 0), 1);
-        // Ease and apply to parallax wrapper
-        const eased = 1 - (1 - eurProgress) * (1 - eurProgress); // easeOutQuad feel
-        const currentY = startY + (endY - startY) * eased;
-        euroParallax.style.transform = `translateY(${currentY}px)`;
-        euroParallax.style.opacity = String(eased);
+        // Seek timeline
+        tl.seek(tl.duration * eurProgress);
         ticking = false;
       });
     };
@@ -448,8 +452,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[0] = el;
         }}
-        className="relative min-h-dvh snap-start bg-white pt-20"
-        style={{ color: "#141416" }}
+        className="relative min-h-dvh snap-start bg-white text-[#141416] pt-20"
       >
         {/* Parallax Image */}
         <ParallaxImage />
@@ -502,7 +505,6 @@ export default function Home() {
           sectionRefs.current[1] = el;
         }}
         className="min-h-dvh snap-start text-white px-6 relative z-40 pt-20"
-        style={{ backgroundColor: "#141416" }}
       >
         <div className="max-w-4xl text-left">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight font-eurostile text-white">
@@ -524,7 +526,6 @@ export default function Home() {
           sectionRefs.current[2] = el;
         }}
         className="min-h-dvh snap-start flex items-center justify-center text-white px-6 relative z-40"
-        style={{ backgroundColor: "#141416" }}
       >
         <div className="max-w-4xl mx-auto text-center relative">
           {/* SVG Container */}
