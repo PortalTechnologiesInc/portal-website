@@ -364,6 +364,19 @@ export default function Home() {
 
   // Independent scroll-based animation for EUR symbol with different timing than text
   useEffect(() => {
+    // Prepare anime timeline for scroll-driven parallax on the outer wrapper
+    const euroParallax = document.querySelector(
+      "[data-euro-parallax]"
+    ) as HTMLElement | null;
+    if (!euroParallax) return;
+
+    // Fallback: use requestAnimationFrame to drive transform/opacity without timeline imports
+    euroParallax.style.transform = "translateY(-200px)";
+    euroParallax.style.opacity = "0";
+    const startY = -200;
+    const endY = 40; // compensation to match Lock/Sad height
+
+    let ticking = false;
     const handleScroll = () => {
       const scrollContainer = document.querySelector(
         "div.h-dvh.overflow-y-scroll"
@@ -372,9 +385,7 @@ export default function Home() {
 
       const secondSection = sectionRefs.current[1]; // Payments section
       const thirdSection = sectionRefs.current[2]; // Euro section
-      const euroSvg = document.querySelector("[data-euro-svg]") as HTMLElement;
-
-      if (!secondSection || !thirdSection || !euroSvg) return;
+      if (!secondSection || !thirdSection) return;
 
       const secondRect = secondSection.getBoundingClientRect();
       const thirdRect = thirdSection.getBoundingClientRect();
@@ -393,30 +404,26 @@ export default function Home() {
       const eurStartThreshold = 0.2;
       const eurEndThreshold = 0.7;
 
-      if (progress >= eurStartThreshold && progress <= eurEndThreshold) {
-        // Map progress to EUR animation range (0.2 to 0.7 becomes 0 to 1)
-        const eurProgress =
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        // Only drive when EUR is the active step
+        if (euroLockStep.current !== 0) {
+          ticking = false;
+          return;
+        }
+        // Map to [0,1]
+        let eurProgress =
           (progress - eurStartThreshold) /
           (eurEndThreshold - eurStartThreshold);
-
-        // EUR symbol moves from bottom to center (higher)
-        const translateY = (1 - eurProgress) * 200 - 80; // Start 200px below, end at -80px (higher)
-        // Smooth opacity with early ease-out saturation
-        const t = Math.min(Math.max(eurProgress + 0.15, 0), 1);
-        const opacity = 1 - (1 - t) * (1 - t); // easeOutQuad
-
-        euroSvg.style.transform = `translateY(${translateY}px)`;
-        euroSvg.style.opacity = opacity.toString();
-      } else if (progress < eurStartThreshold) {
-        // Before EUR animation starts - hidden below
-        euroSvg.style.transform = "translateY(200px)";
-        euroSvg.style.opacity = "0";
-      } else if (progress > eurEndThreshold) {
-        // After EUR animation ends - in final position (higher)
-        euroSvg.style.transform = "translateY(-80px)";
-        euroSvg.style.opacity = "1";
-        euroSvg.style.filter = "blur(0px)";
-      }
+        eurProgress = Math.min(Math.max(eurProgress, 0), 1);
+        // Ease and apply to parallax wrapper
+        const eased = 1 - (1 - eurProgress) * (1 - eurProgress); // easeOutQuad feel
+        const currentY = startY + (endY - startY) * eased;
+        euroParallax.style.transform = `translateY(${currentY}px)`;
+        euroParallax.style.opacity = String(eased);
+        ticking = false;
+      });
     };
 
     const scrollContainer = document.querySelector(
@@ -522,23 +529,30 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center relative">
           {/* SVG Container */}
           <div className="relative mb-8 h-[7.03125rem] flex items-center justify-center">
-            {/* Euro SVG - moves left with blur */}
+            {/* Euro Parallax Wrapper (scroll-driven Y/opacity) */}
             <div
-              data-euro-svg
-              className="absolute"
+              data-euro-parallax
+              className="absolute inset-0 flex items-center justify-center"
               style={{
-                transform: "translateY(-80px)",
-                filter: "blur(0px)",
+                transform: "translateY(-200px)",
                 opacity: 0,
               }}
             >
-              <Image
-                src="/euro_symbol.svg"
-                alt="Euro symbol"
-                width={112.5}
-                height={112.5}
-                className="w-[7.03125rem] h-[7.03125rem]"
-              />
+              {/* Euro SVG - step-driven X/blur/opacity */}
+              <div
+                data-euro-svg
+                style={{
+                  filter: "blur(0px)",
+                }}
+              >
+                <Image
+                  src="/euro_symbol.svg"
+                  alt="Euro symbol"
+                  width={112.5}
+                  height={112.5}
+                  className="w-[7.03125rem] h-[7.03125rem]"
+                />
+              </div>
             </div>
 
             {/* Lock SVG - comes from right */}
