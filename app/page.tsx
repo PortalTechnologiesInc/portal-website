@@ -32,7 +32,7 @@ export default function Home() {
             animate(target, {
               opacity: [0, 1],
               translateY: [startingTranslate, 0],
-              easing: "easeOutQuad",
+              easing: "easeInOutQuad",
               duration: 200,
             });
             io.unobserve(target);
@@ -97,31 +97,31 @@ export default function Home() {
             translateX: 200,
             opacity: 0,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(lockSvg, {
             translateX: 0,
             filter: "blur(0px)",
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(euroSvg, {
             translateX: -180,
             filter: "blur(10px)",
             opacity: 0.5,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(sadText, {
             opacity: 0,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(newText, {
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
         } else {
           // Euro -> Lock
@@ -130,23 +130,23 @@ export default function Home() {
             filter: "blur(10px)",
             opacity: 0.5,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(lockSvg, {
             translateX: 0,
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(initialText, {
             opacity: 0,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(newText, {
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
         }
       } else if (targetStep === 2) {
@@ -189,24 +189,24 @@ export default function Home() {
             translateX: 200,
             opacity: 0,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(euroSvg, {
             translateX: 0,
             filter: "blur(0px)",
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(sadText, {
             opacity: 0,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(initialText, {
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
         } else {
           // Lock -> Euro
@@ -214,24 +214,24 @@ export default function Home() {
             translateX: 200,
             opacity: 0,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(euroSvg, {
             translateX: 0,
             filter: "blur(0px)",
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(newText, {
             opacity: 0,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
           animate(initialText, {
             opacity: 1,
             duration: 600,
-            easing: "easeOutQuad",
+            easing: "easeInOutQuad",
           });
         }
       }
@@ -362,6 +362,78 @@ export default function Home() {
     };
   }, []);
 
+  // Independent scroll-based animation for EUR symbol with different timing than text
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollContainer = document.querySelector(
+        "div.h-dvh.overflow-y-scroll"
+      );
+      if (!scrollContainer) return;
+
+      const secondSection = sectionRefs.current[1]; // Payments section
+      const thirdSection = sectionRefs.current[2]; // Euro section
+      const euroSvg = document.querySelector("[data-euro-svg]") as HTMLElement;
+
+      if (!secondSection || !thirdSection || !euroSvg) return;
+
+      const secondRect = secondSection.getBoundingClientRect();
+      const thirdRect = thirdSection.getBoundingClientRect();
+
+      // Stable progress: based on section heights and second section offset
+      const totalDistance = secondRect.height + thirdRect.height;
+      const scrolledDistance = Math.abs(secondRect.top);
+      const progress = Math.min(
+        Math.max(scrolledDistance / totalDistance, 0),
+        1
+      );
+
+      // EUR symbol animation with different timing:
+      // - Starts later (at 0.2 progress instead of 0)
+      // - Finishes sooner (at 0.7 progress instead of 1)
+      const eurStartThreshold = 0.2;
+      const eurEndThreshold = 0.7;
+
+      if (progress >= eurStartThreshold && progress <= eurEndThreshold) {
+        // Map progress to EUR animation range (0.2 to 0.7 becomes 0 to 1)
+        const eurProgress =
+          (progress - eurStartThreshold) /
+          (eurEndThreshold - eurStartThreshold);
+
+        // EUR symbol moves from bottom to center (higher)
+        const translateY = (1 - eurProgress) * 200 - 80; // Start 200px below, end at -80px (higher)
+        // Smooth opacity with early ease-out saturation
+        const t = Math.min(Math.max(eurProgress + 0.15, 0), 1);
+        const opacity = 1 - (1 - t) * (1 - t); // easeOutQuad
+
+        euroSvg.style.transform = `translateY(${translateY}px)`;
+        euroSvg.style.opacity = opacity.toString();
+      } else if (progress < eurStartThreshold) {
+        // Before EUR animation starts - hidden below
+        euroSvg.style.transform = "translateY(200px)";
+        euroSvg.style.opacity = "0";
+      } else if (progress > eurEndThreshold) {
+        // After EUR animation ends - in final position (higher)
+        euroSvg.style.transform = "translateY(-80px)";
+        euroSvg.style.opacity = "1";
+        euroSvg.style.filter = "blur(0px)";
+      }
+    };
+
+    const scrollContainer = document.querySelector(
+      "div.h-dvh.overflow-y-scroll"
+    );
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll, {
+        passive: true,
+      });
+      handleScroll(); // Initial call
+
+      return () => {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
   return (
     <div className="h-dvh overflow-y-scroll overflow-x-hidden scroll-smooth snap-y snap-mandatory">
       {/* Step 1: Hero Section */}
@@ -453,11 +525,11 @@ export default function Home() {
             {/* Euro SVG - moves left with blur */}
             <div
               data-euro-svg
-              className="absolute transition-all duration-1000 ease-out"
+              className="absolute"
               style={{
-                transform: "translateX(0)",
+                transform: "translateY(-80px)",
                 filter: "blur(0px)",
-                opacity: 1,
+                opacity: 0,
               }}
             >
               <Image
@@ -472,7 +544,7 @@ export default function Home() {
             {/* Lock SVG - comes from right */}
             <div
               data-lock-svg
-              className="absolute transition-all duration-1000 ease-out"
+              className="absolute"
               style={{
                 transform: "translateX(200px)",
                 opacity: 0,
@@ -490,7 +562,7 @@ export default function Home() {
             {/* Sad SVG - comes from right */}
             <div
               data-sad-svg
-              className="absolute transition-all duration-1000 ease-out"
+              className="absolute"
               style={{
                 transform: "translateX(200px)",
                 opacity: 0,
