@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function EuroParallax({ isActiveRef, euroRef, containerRef }: Props) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEuroParallax(wrapperRef, isActiveRef, containerRef);
 

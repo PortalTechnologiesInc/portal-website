@@ -9,8 +9,8 @@ import {
   EURO_SCROLL,
 } from "../lib/constants/animation";
 
-export function useEuroParallax(
-  euroParallaxRef: React.RefObject<HTMLElement>,
+export function useEuroParallax<T extends HTMLElement>(
+  euroParallaxRef: React.RefObject<T | null>,
   isActiveRef: React.RefObject<number>,
   containerRef?: React.RefObject<HTMLElement | null>
 ) {
