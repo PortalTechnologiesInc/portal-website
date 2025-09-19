@@ -19,6 +19,11 @@ export default function Home() {
   const euroRef = useRef<HTMLDivElement | null>(null);
   const lockRef = useRef<HTMLDivElement | null>(null);
   const sadRef = useRef<HTMLDivElement | null>(null);
+  const euroGroupRef = useRef<HTMLDivElement | null>(null);
+  const logoYellowRef = useRef<HTMLDivElement | null>(null);
+  const logoPathRef = useRef<SVGPathElement | null>(null);
+  const finalTitleRef = useRef<HTMLDivElement | null>(null);
+  const finalSubtitleRef = useRef<HTMLDivElement | null>(null);
   const initialTextRef = useRef<HTMLDivElement | null>(null);
   const newTextRef = useRef<HTMLDivElement | null>(null);
   const sadTextRef = useRef<HTMLDivElement | null>(null);
@@ -43,6 +48,11 @@ export default function Home() {
       initialText: initialTextRef,
       newText: newTextRef,
       sadText: sadTextRef,
+      euroGroup: euroGroupRef,
+      logoYellow: logoYellowRef,
+      logoPath: logoPathRef,
+      finalTitle: finalTitleRef,
+      finalSubtitle: finalSubtitleRef,
     },
     scrollContainerRef
   );
@@ -192,7 +202,11 @@ export default function Home() {
       >
         <div className="max-w-4xl mx-auto text-center relative">
           {/* Column layout: sprites on top, texts below */}
-          <div className="relative flex flex-col items-center justify-center gap-10 w-full">
+          <div
+            ref={euroGroupRef}
+            data-euro-steps-wrapper
+            className="relative flex flex-col items-center justify-center gap-10 w-full"
+          >
             <div className="relative h-[7.03125rem] flex items-center justify-center w-full">
               <EuroParallax
                 isActiveRef={euroLockStep}
@@ -207,6 +221,59 @@ export default function Home() {
               newTextRef={newTextRef}
               sadTextRef={sadTextRef}
             />
+          </div>
+
+          {/* Step 4 overlay: Yellow logo + final title/subtitle */}
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-4">
+            <div
+              ref={logoYellowRef}
+              data-logo-yellow
+              className="absolute"
+              style={{
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, 40vh)",
+                width: "20px",
+                opacity: 0,
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 246 210"
+                style={{ width: "100%", height: "auto", display: "block" }}
+                role="img"
+                aria-label="Portal yellow logo"
+              >
+                <path
+                  ref={logoPathRef}
+                  d="M174.011 1.5C174.029 17.4525 174.358 29.8097 175.814 39.3369C177.317 49.1665 180.048 56.2148 185.089 61.127C190.126 66.0356 197.249 68.5948 207.03 69.9609C216.506 71.2844 228.703 71.5115 244.313 71.5244V138.475C228.7 138.488 216.501 138.716 207.024 140.039C197.243 141.405 190.12 143.965 185.084 148.873C180.044 153.785 177.314 160.834 175.812 170.663C174.358 180.19 174.029 192.548 174.011 208.5H71.8027C71.7841 192.547 71.455 180.19 69.999 170.663C68.4968 160.833 65.7646 153.785 60.7236 148.873C55.6863 143.965 48.5641 141.405 38.7832 140.039C29.3072 138.716 17.1101 138.488 1.5 138.475V71.5244C17.1136 71.5115 29.3124 71.2845 38.7891 69.9609C48.5707 68.5948 55.693 66.0356 60.7295 61.127C65.7696 56.2148 68.4999 49.1664 70.001 39.3369C71.4559 29.8097 71.7842 17.4525 71.8027 1.5H174.011Z"
+                  stroke="#FFED00"
+                  strokeWidth={3}
+                  fill="none"
+                />
+              </svg>
+            </div>
+            <div className="text-center mx-2">
+              <h2
+                ref={finalTitleRef}
+                data-final-title
+                className="font-eurostile font-bold tracking-tight text-5xl md:text-8xl lg:text-8xl"
+                style={{ opacity: 0 }}
+              >
+                BREAK THE CYCLE,
+                <br />
+                SKIP THE THIRD WHEEL
+              </h2>
+              <p
+                ref={finalSubtitleRef}
+                data-final-subtitle
+                className="mt-3 text-2xl md:text-xl lg:text-xl opacity-90 max-w-2xl mx-5"
+                style={{ opacity: 0 }}
+              >
+                A peer-to-peer system for direct business-to-customer
+                communication
+              </p>
+            </div>
           </div>
         </div>
       </section>
