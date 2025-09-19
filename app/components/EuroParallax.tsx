@@ -26,9 +26,9 @@ export function EuroParallax({ isActiveRef, euroRef, containerRef }: Props) {
         <Image
           src="/euro_symbol.svg"
           alt="Euro symbol"
-          width={112.5}
-          height={112.5}
-          className="w-[7.03125rem] h-[7.03125rem]"
+          width={120}
+          height={120}
+          className="w-[7.5rem] h-[7.5rem]"
         />
       </div>
     </div>

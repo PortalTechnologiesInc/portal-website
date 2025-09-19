@@ -9,7 +9,7 @@ import ParallaxImage from "./components/ParallaxImage";
 import { EuroParallax } from "./components/EuroParallax";
 import { EuroStepSprites } from "./components/EuroStepSprites";
 import { EuroStepTexts } from "./components/EuroStepTexts";
-import { useStaggeredRiseOnIntersect } from "./hooks/useStaggeredRiseOnIntersect";
+import { useStaggeredScrollRise } from "./hooks/useStaggeredScrollRise";
 
 export default function Home() {
   const sectionRefs = useRef<Array<HTMLElement | null>>([]);
@@ -47,17 +47,20 @@ export default function Home() {
     scrollContainerRef
   );
 
-  useStaggeredRiseOnIntersect(
+  useStaggeredScrollRise(
     step2IconsRef as React.RefObject<HTMLElement | null>,
     [step2SadRef, step2EurRef, step2LockRef] as Array<
       React.RefObject<HTMLElement | null>
     >,
     scrollContainerRef,
     {
-      distancePx: 96,
-      delaysMs: [0, 200, 400],
-      reverseStartRatio: 0.75,
-      threshold: 0.15,
+      distancePx: 280,
+      continueDistancePx: 300,
+      delaysMs: [0, 150, 300],
+      start: 0.25,
+      end: 0.8,
+      continueIntoNext: true,
+      respectReducedMotion: false,
     }
   );
 
@@ -143,7 +146,10 @@ export default function Home() {
         {/* Bottom icons group: column, aggregated */}
         <div
           ref={step2IconsRef}
-          className="absolute inset-x-0 flex justify-center bottom-[clamp(1.5rem,12svh,8rem)] sm:bottom-[clamp(2rem,14svh,10rem)] lg:bottom-[clamp(3rem,18svh,12rem)]"
+          className="absolute inset-x-0 flex justify-center
+             bottom-[clamp(12rem,40svh,20rem)]
+             sm:bottom-[clamp(13rem,42svh,20rem)]
+             md:bottom-[clamp(14rem,44svh,20rem)]"
         >
           <div className="flex flex-col w-[14rem]">
             <div ref={step2SadRef} className="self-start">
@@ -152,10 +158,10 @@ export default function Home() {
                 alt="Sad symbol"
                 width={93}
                 height={93}
-                className="-mb-10 rotate-[12.31deg] blur-md"
+                className="rotate-[12.31deg] blur-md"
               />
             </div>
-            <div ref={step2EurRef} className="-mt-3 self-end">
+            <div ref={step2EurRef} className="-mt-20 self-end">
               <Image
                 src="/euro_symbol.svg"
                 alt="Euro symbol"
@@ -164,7 +170,7 @@ export default function Home() {
                 className="rotate-[15deg] blur-md"
               />
             </div>
-            <div ref={step2LockRef} className="-mt-8 self-start">
+            <div ref={step2LockRef} className="-mt-16 self-start">
               <Image
                 src="/lock.svg"
                 alt="Lock symbol"

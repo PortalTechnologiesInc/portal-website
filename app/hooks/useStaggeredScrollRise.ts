@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { buildPausedAnimation } from "../lib/animation/anime";
+// We compute transforms directly per scroll for deterministic, smooth behavior
 import { computeSectionProgress } from "../lib/scroll/computeSectionProgress";
-import { DUR_SCROLL_MS, EASING_DEFAULT } from "../lib/constants/animation";
+import { DUR_SCROLL_MS } from "../lib/constants/animation";
 
 type Options = {
   distancePx?: number;
+  continueDistancePx?: number;
   delaysMs?: number[];
   durationMs?: number;
   easing?: string;
   start?: number; // section progress start
   end?: number; // section progress end
+  continueIntoNext?: boolean; // allow progress > 1 to carry into next section
+  respectReducedMotion?: boolean; // if false, ignore prefers-reduced-motion
 };
 
 export function useStaggeredScrollRise(
@@ -39,9 +42,11 @@ export function useStaggeredScrollRise(
     const distance = options?.distancePx ?? 32;
     const delaysMs = options?.delaysMs ?? [0, 200, 400];
     const duration = options?.durationMs ?? DUR_SCROLL_MS;
-    const easing = options?.easing ?? EASING_DEFAULT;
+    // easing is not used in direct transform approach; retained for API parity
+    // const easing = options?.easing ?? EASING_DEFAULT;
     const start = options?.start ?? 0.2;
     const end = options?.end ?? 0.8;
+    const continueDistance = options?.continueDistancePx ?? distance;
 
     // Prepare elements initial transform
     elements.forEach((el) => {
@@ -49,16 +54,7 @@ export function useStaggeredScrollRise(
       el.style.opacity = "1";
     });
 
-    // Build paused animations for each element
-    const animations = elements.map((el) =>
-      buildPausedAnimation(el, {
-        translateY: [distance, 0],
-        duration,
-        easing,
-      })
-    );
-
-    if (reduced) {
+    if (reduced && options?.respectReducedMotion !== false) {
       // Snap to end state and skip listeners
       elements.forEach((el) => {
         el.style.transform = `translateY(0px)`;
@@ -89,27 +85,53 @@ export function useStaggeredScrollRise(
         let np = (pPrev - start) / (end - start);
         np = Math.min(Math.max(np, 0), 1);
 
-        // If next section started, clamp to end state so animation fully finishes in page 2
-        if (nextEl) {
-          const pNext = computeSectionProgress(
+        // Compute within-section progress (0 at section top, 1 at bottom)
+        // Compute based on offsets to avoid unused local rects
+        const toTopAbs = toEl.offsetTop; // relative to scroll container
+        const toHeight = Math.max(toEl.offsetHeight, 1);
+        const scrollTop = containerEl.scrollTop;
+        const within = Math.min(
+          Math.max((scrollTop - toTopAbs) / toHeight, 0),
+          1
+        );
+
+        // Next-section progress
+        let nextP = 0;
+        if (options?.continueIntoNext && nextEl) {
+          nextP = computeSectionProgress(
             toEl as HTMLElement,
             nextEl as HTMLElement
           );
-          if (pNext > 0) {
-            np = 1;
-          }
+          nextP = Math.min(Math.max(nextP, 0), 1);
         }
 
-        // Seek each animation with delay that finishes together at np=1
-        animations.forEach((anim, idx) => {
+        // Drive transforms directly from three phases:
+        // 1) enter phase: from distance -> 0 using np
+        // 2) within current section: from 0 -> -continueDistance using within
+        // 3) into next section: further from -continueDistance -> -2*continueDistance using nextP
+        elements.forEach((el, idx) => {
           const delay = delaysMs[idx] ?? 0;
           const delayFrac = Math.min(Math.max(delay / duration, 0), 0.99);
-          const localP = Math.min(
+
+          const enterP = Math.min(
             Math.max((np - delayFrac) / (1 - delayFrac), 0),
             1
           );
-          const t = localP * duration;
-          anim.seek(t);
+          const withinP = Math.min(
+            Math.max((within - delayFrac) / (1 - delayFrac), 0),
+            1
+          );
+          const nextPhaseP = Math.min(
+            Math.max((nextP - delayFrac) / (1 - delayFrac), 0),
+            1
+          );
+
+          const translate =
+            distance * (1 - enterP) -
+            continueDistance * withinP -
+            continueDistance * nextPhaseP;
+
+          el.style.transform = `translateY(${translate}px)`;
         });
         ticking = false;
       });
@@ -130,10 +152,12 @@ export function useStaggeredScrollRise(
     elementRefs,
     scrollContainerRef,
     options?.distancePx,
+    options?.continueDistancePx,
     options?.delaysMs,
     options?.durationMs,
-    options?.easing,
     options?.start,
     options?.end,
+    options?.continueIntoNext,
+    options?.respectReducedMotion,
   ]);
 }

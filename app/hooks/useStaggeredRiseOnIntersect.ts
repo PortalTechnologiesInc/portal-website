@@ -61,8 +61,12 @@ export function useStaggeredRiseOnIntersect(
 
     const animateIn = () => {
       elements.forEach((el, idx) => {
+        // Ensure the starting side is applied before animating
+        el.style.transform = `translateY(${
+          direction === "up" ? -distance : distance
+        }px)`;
         animate(el, {
-          translateY: [distance, 0],
+          translateY: 0,
           easing,
           duration,
           delay: delays[idx] ?? 0,
@@ -76,7 +80,7 @@ export function useStaggeredRiseOnIntersect(
       const reversed = [...elements].reverse();
       reversed.forEach((el, idx) => {
         animate(el, {
-          translateY: [0, distance],
+          translateY: direction === "up" ? -distance : distance,
           easing,
           duration,
           delay: delays[idx] ?? 0,
@@ -86,16 +90,20 @@ export function useStaggeredRiseOnIntersect(
     };
 
     let lastRatio = 0;
+    let prevIsIntersecting = false;
 
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.target !== container) return;
 
-          if (entry.isIntersecting) {
-            if (!hasAnimatedIn) {
-              animateIn();
-            } else if (
+          const isEntering = entry.isIntersecting && !prevIsIntersecting;
+          const isExiting = !entry.isIntersecting && prevIsIntersecting;
+
+          if (isEntering) {
+            animateIn();
+          } else if (entry.isIntersecting) {
+            if (
               direction === "up" &&
               entry.intersectionRatio < reverseStartRatio &&
               entry.intersectionRatio < lastRatio
@@ -103,12 +111,27 @@ export function useStaggeredRiseOnIntersect(
               // Start reversing while still partially visible on upward scroll
               animateOut();
             }
-          } else if (direction === "up" && hasAnimatedIn) {
+          } else if (
+            !entry.isIntersecting &&
+            direction === "up" &&
+            hasAnimatedIn
+          ) {
             // Ensure reverse also triggers once it leaves the viewport on upward scroll
             animateOut();
           }
 
+          if (isExiting) {
+            // Allow a fresh animate-in on next entry from either direction
+            hasAnimatedIn = false;
+            // Pre-position elements so the next entry animates from the opposite side
+            const preset = direction === "down" ? -distance : distance;
+            elements.forEach((el) => {
+              el.style.transform = `translateY(${preset}px)`;
+            });
+          }
+
           lastRatio = entry.intersectionRatio;
+          prevIsIntersecting = entry.isIntersecting;
         });
       },
       { threshold, root: scrollEl ?? undefined }

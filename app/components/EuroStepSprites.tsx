@@ -23,9 +23,9 @@ export function EuroStepSprites({ lockRef, sadRef }: Props) {
         <Image
           src="/lock.svg"
           alt="Lock symbol"
-          width={112.5}
-          height={112.5}
-          className="w-[7.03125rem] h-[7.03125rem]"
+          width={128}
+          height={128}
+          className="w-[8rem] h-[8rem]"
         />
       </div>
 
@@ -42,9 +42,9 @@ export function EuroStepSprites({ lockRef, sadRef }: Props) {
         <Image
           src="/sentiment_sad.svg"
           alt="Sad symbol"
-          width={112.5}
-          height={112.5}
-          className="w-[7.03125rem] h-[7.03125rem]"
+          width={120}
+          height={120}
+          className="w-[7.5rem] h-[7.5rem]"
         />
       </div>
     </>
