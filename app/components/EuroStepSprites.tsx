@@ -14,7 +14,7 @@ export function EuroStepSprites({ lockRef, sadRef }: Props) {
       <div
         data-lock-svg
         ref={lockRef}
-        className="absolute inset-0 flex items-center justify-center"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
         style={{
           transform: "translateX(200px)",
           opacity: 0,
@@ -33,7 +33,7 @@ export function EuroStepSprites({ lockRef, sadRef }: Props) {
       <div
         data-sad-svg
         ref={sadRef}
-        className="absolute inset-0 flex items-center justify-center"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
         style={{
           transform: "translateX(200px)",
           opacity: 0,

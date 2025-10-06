@@ -8,19 +8,31 @@ type Props = {
   isActiveRef: React.RefObject<number>;
   euroRef?: React.RefObject<HTMLDivElement | null>;
   containerRef?: React.RefObject<HTMLElement | null>;
+  staticMode?: boolean;
 };
 
-export function EuroParallax({ isActiveRef, euroRef, containerRef }: Props) {
+export function EuroParallax({
+  isActiveRef,
+  euroRef,
+  containerRef,
+  staticMode,
+}: Props) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-
-  useEuroParallax(wrapperRef, isActiveRef, containerRef);
+  // Always call the hook to preserve order; when staticMode, the wrapper ref won't be used for transforms
+  useEuroParallax(
+    staticMode ? { current: null } : wrapperRef,
+    isActiveRef,
+    containerRef
+  );
 
   return (
     <div
       data-euro-parallax
       ref={wrapperRef}
       className="absolute inset-0 flex items-center justify-center"
-      style={{ transform: "translateY(-200px)", opacity: 0 }}
+      style={
+        staticMode ? undefined : { transform: "translateY(-200px)", opacity: 0 }
+      }
     >
       <div data-euro-svg ref={euroRef} style={{ filter: "blur(0px)" }}>
         <Image

@@ -87,6 +87,7 @@ export default function Home() {
           sectionRefs.current[0] = el;
         }}
         className="relative min-h-dvh snap-start bg-white text-[#141416] pt-20"
+        style={{ scrollSnapStop: "always" }}
       >
         {/* Parallax Image */}
         <ParallaxImage />
@@ -139,6 +140,7 @@ export default function Home() {
           sectionRefs.current[1] = el;
         }}
         className="min-h-dvh snap-start text-white px-6 relative z-40 pt-28 md:pt-36"
+        style={{ scrollSnapStop: "always" }}
       >
         <div className="max-w-4xl text-left">
           <h1 className="text-3xl md:text-4xl lg:text-5xl tracking-tight mb-6 leading-tight font-eurostile text-white">
@@ -198,32 +200,46 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[2] = el;
         }}
+        className="snap-start text-white px-6 relative z-40"
+        style={{ scrollSnapStop: "always", minHeight: "200svh" }}
+      >
+        <div className="sticky top-0 h-dvh flex items-center justify-center w-full pointer-events-none">
+          <div className="max-w-4xl mx-auto text-center relative">
+            {/* Column layout: sprites on top, texts below */}
+            <div
+              ref={euroGroupRef}
+              data-euro-steps-wrapper
+              className="relative flex flex-col items-center justify-center gap-10 w-full"
+            >
+              <div className="relative h-[7.03125rem] flex items-center justify-center w-full">
+                <EuroParallax
+                  isActiveRef={euroLockStep}
+                  euroRef={euroRef}
+                  containerRef={scrollContainerRef}
+                  staticMode
+                />
+                <EuroStepSprites lockRef={lockRef} sadRef={sadRef} />
+              </div>
+
+              <EuroStepTexts
+                initialTextRef={initialTextRef}
+                newTextRef={newTextRef}
+                sadTextRef={sadTextRef}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Step 4: Final Section */}
+      <section
+        ref={(el) => {
+          sectionRefs.current[3] = el;
+        }}
         className="min-h-dvh snap-start flex items-center justify-center text-white px-6 relative z-40"
+        style={{ scrollSnapStop: "always", opacity: 0 }}
       >
         <div className="max-w-4xl mx-auto text-center relative">
-          {/* Column layout: sprites on top, texts below */}
-          <div
-            ref={euroGroupRef}
-            data-euro-steps-wrapper
-            className="relative flex flex-col items-center justify-center gap-10 w-full"
-          >
-            <div className="relative h-[7.03125rem] flex items-center justify-center w-full">
-              <EuroParallax
-                isActiveRef={euroLockStep}
-                euroRef={euroRef}
-                containerRef={scrollContainerRef}
-              />
-              <EuroStepSprites lockRef={lockRef} sadRef={sadRef} />
-            </div>
-
-            <EuroStepTexts
-              initialTextRef={initialTextRef}
-              newTextRef={newTextRef}
-              sadTextRef={sadTextRef}
-            />
-          </div>
-
-          {/* Step 4 overlay: Yellow logo + final title/subtitle */}
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-4">
             <div
               ref={logoYellowRef}
