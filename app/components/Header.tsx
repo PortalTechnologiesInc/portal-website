@@ -147,7 +147,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 z-50 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.7rem]">
+    <header className="w-full fixed top-0 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.7rem]" style={{ zIndex: 10000 }}>
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6">
         <div className="h-14 flex items-center justify-between">
           <Link
