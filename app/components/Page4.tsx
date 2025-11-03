@@ -57,6 +57,7 @@ export function Page4({ scrollContainerRef }: Props) {
             if (logoYellowEl) {
               logoYellowEl.style.transition = `opacity ${DUR_STEP_MS}ms ease-in-out`;
               logoYellowEl.style.opacity = "1";
+              logoYellowEl.style.zIndex = "41"; // Above Page4 section (z-40)
             }
             setLogoPhase("visible");
           }
@@ -147,6 +148,7 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.transform = "translate(-50%, -50%)";
         logoYellow.style.width = "40px";
         logoYellow.style.height = "40px";
+        logoYellow.style.zIndex = "41"; // Above Page4 section (z-40)
         // Only transition opacity and top - width/height don't change here
         logoYellow.style.transition = `opacity ${baseTransition}, top ${baseTransition}`;
         if (logoPath) {
@@ -160,6 +162,7 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.transform = "translate(-50%, -50%)";
         logoYellow.style.width = "900px";
         logoYellow.style.height = "900px";
+        logoYellow.style.zIndex = "41"; // Above Page4 section (z-40)
         logoYellow.style.transition = `width ${baseTransition}, height ${baseTransition}`;
         if (logoPath) {
           logoPath.style.transition = `stroke-width ${baseTransition}`;
@@ -172,6 +175,7 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.transform = "translate(-50%, -50%)";
         logoYellow.style.width = "900px";
         logoYellow.style.height = "900px";
+        logoYellow.style.zIndex = "41"; // Above Page4 section (z-40)
         logoYellow.style.transition = "none";
         if (logoPath) {
           logoPath.style.strokeWidth = "1.2";

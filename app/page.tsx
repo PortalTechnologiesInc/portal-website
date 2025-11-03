@@ -30,7 +30,7 @@ export default function Home() {
         className="fixed left-1/2 pointer-events-none"
         style={{
           transformOrigin: "center center",
-          zIndex: 9999,
+          zIndex: 48,
           opacity: 0,
           top: "100vh",
           transform: "translate(-50%, -50%)",
@@ -45,9 +45,10 @@ export default function Home() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           style={{
-            display: "block",
+            display: "absolute",
             width: "100%",
             height: "100%",
+            zIndex: 1,
           }}
         >
           <path
@@ -107,8 +108,12 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[4] = el;
         }}
-        className="min-h-dvh snap-start relative z-40"
-        style={{ scrollSnapStop: "always" }}
+        className="min-h-dvh snap-start relative"
+        style={{ 
+          scrollSnapStop: "always", 
+          zIndex: 49, 
+          position: 'relative'
+        }}
       >
         <Page5 scrollContainerRef={scrollContainerRef} />
       </section>
