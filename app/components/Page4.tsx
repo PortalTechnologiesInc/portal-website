@@ -72,6 +72,7 @@ export function Page4({ scrollContainerRef }: Props) {
   // Apply logo styles based on phase
   useEffect(() => {
     const logoYellow = document.querySelector('[data-logo-yellow]') as HTMLElement;
+    const logoPath = document.querySelector('[data-logo-path]') as SVGPathElement;
     if (!logoYellow) return;
 
     const baseTransition = `${DUR_STEP_MS}ms ease-in-out`;
@@ -84,6 +85,10 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.width = "40px";
         logoYellow.style.height = "40px";
         logoYellow.style.transition = "none";
+        if (logoPath) {
+          logoPath.style.strokeWidth = "3";
+          logoPath.style.transition = "none";
+        }
         break;
       case "moving":
         logoYellow.style.opacity = "1";
@@ -92,6 +97,10 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.width = "40px";
         logoYellow.style.height = "40px";
         logoYellow.style.transition = `opacity ${baseTransition}, top ${baseTransition}, width ${baseTransition}, height ${baseTransition}`;
+        if (logoPath) {
+          logoPath.style.strokeWidth = "3";
+          logoPath.style.transition = "none";
+        }
         break;
       case "enlarging":
         logoYellow.style.opacity = "1";
@@ -100,6 +109,10 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.width = "900px";
         logoYellow.style.height = "900px";
         logoYellow.style.transition = `width ${baseTransition}, height ${baseTransition}`;
+        if (logoPath) {
+          logoPath.style.transition = `stroke-width ${baseTransition}`;
+          logoPath.style.strokeWidth = "1.2";
+        }
         break;
       case "visible":
         logoYellow.style.opacity = "1";
@@ -108,6 +121,10 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.width = "900px";
         logoYellow.style.height = "900px";
         logoYellow.style.transition = "none";
+        if (logoPath) {
+          logoPath.style.strokeWidth = "1.2";
+          logoPath.style.transition = "none";
+        }
         break;
     }
   }, [logoPhase]);
@@ -147,6 +164,7 @@ export function Page4({ scrollContainerRef }: Props) {
 // Export utility function for Page5 to reset logo
 export function resetLogoYellow() {
   const logoYellow = document.querySelector('[data-logo-yellow]') as HTMLElement;
+  const logoPath = document.querySelector('[data-logo-path]') as SVGPathElement;
   if (logoYellow) {
     logoYellow.style.opacity = "0";
     logoYellow.style.top = "100vh";
@@ -154,5 +172,9 @@ export function resetLogoYellow() {
     logoYellow.style.width = "40px";
     logoYellow.style.height = "40px";
     logoYellow.style.transition = "none";
+  }
+  if (logoPath) {
+    logoPath.style.strokeWidth = "3";
+    logoPath.style.transition = "none";
   }
 }

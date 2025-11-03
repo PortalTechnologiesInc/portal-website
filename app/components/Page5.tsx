@@ -28,6 +28,7 @@ export function Page5({ scrollContainerRef }: Props) {
 
     const ensureLogoVisible = () => {
       const logoYellow = document.querySelector('[data-logo-yellow]') as HTMLElement;
+      const logoPath = document.querySelector('[data-logo-path]') as SVGPathElement;
       if (logoYellow) {
         // Ensure logo maintains its visible state
         logoYellow.style.opacity = "1";
@@ -36,6 +37,10 @@ export function Page5({ scrollContainerRef }: Props) {
         logoYellow.style.width = "900px";
         logoYellow.style.height = "900px";
         logoYellow.style.transition = "none";
+      }
+      if (logoPath) {
+        logoPath.style.strokeWidth = "1.2";
+        logoPath.style.transition = "none";
       }
     };
 
