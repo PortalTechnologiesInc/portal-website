@@ -125,7 +125,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[5] = el;
         }}
-        className="min-h-dvh snap-start relative"
+        className="min-h-dvh snap-start relative overflow-hidden"
         style={{ 
           scrollSnapStop: "always",
           backgroundColor: "#FFED00"
