@@ -30,6 +30,7 @@ export default function Header() {
     ) as HTMLElement[];
     const firstSection = sections[0];
     const secondSection = sections[1];
+    const fifthSection = sections[4];
 
     if (!firstSection || !secondSection) return;
 
@@ -43,6 +44,7 @@ export default function Header() {
 
         let firstActive = false;
         let secondActive = false;
+        let fifthActive = false;
 
         for (const entry of entries) {
           const top = entry.boundingClientRect.top;
@@ -54,10 +56,15 @@ export default function Header() {
           } else if (entry.target === secondSection) {
             const y = triggerY + lead;
             secondActive = top <= y && bottom > y;
+          } else if (fifthSection && entry.target === fifthSection) {
+            const y = triggerY + lead;
+            fifthActive = top <= y && bottom > y;
           }
         }
 
-        if (firstActive) {
+        if (fifthActive) {
+          setOnLightBackground(true);
+        } else if (firstActive) {
           setOnLightBackground(true);
         } else if (secondActive) {
           setOnLightBackground(false);
@@ -74,6 +81,7 @@ export default function Header() {
 
     observer.observe(firstSection);
     observer.observe(secondSection);
+    if (fifthSection) observer.observe(fifthSection);
 
     // Add a tiny rAF-throttled scroll handler to remove any perceived IO delay
     const handleScroll = () => {
@@ -86,14 +94,20 @@ export default function Header() {
 
       const firstRect = firstSection.getBoundingClientRect();
       const secondRect = secondSection.getBoundingClientRect();
+      const fifthRect = fifthSection?.getBoundingClientRect();
 
       const firstActive =
         firstRect.top <= triggerY - lead && firstRect.bottom > triggerY - lead;
       const secondActive =
         secondRect.top <= triggerY + lead &&
         secondRect.bottom > triggerY + lead;
+      const fifthActive = fifthRect
+        ? fifthRect.top <= triggerY + lead && fifthRect.bottom > triggerY + lead
+        : false;
 
-      if (firstActive) {
+      if (fifthActive) {
+        setOnLightBackground(true);
+      } else if (firstActive) {
         setOnLightBackground(true);
       } else if (secondActive) {
         setOnLightBackground(false);
