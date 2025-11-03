@@ -21,11 +21,16 @@ export function Page4({ scrollContainerRef }: Props) {
     const container = page4ContainerRef.current;
     const scrollContainerEl = scrollContainerRef.current;
     const logoYellow = document.querySelector('[data-logo-yellow]') as HTMLElement;
+    const logoPath = document.querySelector('[data-logo-path]') as SVGPathElement;
     const page4Section = container?.closest("section");
 
     if (!container || !scrollContainerEl || !logoYellow || !page4Section) return;
 
-    const observer = new IntersectionObserver(
+    // Get Page3 section
+    const page3Section = page4Section.previousElementSibling as HTMLElement;
+    
+    // Observer for Page4
+    const page4Observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
         const isIntersecting = entry.isIntersecting;
@@ -47,7 +52,12 @@ export function Page4({ scrollContainerRef }: Props) {
               }, DUR_STEP_MS);
             }, DUR_STEP_MS);
           } else {
-            // If already animated, ensure logo stays visible
+            // If already animated, ensure logo reappears (fade in)
+            const logoYellowEl = document.querySelector('[data-logo-yellow]') as HTMLElement;
+            if (logoYellowEl) {
+              logoYellowEl.style.transition = `opacity ${DUR_STEP_MS}ms ease-in-out`;
+              logoYellowEl.style.opacity = "1";
+            }
             setLogoPhase("visible");
           }
           setIsTextVisible(true);
@@ -62,10 +72,51 @@ export function Page4({ scrollContainerRef }: Props) {
       }
     );
 
-    observer.observe(page4Section);
+    // Observer for Page3 - to detect when we're scrolling back to it
+    const page3Observer = page3Section ? new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        const isPage3Intersecting = entry.isIntersecting;
+        const page3Ratio = entry.intersectionRatio;
+        
+        // Check if Page4 is currently intersecting
+        const page4Rect = page4Section.getBoundingClientRect();
+        const viewportHeight = scrollContainerEl.clientHeight;
+        const page4Ratio = page4Rect.top < viewportHeight && page4Rect.bottom > 0 
+          ? Math.min(1, Math.max(0, (viewportHeight - Math.max(0, page4Rect.top)) / viewportHeight))
+          : 0;
+        
+        // If Page3 is starting to become visible (low threshold) while Page4 is still partially visible, fade out
+        // This makes the fade happen DURING the scroll transition, not after
+        if (isPage3Intersecting && page3Ratio > 0.1 && page4Ratio < 0.8 && hasAnimatedRef.current) {
+          const logoYellowEl = document.querySelector('[data-logo-yellow]') as HTMLElement;
+          if (logoYellowEl) {
+            const currentOpacity = getComputedStyle(logoYellowEl).opacity;
+            // Only fade if not already faded out
+            if (currentOpacity !== "0" && parseFloat(currentOpacity) > 0) {
+              // Gracefully fade out with transition while scrolling
+              logoYellowEl.style.transition = `opacity ${DUR_STEP_MS}ms ease-in-out`;
+              logoYellowEl.style.opacity = "0";
+            }
+          }
+        }
+      },
+      {
+        root: scrollContainerEl,
+        threshold: [0, 0.1, 0.2, 0.3, 0.5, 1],
+      }
+    ) : null;
+
+    page4Observer.observe(page4Section);
+    if (page3Section && page3Observer) {
+      page3Observer.observe(page3Section);
+    }
 
     return () => {
-      observer.disconnect();
+      page4Observer.disconnect();
+      if (page3Observer) {
+        page3Observer.disconnect();
+      }
     };
   }, [scrollContainerRef]);
 
@@ -96,7 +147,8 @@ export function Page4({ scrollContainerRef }: Props) {
         logoYellow.style.transform = "translate(-50%, -50%)";
         logoYellow.style.width = "40px";
         logoYellow.style.height = "40px";
-        logoYellow.style.transition = `opacity ${baseTransition}, top ${baseTransition}, width ${baseTransition}, height ${baseTransition}`;
+        // Only transition opacity and top - width/height don't change here
+        logoYellow.style.transition = `opacity ${baseTransition}, top ${baseTransition}`;
         if (logoPath) {
           logoPath.style.strokeWidth = "3";
           logoPath.style.transition = "none";
