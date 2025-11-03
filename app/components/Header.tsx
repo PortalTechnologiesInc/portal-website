@@ -31,6 +31,7 @@ export default function Header() {
     const firstSection = sections[0];
     const secondSection = sections[1];
     const fifthSection = sections[4];
+    const sixthSection = sections[5];
 
     if (!firstSection || !secondSection) return;
 
@@ -45,6 +46,7 @@ export default function Header() {
         let firstActive = false;
         let secondActive = false;
         let fifthActive = false;
+        let sixthActive = false;
 
         for (const entry of entries) {
           const top = entry.boundingClientRect.top;
@@ -59,10 +61,15 @@ export default function Header() {
           } else if (fifthSection && entry.target === fifthSection) {
             const y = triggerY + lead;
             fifthActive = top <= y && bottom > y;
+          } else if (sixthSection && entry.target === sixthSection) {
+            const y = triggerY + lead;
+            sixthActive = top <= y && bottom > y;
           }
         }
 
-        if (fifthActive) {
+        if (sixthActive) {
+          setOnLightBackground(true);
+        } else if (fifthActive) {
           setOnLightBackground(true);
         } else if (firstActive) {
           setOnLightBackground(true);
@@ -82,6 +89,7 @@ export default function Header() {
     observer.observe(firstSection);
     observer.observe(secondSection);
     if (fifthSection) observer.observe(fifthSection);
+    if (sixthSection) observer.observe(sixthSection);
 
     // Add a tiny rAF-throttled scroll handler to remove any perceived IO delay
     const handleScroll = () => {
@@ -95,6 +103,7 @@ export default function Header() {
       const firstRect = firstSection.getBoundingClientRect();
       const secondRect = secondSection.getBoundingClientRect();
       const fifthRect = fifthSection?.getBoundingClientRect();
+      const sixthRect = sixthSection?.getBoundingClientRect();
 
       const firstActive =
         firstRect.top <= triggerY - lead && firstRect.bottom > triggerY - lead;
@@ -104,8 +113,13 @@ export default function Header() {
       const fifthActive = fifthRect
         ? fifthRect.top <= triggerY + lead && fifthRect.bottom > triggerY + lead
         : false;
+      const sixthActive = sixthRect
+        ? sixthRect.top <= triggerY + lead && sixthRect.bottom > triggerY + lead
+        : false;
 
-      if (fifthActive) {
+      if (sixthActive) {
+        setOnLightBackground(true);
+      } else if (fifthActive) {
         setOnLightBackground(true);
       } else if (firstActive) {
         setOnLightBackground(true);

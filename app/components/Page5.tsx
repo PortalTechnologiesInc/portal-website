@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { resetLogoYellow } from "./Page4";
+import { DUR_STEP_MS } from "../lib/constants/animation";
 
 type Props = {
   scrollContainerRef: React.RefObject<HTMLElement | null>;
@@ -32,6 +33,9 @@ export function Page5({ scrollContainerRef }: Props) {
 
     const page5Section = container.closest("section");
     if (!page5Section) return;
+
+    // Get Page6 section
+    const page6Section = page5Section.nextElementSibling as HTMLElement;
 
     const ensureLogoVisible = () => {
       const logoYellow = document.querySelector('[data-logo-yellow]') as HTMLElement;
@@ -87,24 +91,46 @@ export function Page5({ scrollContainerRef }: Props) {
         } else {
           // Immediately set to false when not intersecting or ratio too low
           setIsPage5Intersecting(false);
+          
+          // Hide logo when scrolling forward past Page5
+          if (hasEnteredRef.current && !isIntersecting) {
+            const page5Rect = page5Section.getBoundingClientRect();
+            const viewportHeight = scrollContainerEl.clientHeight;
+            // If Page5 is above the viewport (scrolled past), hide the logo
+            if (page5Rect.bottom < viewportHeight * 0.5) {
+              const logoYellowEl = document.querySelector('[data-logo-yellow]') as HTMLElement;
+              if (logoYellowEl) {
+                const currentOpacity = getComputedStyle(logoYellowEl).opacity;
+                if (currentOpacity !== "0" && parseFloat(currentOpacity) > 0) {
+                  logoYellowEl.style.transition = `opacity ${DUR_STEP_MS}ms ease-in-out`;
+                  logoYellowEl.style.opacity = "0";
+                }
+              }
+            }
+          }
         }
         
-        // Exit animation: section becomes invisible
+        // Exit animation: section becomes invisible (backwards scroll)
         if (!isIntersecting && hasEnteredRef.current && cardPhase !== 'hidden' && !isAnimatingRef.current) {
-          isAnimatingRef.current = true;
-          
-          // Reset logo when leaving Page5 (going backwards)
-          resetLogoYellow();
-          
-          // Start reverse animation
-          setCardPhase('hidden');
-          setIsVisible(false);
-          
-          // Animation complete
-          setTimeout(() => {
-            isAnimatingRef.current = false;
-            hasEnteredRef.current = false; // Reset for next cycle
-          }, 1000);
+          const page5Rect = page5Section.getBoundingClientRect();
+          const viewportHeight = scrollContainerEl.clientHeight;
+          // Only reset when scrolling backwards (Page5 is below viewport)
+          if (page5Rect.top > viewportHeight * 0.5) {
+            isAnimatingRef.current = true;
+            
+            // Reset logo when leaving Page5 (going backwards)
+            resetLogoYellow();
+            
+            // Start reverse animation
+            setCardPhase('hidden');
+            setIsVisible(false);
+            
+            // Animation complete
+            setTimeout(() => {
+              isAnimatingRef.current = false;
+              hasEnteredRef.current = false; // Reset for next cycle
+            }, 1000);
+          }
         }
       },
       {
@@ -113,7 +139,45 @@ export function Page5({ scrollContainerRef }: Props) {
       }
     );
 
+    // Observer for Page6 - to detect when we're scrolling forward to it
+    const page6Observer = page6Section ? new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        const isPage6Intersecting = entry.isIntersecting;
+        const page6Ratio = entry.intersectionRatio;
+        
+        // Check if Page5 is currently intersecting
+        const page5Rect = page5Section.getBoundingClientRect();
+        const viewportHeight = scrollContainerEl.clientHeight;
+        const page5Ratio = page5Rect.top < viewportHeight && page5Rect.bottom > 0 
+          ? Math.min(1, Math.max(0, (viewportHeight - Math.max(0, page5Rect.top)) / viewportHeight))
+          : 0;
+        
+        // If Page6 is starting to become visible (low threshold) while Page5 is still partially visible, fade out
+        // This makes the fade happen DURING the scroll transition, not after
+        if (isPage6Intersecting && page6Ratio > 0.1 && page5Ratio < 0.8 && hasEnteredRef.current) {
+          const logoYellowEl = document.querySelector('[data-logo-yellow]') as HTMLElement;
+          if (logoYellowEl) {
+            const currentOpacity = getComputedStyle(logoYellowEl).opacity;
+            // Only fade if not already faded out
+            if (currentOpacity !== "0" && parseFloat(currentOpacity) > 0) {
+              // Gracefully fade out with transition while scrolling
+              logoYellowEl.style.transition = `opacity ${DUR_STEP_MS}ms ease-in-out`;
+              logoYellowEl.style.opacity = "0";
+            }
+          }
+        }
+      },
+      {
+        root: scrollContainerEl,
+        threshold: [0, 0.1, 0.2, 0.3, 0.5, 1],
+      }
+    ) : null;
+
     observer.observe(page5Section);
+    if (page6Section && page6Observer) {
+      page6Observer.observe(page6Section);
+    }
     
     // Check initial intersection state in case page is already visible on mount
     // Use a small delay to ensure DOM is ready
@@ -150,6 +214,9 @@ export function Page5({ scrollContainerRef }: Props) {
 
     return () => {
       observer.disconnect();
+      if (page6Observer) {
+        page6Observer.disconnect();
+      }
     };
   }, [scrollContainerRef]);
 
@@ -211,7 +278,10 @@ export function Page5({ scrollContainerRef }: Props) {
           position: 'relative',
           zIndex: 52,
           scrollPaddingLeft: '7.5vw',
-          scrollPaddingRight: '7.5vw'
+          scrollPaddingRight: '7.5vw',
+          opacity: cardPhase === 'expanded' ? 1 : 0,
+          pointerEvents: cardPhase === 'expanded' ? 'auto' : 'none',
+          transition: 'opacity 300ms ease-out'
         }}
       >
         <div className="flex h-full gap-6 py-6 z-52" style={{ paddingLeft: '7.5vw', paddingRight: '0' }}>

@@ -7,6 +7,8 @@ import { Page2 } from "./components/Page2";
 import { Page3 } from "./components/Page3";
 import { Page4 } from "./components/Page4";
 import { Page5 } from "./components/Page5";
+import { Page6 } from "./components/Page6";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const sectionRefs = useRef<Array<HTMLElement | null>>([]);
@@ -117,6 +119,23 @@ export default function Home() {
       >
         <Page5 scrollContainerRef={scrollContainerRef} />
       </section>
+
+      {/* Page 6: Yellow Background Section */}
+      <section
+        ref={(el) => {
+          sectionRefs.current[5] = el;
+        }}
+        className="min-h-dvh snap-start relative"
+        style={{ 
+          scrollSnapStop: "always",
+          backgroundColor: "#FFED00"
+        }}
+      >
+        <Page6 />
+      </section>
+
+      {/* Footer */}
+      <Footer />
 
     </div>
   );
