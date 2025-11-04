@@ -277,29 +277,29 @@ export function Page5({ scrollContainerRef }: Props) {
         style={{
           position: 'relative',
           zIndex: 52,
-          scrollPaddingLeft: '7.5vw',
-          scrollPaddingRight: '7.5vw',
+          scrollPaddingLeft: '11.5vw',
+          scrollPaddingRight: '11.5vw',
           opacity: cardPhase === 'expanded' ? 1 : 0,
           pointerEvents: cardPhase === 'expanded' ? 'auto' : 'none',
           transition: 'opacity 300ms ease-out'
         }}
       >
-        <div className="flex h-full gap-6 py-6 z-52" style={{ paddingLeft: '7.5vw', paddingRight: '0' }}>
+        <div className="flex h-full gap-6 py-6 z-52" style={{ paddingLeft: '11.5vw', paddingRight: '0' }}>
           {/* Card 1 - Hidden when animated card1 is showing, visible when expanded */}
           <div 
-            className="flex-shrink-0 w-[85vw] h-full flex items-center justify-center snap-center"
+            className="flex-shrink-0 w-[77vw] flex items-center justify-center snap-center"
             style={{
               opacity: cardPhase === 'expanded' ? 1 : 0,
               pointerEvents: cardPhase === 'expanded' ? 'auto' : 'none'
             }}
           >
-            <div className="z-52 relative w-full h-[65vh] max-w-full max-h-[65vh] flex items-center justify-center" style={{ width: '85vw', height: '65vh' }}>
+            <div className="z-52 relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
               <Image
                 src="/card1.png"
                 alt="Card 1"
                 fill
                 className="object-cover rounded-3xl"
-                sizes="85vw"
+                sizes="77vw"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
@@ -307,20 +307,20 @@ export function Page5({ scrollContainerRef }: Props) {
 
           {/* Card 2 */}
           <div 
-            className="flex-shrink-0 w-[85vw] h-full flex items-center justify-center snap-center"
+            className="flex-shrink-0 w-[77vw] flex items-center justify-center snap-center"
             style={{
               opacity: 1,
               pointerEvents: 'auto',
               zIndex: 52
             }}
           >
-            <div className="relative w-full h-[65vh] max-w-full max-h-[65vh] flex items-center justify-center" style={{ width: '85vw', height: '65vh' }}>
+            <div className="relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
               <Image
                 src="/card2.png"
                 alt="Card 2"
                 fill
                 className="object-cover rounded-3xl"
-                sizes="85vw"
+                sizes="77vw"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
@@ -328,26 +328,26 @@ export function Page5({ scrollContainerRef }: Props) {
 
           {/* Card 3 */}
           <div 
-            className="flex-shrink-0 w-[85vw] h-full flex items-center justify-center snap-center"
+            className="flex-shrink-0 w-[77vw] flex items-center justify-center snap-center"
             style={{
               opacity: 1,
               pointerEvents: 'auto'
             }}
           >
-            <div className="relative w-full h-[65vh] max-w-full max-h-[65vh] flex items-center justify-center" style={{ width: '85vw', height: '65vh' }}>
+            <div className="relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
               <Image
                 src="/card3.png"
                 alt="Card 3"
                 fill
                 className="object-cover rounded-3xl"
-                sizes="85vw"
+                sizes="77vw"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>
           
           {/* Spacer to ensure last card can center */}
-          <div className="flex-shrink-0 w-[7.5vw]" />
+          <div className="flex-shrink-0 w-[11.5vw]" />
         </div>
       </div>
 
@@ -359,8 +359,8 @@ export function Page5({ scrollContainerRef }: Props) {
           left: cardPhase === 'expanded' ? '-9999px' : '50%',
           top: cardPhase === 'hidden' ? '100%' : cardPhase === 'expanded' ? '-9999px' : '50%',
           transform: 'translate(-50%, -50%)',
-          width: cardPhase === 'expanded' ? '85vw' : '200px',
-          height: cardPhase === 'expanded' ? '65vh' : '300px',
+          width: cardPhase === 'expanded' ? '77vw' : '200px',
+          height: cardPhase === 'expanded' ? '57vh' : '300px',
           opacity: cardPhase === 'hidden' ? 0 : cardPhase === 'expanded' ? 0 : 1,
           transition: cardPhase === 'expanded' ? 'opacity 300ms ease-out, width 800ms ease-out, height 800ms ease-out, left 300ms ease-out, top 300ms ease-out' : 'all 1000ms ease-out',
           zIndex: 53,

@@ -12,31 +12,60 @@ const CurrencyCarousel = memo(function CurrencyCarousel() {
   const symbolHeightMd = 160; // Medium screens (768px+)
   const symbolHeightLg = 176; // Large screens (1024px+)
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Duplicate symbols for infinite loop
+  const duplicatedSymbols = [...CAROUSEL_SYMBOLS, ...CAROUSEL_SYMBOLS, ...CAROUSEL_SYMBOLS];
+  const startIndex = CAROUSEL_SYMBOLS.length; // Start in the middle section
+  
+  const [currentIndex, setCurrentIndex] = useState(startIndex);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % CAROUSEL_SYMBOLS.length);
+      setCurrentIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        
+        // If we've reached the end of the middle section, reset to start of middle section
+        // Reset happens before the end to avoid visible boundary
+        if (nextIndex >= CAROUSEL_SYMBOLS.length * 2) {
+          // Immediately disable transition and reset position
+          setIsTransitioning(true);
+          // Use requestAnimationFrame to ensure DOM update happens before re-enabling
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setIsTransitioning(false);
+            });
+          });
+          return startIndex;
+        }
+        
+        return nextIndex;
+      });
     }, 2000);
 
     return () => window.clearInterval(intervalId);
-  }, []);
+  }, [startIndex]);
+
+  // Calculate the visual index for active state (use modulo to map back to original array)
+  const visualIndex = currentIndex % CAROUSEL_SYMBOLS.length;
 
   return (
     <div className="w-full max-w-2xl pt-32">
-      <div className="overflow-hidden rounded-3xl">
+      <div className="overflow-hidden relative py-8">
         <div
           className="flex transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          style={{ 
+            transform: `translateX(calc(33.333% - ${currentIndex * 33.333}%))`,
+            transitionDuration: isTransitioning ? '0ms' : '500ms'
+          }}
         >
-          {CAROUSEL_SYMBOLS.map((symbol, index) => {
-            const isActive = currentIndex === index;
+          {duplicatedSymbols.map((symbol, index) => {
+            const isActive = visualIndex === (index % CAROUSEL_SYMBOLS.length);
             const src = `/letters-carousel/${encodeURIComponent(symbol)}.svg`;
 
             return (
               <div
-                key={symbol}
-                className="flex w-full flex-shrink-0 items-center justify-center px-6 sm:px-8 md:px-12"
+                key={`${symbol}-${index}`}
+                className="flex w-1/3 flex-shrink-0 items-center justify-center px-6 sm:px-8 md:px-12 py-4"
               >
                 <Image
                   src={src}
@@ -165,7 +194,7 @@ export function Page6() {
 
           <CurrencyCarousel />
         {/* Spacing */}
-        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
+        <div className="relative z-50 py-20 md:py-40 lg:py-48"></div>
 
         {/* Easy, Simple and secure section */}
         <div className="relative z-50 flex flex-col items-center justify-center text-center px-6">
@@ -179,6 +208,197 @@ export function Page6() {
 
         {/* Spacing */}
         <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
+
+        {/* Footer SVG */}
+        <div className="relative z-50 flex flex-col items-center justify-center px-6 pb-32 md:pb-40 lg:pb-48">
+          <Image
+            src="/page6-circle.svg"
+            alt="Portal Footer"
+            width={379}
+            height={302}
+            className="w-full max-w-[379px] h-auto"
+          />
+        </div>
+
+        {/* P+RTAL Is the smartest choice section */}
+        <div className="relative z-50 flex flex-col items-center justify-center px-6">
+          <h2 className="font-eurostile font-semibold tracking-tight text-xl md:text-6xl lg:text-7xl text-black mb-4">
+            P+RTAL
+            <br />
+            Is the smartest
+            choice for your daily life
+          </h2>
+          <div className="flex justify-center w-full">
+            <div className="relative w-full max-w-full aspect-[2/3] overflow-hidden">
+              <Image
+                src="/Rectangle.png"
+                alt="Portal Rectangle"
+                fill
+                className="object-cover"
+                sizes="100vw"
+              />
+            </div>
+          </div>
+
+          {/* 3 Rows Section */}
+          <div className="mt-8 md:mt-12 lg:mt-16 w-full max-w-4xl space-y-12 md:space-y-12 lg:space-y-16">
+            {/* Row 1 */}
+            <div className="flex flex-row items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0">
+                <Image
+                  src="/confirmation_number.svg"
+                  alt="Tickets"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 md:w-16 md:h-16"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
+                  Tickets? No problem
+                </h3>
+                <p className="text-sm md:text-base lg:text-lg text-black">
+                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+                </p>
+              </div>
+            </div>
+
+            {/* Row 2 */}
+            <div className="flex flex-row items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0">
+                <Image
+                  src="/assignment_ind.svg"
+                  alt="Identity"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 md:w-16 md:h-16"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
+                  Your identity, fully secured
+                </h3>
+                <p className="text-sm md:text-base lg:text-lg text-black">
+                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+                </p>
+              </div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="flex flex-row items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0">
+                <Image
+                  src="/cached.svg"
+                  alt="Control"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 md:w-16 md:h-16"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
+                  Take control of your money
+                </h3>
+                <p className="text-sm md:text-base lg:text-lg text-black">
+                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Spacing */}
+        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
+
+        {/* P+RTAL Is the smartest choice section - Duplicate */}
+        <div className="relative z-50 flex flex-col items-center justify-center px-6">
+          <h2 className="font-eurostile font-semibold tracking-tight text-xl md:text-6xl lg:text-7xl text-black mb-4">
+            P+RTAL
+            <br />
+            gives you complete
+            control over your business
+          </h2>
+          <div className="flex justify-center w-full">
+            <div className="relative w-full max-w-full aspect-[2/3] overflow-hidden">
+              <Image
+                src="/Rectangle2.png"
+                alt="Portal Rectangle"
+                fill
+                className="object-cover"
+                sizes="100vw"
+              />
+            </div>
+          </div>
+
+          {/* 3 Rows Section */}
+          <div className="mt-8 md:mt-12 lg:mt-16 w-full max-w-4xl space-y-12 md:space-y-12 lg:space-y-16">
+            {/* Row 1 */}
+            <div className="flex flex-row items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0">
+                <Image
+                  src="/do_not_touch.svg"
+                  alt="Hand"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 md:w-16 md:h-16"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
+                Only you and
+                your customer
+                </h3>
+                <p className="text-sm md:text-base lg:text-lg text-black">
+                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+                </p>
+              </div>
+            </div>
+
+            {/* Row 2 */}
+            <div className="flex flex-row items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0">
+                <Image
+                  src="/sell.svg"
+                  alt="Sell"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 md:w-16 md:h-16"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
+                Sell tickets effortlessly
+                </h3>
+                <p className="text-sm md:text-base lg:text-lg text-black">
+                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+                </p>
+              </div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="flex flex-row items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0">
+                <Image
+                  src="/cached.svg"
+                  alt="Control"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 md:w-16 md:h-16"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
+                Intruders are kept out
+                </h3>
+                <p className="text-sm md:text-base lg:text-lg text-black">
+                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+                </p>
+              </div>
+            </div>
+            {/* Spacing */}
+            <div className="relative z-50 py-12 md:py-20 lg:py-28"></div>
+          </div>
+        </div>
       </div>
     </>
   );

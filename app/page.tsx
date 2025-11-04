@@ -15,7 +15,7 @@ export default function Home() {
   const scrollContainerRef = useRef<HTMLElement | null>(null);
 
   useRevealOnIntersect(
-    () => sectionRefs.current.filter(Boolean) as HTMLElement[]
+    () => sectionRefs.current.filter((el, index) => el && index !== 5) as HTMLElement[]
   );
 
   return (
@@ -128,7 +128,8 @@ export default function Home() {
         className="min-h-dvh snap-start relative overflow-hidden"
         style={{ 
           scrollSnapStop: "always",
-          backgroundColor: "#FFED00"
+          backgroundColor: "#FFED00",
+          opacity: 1
         }}
       >
         <Page6 />
