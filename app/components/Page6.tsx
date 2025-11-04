@@ -1,9 +1,212 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, memo } from "react";
+import Link from "next/link";
+import { useEffect, useState, memo, useRef } from "react";
 
 const CAROUSEL_SYMBOLS = ["$", "£", "¥", "€", "₺", "₽", "₿", "ƒ"];
+
+const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel() {
+  const [activeSlide, setActiveSlide] = useState(0); // 0 = Daily life, 1 = Business
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const isDragging = useRef(false);
+
+  const minSwipeDistance = 50;
+
+  const handleSwipe = (startX: number, endX: number) => {
+    const distance = startX - endX;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && activeSlide === 0) {
+      // Swipe left = go to Business (slide 1)
+      setActiveSlide(1);
+    } else if (isRightSwipe && activeSlide === 1) {
+      // Swipe right = go to Daily life (slide 0)
+      setActiveSlide(0);
+    }
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchEndX.current = null;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    handleSwipe(touchStartX.current, touchEndX.current);
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    isDragging.current = true;
+    touchEndX.current = null;
+    touchStartX.current = e.clientX;
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    touchEndX.current = e.clientX;
+  };
+
+  const onMouseUp = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    if (!touchStartX.current || !touchEndX.current) return;
+    handleSwipe(touchStartX.current, touchEndX.current);
+  };
+
+  const onMouseLeave = () => {
+    if (isDragging.current) {
+      isDragging.current = false;
+    }
+  };
+
+  const slides = [
+    { 
+      id: 0, 
+      label: "Daily life", 
+      image: "/Slides.png",
+      title: "Download now and be part of next the revolution"
+    },
+    { 
+      id: 1, 
+      label: "Business", 
+      image: "/form.jpg",
+      title: "Change the way you get payed, sell tickets\nand more"
+    },
+  ];
+
+  return (
+    <div className="w-full px-6">
+      {/* Title */}
+      <h2 className="font-eurostile font-bold text-2xl text-center text-black mb-6">
+        Take the first step
+      </h2>
+
+      {/* Tabs */}
+      <div className="flex justify-center gap-8 mb-6">
+        {slides.map((slide) => (
+          <button
+            key={slide.id}
+            onClick={() => setActiveSlide(slide.id)}
+            className={`font-eurostile md:text-xl transition-all ${
+              activeSlide === slide.id
+                ? "font-bold text-black"
+                : "font-normal text-black opacity-60"
+            }`}
+          >
+            {slide.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Carousel */}
+      <div
+        ref={carouselRef}
+        className="relative w-full overflow-hidden cursor-grab active:cursor-grabbing"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseLeave}
+      >
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{
+            transform: `translateX(-${activeSlide * 100}%)`,
+          }}
+        >
+          {slides.map((slide) => (
+            <div
+              key={slide.id}
+              className="flex-shrink-0 w-full flex items-center justify-center"
+            >
+              <div className="relative w-full aspect-[2/3] overflow-hidden">
+                <Image
+                  src={slide.image}
+                  alt={slide.label}
+                  fill
+                  className={`object-cover ${
+                    slide.id === 0 ? "object-left" : "object-center grayscale"
+                  }`}
+                  sizes="100vw"
+                />
+                {/* Title overlay */}
+                <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10">
+                  <h3 className="font-eurostile font-bold text-black text-lg md:text-2xl lg:text-3xl leading-tight">
+                    {slide.title.split('\n').map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        {index < slide.title.split('\n').length - 1 && <br />}
+                      </span>
+                    ))}
+                  </h3>
+                </div>
+                {/* Coming Soon label - only for business slide */}
+                {slide.id === 1 && (
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-6 py-4 md:px-8 md:py-6 rounded-lg backdrop-blur-md bg-white/80">
+                    <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl">
+                      Coming Soon
+                    </h2>
+                  </div>
+                )}
+                {/* Store links - only for first slide */}
+                {slide.id === 0 && (
+                  <>
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-3 md:gap-4 items-center">
+                      <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
+                        <Image
+                          src="/appstore.png"
+                          alt="App Store"
+                          width={240}
+                          height={80}
+                          className="object-contain store-badge"
+                        />
+                      </Link>
+                      <Link href="https://play.google.com/store/apps/details?id=cc.getportal.portal" className="block">
+                        <Image
+                          src="/playstore.png"
+                          alt="Play Store"
+                          width={240}
+                          height={80}
+                          className="object-contain store-badge"
+                        />
+                      </Link>
+                    </div>
+                    <style jsx>{`
+                      .store-badge {
+                        height: 80px;
+                        width: auto;
+                      }
+                      @media (min-width: 768px) {
+                        .store-badge {
+                          height: 120px;
+                        }
+                      }
+                      @media (min-width: 1024px) {
+                        .store-badge {
+                          height: 150px;
+                        }
+                      }
+                    `}</style>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+});
 
 const CurrencyCarousel = memo(function CurrencyCarousel() {
   // Control variable for SVG symbol height (in pixels)
@@ -183,9 +386,9 @@ export function Page6() {
         <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
 
         {/* Works with all currency section */}
-        <div className="relative z-50 flex flex-col items-center justify-center text-center px-6">
-          <h2 className="font-eurostile font-bold tracking-tight text-4xl md:text-6xl lg:text-7xl text-black mb-6">
-            Works with all currency
+        <div className="relative z-50 flex flex-col px-6">
+        <h2 className="text-left font-eurostile font-bold tracking-tight text-2xl md:text-6xl lg:text-7xl text-black mb-6">
+            Works with <br /> all currency
           </h2>
           <p className="text-lg md:text-xl lg:text-xl text-black max-w-2xl">
             Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
@@ -197,8 +400,8 @@ export function Page6() {
         <div className="relative z-50 py-20 md:py-40 lg:py-48"></div>
 
         {/* Easy, Simple and secure section */}
-        <div className="relative z-50 flex flex-col items-center justify-center text-center px-6">
-          <h2 className="font-eurostile font-bold tracking-tight text-4xl md:text-6xl lg:text-7xl text-black mb-6">
+        <div className="relative z-50 flex flex-col items-center justify-center  px-6">
+          <h2 className="font-eurostile font-bold tracking-tight text-2xl md:text-6xl lg:text-7xl text-black mb-6">
             Easy, Simple and secure
           </h2>
           <p className="text-lg md:text-xl lg:text-xl text-black max-w-2xl">
@@ -399,6 +602,17 @@ export function Page6() {
             <div className="relative z-50 py-12 md:py-20 lg:py-28"></div>
           </div>
         </div>
+
+        {/* Spacing */}
+        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
+
+        {/* Take the first step carousel */}
+        <div className="relative z-50 flex flex-col items-center justify-center">
+          <DailyLifeBusinessCarousel />
+        </div>
+
+        {/* Spacing */}
+        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
       </div>
     </>
   );
