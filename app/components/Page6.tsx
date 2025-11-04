@@ -321,7 +321,7 @@ const CurrencyCarousel = memo(function CurrencyCarousel() {
 export function Page6() {
   // Control variables for SVG shape and position
   const svgSize = 400; // Size in pixels (controls shape scale)
-  const svgPosition = { x: -30, y: -180 }; // Position offset in pixels from top-left
+  const svgPosition = { x: -30, y: -190 }; // Position offset in pixels from top-left
 
   return (
     <>
@@ -381,9 +381,6 @@ export function Page6() {
             priority
           />
         </div>
-
-        {/* Spacing */}
-        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
 
         {/* Works with all currency section */}
         <div className="relative z-50 flex flex-col px-6">
