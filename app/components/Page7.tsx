@@ -13,10 +13,10 @@ export function Page7() {
         <div className="flex justify-center w-full">
           <div className="relative w-full max-w-full aspect-[2/3] overflow-hidden">
             <Image
-              src="/Rectangle.png"
+              src="/company.jpg"
               alt="Behind the P+RTAL company"
               fill
-              className="object-cover"
+              className="object-cover grayscale"
               sizes="100vw"
             />
           </div>
