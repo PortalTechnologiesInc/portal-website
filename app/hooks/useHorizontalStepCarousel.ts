@@ -65,9 +65,6 @@ export function useHorizontalStepCarousel(
     const handleHorizontalScroll = (e: WheelEvent) => {
       if (!isPageActive || isTransitioning) return;
       
-      e.preventDefault();
-      e.stopPropagation();
-      
       const deltaX = e.deltaX;
       const deltaY = e.deltaY;
       
@@ -76,7 +73,11 @@ export function useHorizontalStepCarousel(
       // Determine scroll direction based on dominant axis
       const isHorizontalScroll = Math.abs(deltaX) > Math.abs(deltaY);
       
+      // Only prevent default for horizontal scrolls to allow CSS scroll-snap to work
       if (isHorizontalScroll) {
+        e.preventDefault();
+        e.stopPropagation();
+        
         if (deltaX > 0) {
           // Scroll right - next step
           if (currentStep < totalSteps - 1) {
@@ -105,22 +106,25 @@ export function useHorizontalStepCarousel(
           }
         }
       } else {
-        // Vertical scroll - handle exits
+        // Vertical scroll - allow it to pass through for CSS scroll-snap
+        // Only handle exits if we're at the boundaries, but don't prevent default
         if (deltaY > 0) {
           // Scroll down - exit to Page 4 if on last step
           if (currentStep === totalSteps - 1) {
             console.log('Exiting down to Page 4 (vertical scroll)');
-            options?.onExitDown?.();
+            // Don't call onExitDown here - let CSS scroll-snap handle it naturally
             return;
           }
         } else {
           // Scroll up - exit to Page 2 if on first step
           if (currentStep === 0) {
             console.log('Exiting up to Page 2 (vertical scroll)');
-            options?.onExitUp?.();
+            // Don't call onExitUp here - let CSS scroll-snap handle it naturally
             return;
           }
         }
+        // For all other vertical scrolls, let CSS scroll-snap handle it
+        return;
       }
     };
 

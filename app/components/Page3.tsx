@@ -29,19 +29,11 @@ export function Page3({ scrollContainerRef }: Props) {
       },
       onExitUp: () => {
         console.log("Page3: Exiting up to Page 2");
-        // Scroll to Page 2
-        const page2Section = document.querySelector('section:nth-child(2)') as HTMLElement;
-        if (page2Section && scrollContainerRef.current) {
-          page2Section.scrollIntoView({ behavior: 'smooth' });
-        }
+        // Don't call scrollIntoView - let CSS scroll-snap handle it naturally
       },
       onExitDown: () => {
         console.log("Page3: Exiting down to Page 4");
-        // Scroll to Page 4 (when it exists)
-        const page4Section = document.querySelector('section:nth-child(4)') as HTMLElement;
-        if (page4Section && scrollContainerRef.current) {
-          page4Section.scrollIntoView({ behavior: 'smooth' });
-        }
+        // Don't call scrollIntoView - let CSS scroll-snap handle it naturally
       },
     }
   );
