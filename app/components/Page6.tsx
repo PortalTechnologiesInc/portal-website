@@ -600,9 +600,6 @@ export function Page6() {
           </div>
         </div>
 
-        {/* Spacing */}
-        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
-
         {/* Take the first step carousel */}
         <div className="relative z-50 flex flex-col items-center justify-center">
           <DailyLifeBusinessCarousel />

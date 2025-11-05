@@ -6,10 +6,10 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="w-full bg-black text-white py-20 md:py-24">
-      <div className="mx-auto max-w-screen-2xl pl-8 sm:pl-12">
+      <div className="mx-auto max-w-screen-2xl sm:pl-12">
         <div className="flex flex-col gap-16 md:gap-20">
           {/* Discover the future section */}
-          <div className="flex flex-col gap-8 md:gap-10">
+          <div className="flex flex-col gap-8 md:gap-10 pl-8">
             <h3 className="text-2xl md:text-3xl font-medium">Discover the future</h3>
             <div className="flex flex-col gap-6 md:gap-8 ml-4">
               <a
@@ -40,7 +40,7 @@ export default function Footer() {
           </div>
 
           {/* Take action section */}
-          <div className="flex flex-col gap-8 md:gap-10">
+          <div className="flex flex-col gap-8 md:gap-10 pl-8">
             <h3 className="text-2xl md:text-3xl font-medium">Take action</h3>
             <div className="flex flex-col gap-6 md:gap-8 ml-4">
               <a
@@ -59,7 +59,7 @@ export default function Footer() {
           </div>
 
           {/* Know P+RTAL Technologies section */}
-          <div className="flex flex-col gap-8 md:gap-10">
+          <div className="flex flex-col gap-8 md:gap-10 pl-8">
             <h3 className="text-2xl md:text-3xl font-medium">Know P+RTAL Technologies</h3>
             <div className="flex flex-col gap-6 md:gap-8 ml-4">
               <a
@@ -72,7 +72,7 @@ export default function Footer() {
           </div>
 
           {/* Follow Us section */}
-          <div className="flex flex-col gap-8 md:gap-10">
+          <div className="flex flex-col gap-8 md:gap-10 pl-8">
             <h3 className="text-2xl md:text-3xl font-medium">Follow Us</h3>
             <div className="flex flex-col gap-6 md:gap-8 ml-4">
               <a
