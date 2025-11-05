@@ -30,7 +30,7 @@ export function HorizontalEuroCarousel({ onEnterCarousel, onExitCarousel, autoEn
       <div
         ref={containerRef}
         className="flex w-[300%] h-full transition-transform duration-300 ease-out"
-        style={{ transform: "translateX(0%)" }}
+        style={{ transform: `translateX(-${carousel.currentCard * 33.333}%)` }}
       >
         {/* Card 1: Euro */}
         <div

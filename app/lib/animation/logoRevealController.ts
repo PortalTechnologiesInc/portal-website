@@ -88,9 +88,9 @@ export function createLogoRevealAnimationController(
       then?: (cb: () => void) => void;
       finished?: Promise<void>;
     };
-    if (typeof any.then === "function") {
+    if (typeof any.then === "function" && any.then) {
       return new Promise<void>((resolve) => {
-        any.then(() => {
+        any.then!(() => {
           animating = false;
           resolve();
         });

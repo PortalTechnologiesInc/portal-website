@@ -63,9 +63,11 @@ export function createFinalController(refs: FinalControllerRefs) {
         }, "<");
       }
       return timeline;
-    };
+    }
+    return timeline;
+  };
 
-    const playForward = (): Promise<void> => {
+  const playForward = (): Promise<void> => {
       return new Promise((resolve) => {
         if (isAnimating) {
           resolve();
@@ -103,9 +105,9 @@ export function createFinalController(refs: FinalControllerRefs) {
           },
         });
       });
-    };
+  };
 
-    const playReverse = (): Promise<void> => {
+  const playReverse = (): Promise<void> => {
       return new Promise((resolve) => {
         if (isAnimating) {
           resolve();
@@ -143,9 +145,9 @@ export function createFinalController(refs: FinalControllerRefs) {
           },
         });
       });
-    };
+  };
 
-    const seekTo = (progress: number): void => {
+  const seekTo = (progress: number): void => {
       if (!logoYellow || !logoPath || !finalTitle || !finalSubtitle) return;
 
       const tl = createTimelineOnce();
@@ -153,27 +155,26 @@ export function createFinalController(refs: FinalControllerRefs) {
       if (tl) {
         (tl as unknown as { currentTime?: number }).currentTime = clampedProgress * ((tl as unknown as { duration?: number })?.duration ?? 0);
       }
-    };
+  };
 
-    const isCurrentlyAnimating = (): boolean => {
+  const isCurrentlyAnimating = (): boolean => {
       return isAnimating;
-    };
+  };
 
-    const destroy = (): void => {
+  const destroy = (): void => {
       if (currentAnimation) {
         currentAnimation.pause();
         currentAnimation = null;
       }
       timeline = null;
       isAnimating = false;
-    };
+  };
 
-    return {
-      playForward,
-      playReverse,
-      seekTo,
-      isAnimating: isCurrentlyAnimating,
-      destroy,
-    };
-  }
+  return {
+    playForward,
+    playReverse,
+    seekTo,
+    isAnimating: isCurrentlyAnimating,
+    destroy,
+  };
 }
