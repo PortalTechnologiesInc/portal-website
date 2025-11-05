@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useRevealOnIntersect } from "./hooks/useRevealOnIntersect";
 import { Page1 } from "./components/Page1";
 import { Page2 } from "./components/Page2";
@@ -13,17 +13,60 @@ import Footer from "./components/Footer";
 export default function Home() {
   const sectionRefs = useRef<Array<HTMLElement | null>>([]);
   const scrollContainerRef = useRef<HTMLElement | null>(null);
+  const [isPastPage5, setIsPastPage5] = useState(false);
 
   useRevealOnIntersect(
     () => sectionRefs.current.filter((el, index) => el && index !== 5) as HTMLElement[]
   );
+
+  // Dynamically disable scroll-snap when past Page 5
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    const page5Section = sectionRefs.current[4]; // Page 5 is at index 4
+
+    if (!container || !page5Section) return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      
+      requestAnimationFrame(() => {
+        const scrollTop = container.scrollTop;
+        const page5Bottom = page5Section.offsetTop + page5Section.offsetHeight;
+        
+        // Disable snap when scroll position has passed Page 5's bottom
+        // Using a small threshold (50px) to disable snap slightly before fully past Page 5
+        const isPast = scrollTop >= page5Bottom - 50;
+        
+        setIsPastPage5((prev) => {
+          if (prev !== isPast) {
+            return isPast;
+          }
+          return prev;
+        });
+        
+        ticking = false;
+      });
+    };
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div
       ref={(el) => {
         scrollContainerRef.current = el as unknown as HTMLElement;
       }}
-      className="h-dvh overflow-y-scroll overflow-x-hidden scroll-smooth snap-y snap-mandatory"
+      className="h-dvh overflow-y-scroll overflow-x-hidden scroll-smooth snap-y"
+      style={{
+        scrollSnapType: isPastPage5 ? "none" : "y mandatory",
+      }}
       id="main-scroll-container"
     >
       {/* Logo Yellow SVG - Shared across Page4 and Page5 */}
@@ -125,9 +168,8 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[5] = el;
         }}
-        className="min-h-dvh snap-start relative overflow-hidden"
+        className="min-h-dvh snap-none relative overflow-hidden"
         style={{ 
-          scrollSnapStop: "always",
           backgroundColor: "#FFED00",
           opacity: 1
         }}
