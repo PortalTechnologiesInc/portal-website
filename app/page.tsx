@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useRevealOnIntersect } from "./hooks/useRevealOnIntersect";
 import { Page1 } from "./components/Page1";
 import { Page2 } from "./components/Page2";
@@ -13,17 +13,88 @@ import Footer from "./components/Footer";
 export default function Home() {
   const sectionRefs = useRef<Array<HTMLElement | null>>([]);
   const scrollContainerRef = useRef<HTMLElement | null>(null);
+  const [snappingEnabled, setSnappingEnabled] = useState(true);
 
   useRevealOnIntersect(
     () => sectionRefs.current.filter((el, index) => el && index !== 5) as HTMLElement[]
   );
+
+  // Disable snapping after page 5, re-enable when reaching page 5 again
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    const page5Section = sectionRefs.current[4];
+
+    if (!container || !page5Section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const page5Entry = entries.find(e => e.target === page5Section);
+        
+        if (page5Entry) {
+          // Page 5 is visible - enable snapping
+          if (page5Entry.isIntersecting && page5Entry.intersectionRatio > 0.5) {
+            setSnappingEnabled(true);
+          } else {
+            // Check if we're past page 5
+            const scrollTop = container.scrollTop;
+            const page5Bottom = page5Section.offsetTop + page5Section.offsetHeight;
+            
+            if (scrollTop >= page5Bottom) {
+              // Past page 5 - disable snapping
+              setSnappingEnabled(false);
+            }
+          }
+        }
+      },
+      {
+        root: container,
+        threshold: [0, 0.5, 1],
+      }
+    );
+
+    observer.observe(page5Section);
+
+    // Also check on scroll to handle edge cases
+    let ticking = false;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const scrollTop = container.scrollTop;
+        const page5Bottom = page5Section.offsetTop + page5Section.offsetHeight;
+        const page5Top = page5Section.offsetTop;
+
+        if (scrollTop >= page5Bottom) {
+          // Past page 5 - disable snapping
+          setSnappingEnabled(false);
+        } else if (scrollTop >= page5Top && scrollTop < page5Bottom) {
+          // On page 5 - enable snapping
+          setSnappingEnabled(true);
+        }
+
+        ticking = false;
+      });
+    };
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => {
+      observer.disconnect();
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div
       ref={(el) => {
         scrollContainerRef.current = el as unknown as HTMLElement;
       }}
-      className="h-dvh overflow-y-scroll overflow-x-hidden snap-y snap-mandatory"
+      className={`h-dvh overflow-y-scroll overflow-x-hidden ${snappingEnabled ? 'snap-y snap-mandatory' : ''}`}
+      style={{
+        scrollSnapType: snappingEnabled ? 'y mandatory' : 'none',
+      }}
       id="main-scroll-container"
     >
       {/* Logo Yellow SVG - Shared across Page4 and Page5 */}
