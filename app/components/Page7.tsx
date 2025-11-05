@@ -21,6 +21,23 @@ export function Page7() {
             />
           </div>
         </div>
+
+        {/* Spacing */}
+        <div className="relative z-50 py-20 md:py-40 lg:py-48"></div>
+
+        {/* Paragraphs */}
+        <div className="relative z-50 flex flex-col px-6 max-w-4xl w-full">
+          <p className="text-lg md:text-xl lg:text-xl text-black mb-6">
+            Lorem ipsum dolor sit amet consectetur. Adipiscing tempor cursus quis eros ligula
+            <br />
+            aliquam ultrices egestas tellus.
+          </p>
+          <p className="text-lg md:text-xl lg:text-xl text-black">
+            Elementum sed tincidunt sit risus. Porttitor viverra euismod neque pellentesque id. Tempus fusce vivamus consectetur vitae
+            <br />
+            sed habitant.
+          </p>
+        </div>
       </div>
     </div>
   );
