@@ -8,6 +8,7 @@ import { Page3 } from "./components/Page3";
 import { Page4 } from "./components/Page4";
 import { Page5 } from "./components/Page5";
 import { Page6 } from "./components/Page6";
+import { Page7 } from "./components/Page7";
 import Footer from "./components/Footer";
 
 export default function Home() {
@@ -197,12 +198,18 @@ export default function Home() {
           sectionRefs.current[5] = el;
         }}
         className="min-h-dvh relative overflow-hidden"
-        style={{ 
-          backgroundColor: "#FFED00",
-          opacity: 1
-        }}
       >
         <Page6 />
+      </section>
+
+      {/* Page 7: Behind the P+RTAL company Section */}
+      <section
+        ref={(el) => {
+          sectionRefs.current[6] = el;
+        }}
+        className="min-h-dvh relative overflow-hidden"
+      >
+        <Page7 />
       </section>
 
       {/* Footer */}

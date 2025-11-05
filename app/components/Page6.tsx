@@ -325,7 +325,7 @@ export function Page6() {
 
   return (
     <>
-      <div className="relative w-full flex flex-col items-center">
+      <div className="relative w-full flex flex-col items-center min-h-dvh" style={{ backgroundColor: "#FFED00" }}>
         {/* Black Logo SVG - Absolute position */}
         <div
           data-logo-black

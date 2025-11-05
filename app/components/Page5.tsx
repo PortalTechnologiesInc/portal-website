@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import Image from "next/image";
 import { resetLogoYellow } from "./Page4";
 import { DUR_STEP_MS } from "../lib/constants/animation";
@@ -12,17 +11,10 @@ type Props = {
 
 export function Page5({ scrollContainerRef }: Props) {
   const [isVisible, setIsVisible] = useState(false);
-  const [isPage5Intersecting, setIsPage5Intersecting] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const [cardPhase, setCardPhase] = useState<'hidden' | 'center' | 'expanded'>('hidden');
   const page5ContainerRef = useRef<HTMLDivElement | null>(null);
   const hasEnteredRef = useRef(false);
   const isAnimatingRef = useRef(false);
-
-  // Track client-side mount to avoid hydration mismatch
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     const container = page5ContainerRef.current;
@@ -62,9 +54,12 @@ export function Page5({ scrollContainerRef }: Props) {
         const isIntersecting = entry.isIntersecting;
         const intersectionRatio = entry.intersectionRatio;
 
-        // Keep logo visible whenever Page5 is intersecting
+        // Calculate page5Rect and viewportHeight for use in logic
+        const page5Rect = page5Section.getBoundingClientRect();
+        const viewportHeight = scrollContainerEl.clientHeight;
+
+        // Keep logo visible whenever Page5 is intersecting with sufficient ratio
         if (isIntersecting && intersectionRatio >= 0.5) {
-          setIsPage5Intersecting(true);
           ensureLogoVisible();
 
           // Enter animation: section becomes visible for the first time
@@ -89,13 +84,8 @@ export function Page5({ scrollContainerRef }: Props) {
             }, 2200); // Total animation time
           }
         } else {
-          // Immediately set to false when not intersecting or ratio too low
-          setIsPage5Intersecting(false);
-          
           // Hide logo when scrolling forward past Page5
           if (hasEnteredRef.current && !isIntersecting) {
-            const page5Rect = page5Section.getBoundingClientRect();
-            const viewportHeight = scrollContainerEl.clientHeight;
             // If Page5 is above the viewport (scrolled past), hide the logo
             if (page5Rect.bottom < viewportHeight * 0.5) {
               const logoYellowEl = document.querySelector('[data-logo-yellow]') as HTMLElement;
@@ -220,57 +210,29 @@ export function Page5({ scrollContainerRef }: Props) {
     };
   }, [scrollContainerRef]);
 
-  // Cleanup portal background when component unmounts
-  useEffect(() => {
-    return () => {
-      // Cleanup: remove any portal background elements
-      const portalBackgrounds = document.body.querySelectorAll('[data-page5-background]');
-      portalBackgrounds.forEach(el => el.remove());
-    };
-  }, []);
-
-  // Update section background color when isVisible changes
+  // Set section background color to white
   useEffect(() => {
     const section = page5ContainerRef.current?.closest("section");
     if (section) {
-      // Remove background from section
-      section.style.backgroundColor = 'transparent';
+      section.style.backgroundColor = '#ffffff';
     }
-  }, [isVisible]);
+    return () => {
+      const section = page5ContainerRef.current?.closest("section");
+      if (section) {
+        section.style.backgroundColor = '';
+      }
+    };
+  }, []);
 
   return (
-    <>
-      {/* Fixed background for Page5 - rendered via portal to avoid stacking context issues */}
-      {isMounted && createPortal(
-        <div
-          data-page5-background
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: 47,
-            backgroundColor: '#ffffff',
-            transition: 'opacity 1000ms ease-out',
-            pointerEvents: 'none',
-            opacity: isPage5Intersecting ? 1 : 0,
-            visibility: isPage5Intersecting ? 'visible' : 'hidden'
-          }}
-        />,
-        document.body
-      )}
-      
-      <div 
-        ref={page5ContainerRef} 
-        className="relative w-full h-dvh flex flex-col items-center justify-center"
-        style={{
-          position: 'relative',
-          zIndex: 50
-        }}
-      >
+    <div 
+      ref={page5ContainerRef} 
+      className="relative w-full h-dvh flex flex-col items-center justify-center"
+      style={{
+        position: 'relative',
+        zIndex: 50
+      }}
+    >
       {/* Horizontal Carousel Container - Always visible */}
       <div 
         className="w-full h-full overflow-x-auto overflow-y-hidden scrollbar-hide snap-x snap-mandatory"
@@ -376,6 +338,5 @@ export function Page5({ scrollContainerRef }: Props) {
         />
       </div>
     </div>
-    </>
   );
 }
