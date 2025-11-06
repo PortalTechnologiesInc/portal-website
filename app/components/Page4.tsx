@@ -186,7 +186,7 @@ export function Page4({ scrollContainerRef }: Props) {
   }, [logoPhase]);
 
   return (
-    <div ref={page4ContainerRef} className="relative w-full h-dvh flex flex-col items-center justify-center px-6">
+    <div ref={page4ContainerRef} className="relative w-full h-full flex flex-col items-center justify-center px-6">
       {/* Text Content */}
       <div className="text-center mx-2">
         <h1

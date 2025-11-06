@@ -227,7 +227,7 @@ export function Page5({ scrollContainerRef }: Props) {
   return (
     <div 
       ref={page5ContainerRef} 
-      className="relative w-full h-dvh flex flex-col items-center justify-center"
+      className="relative w-full h-full flex flex-col items-center justify-center"
       style={{
         position: 'relative',
         zIndex: 50

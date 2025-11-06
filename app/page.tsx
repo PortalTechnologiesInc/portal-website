@@ -133,58 +133,63 @@ export default function Home() {
           />
         </svg>
       </div>
-      {/* Page 1: Hero Section */}
+      {/* Page 1: Hero Section - Exactly 100vh */}
       <section
         ref={(el) => {
           sectionRefs.current[0] = el;
         }}
-        className="relative h-dvh snap-center bg-white text-[#141416] pt-20"
-        style={{ scrollSnapStop: "always" }}
+        className="relative h-screen snap-start bg-white text-[#141416]"
+        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
       >
-        <Page1 />
+        <div className="h-full pt-20">
+          <Page1 />
+        </div>
       </section>
 
-      {/* Page 2: Payments Section */}
+      {/* Page 2: Payments Section - Exactly 100vh */}
       <section
         ref={(el) => {
           sectionRefs.current[1] = el;
         }}
-        className="h-dvh snap-center text-white px-6 relative z-40 pt-28 md:pt-36 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ scrollSnapStop: "always" }}
+        className="h-screen snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
       >
-        <Page2 scrollContainerRef={scrollContainerRef} />
+        <div className="h-full px-6 pt-28 md:pt-36">
+          <Page2 scrollContainerRef={scrollContainerRef} />
+        </div>
       </section>
 
-      {/* Page 3: Horizontal Carousel Section */}
+      {/* Page 3: Horizontal Carousel Section - Exactly 100vh */}
       <section
         ref={(el) => {
           sectionRefs.current[2] = el;
         }}
-        className="h-dvh snap-center text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ scrollSnapStop: "always" }}
+        className="h-screen snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
       >
         <Page3 scrollContainerRef={scrollContainerRef} />
       </section>
 
-      {/* Page 4: Solution Section */}
+      {/* Page 4: Solution Section - Exactly 100vh */}
       <section
         ref={(el) => {
           sectionRefs.current[3] = el;
         }}
-        className="h-dvh snap-center text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ scrollSnapStop: "always" }}
+        className="h-screen snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
       >
         <Page4 scrollContainerRef={scrollContainerRef} />
       </section>
 
-      {/* Page 5: Final Section */}
+      {/* Page 5: Final Section - Exactly 100vh */}
       <section
         ref={(el) => {
           sectionRefs.current[4] = el;
         }}
-        className="h-dvh snap-center relative md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        className="h-screen snap-start relative md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ 
-          scrollSnapStop: "always", 
+          scrollSnapStop: "always",
+          scrollSnapAlign: "start",
           zIndex: 49, 
           position: 'relative'
         }}
@@ -192,7 +197,7 @@ export default function Home() {
         <Page5 scrollContainerRef={scrollContainerRef} />
       </section>
 
-      {/* Page 6: Yellow Background Section */}
+      {/* Page 6: Yellow Background Section - No snapping */}
       <section
         ref={(el) => {
           sectionRefs.current[5] = el;
@@ -202,7 +207,7 @@ export default function Home() {
         <Page6 />
       </section>
 
-      {/* Page 7: Behind the P+RTAL company Section */}
+      {/* Page 7: Behind the P+RTAL company Section - No snapping */}
       <section
         ref={(el) => {
           sectionRefs.current[6] = el;

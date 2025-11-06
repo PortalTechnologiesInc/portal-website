@@ -86,7 +86,7 @@ export function Page3({ scrollContainerRef }: Props) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-dvh overflow-hidden"
+      className="relative w-full h-full overflow-hidden"
     >
       {/* Carousel Container */}
       <div
