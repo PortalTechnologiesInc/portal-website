@@ -8,6 +8,7 @@ import { Page3 } from "./components/Page3";
 import { Page3a } from "./components/Page3a";
 import { Page3b } from "./components/Page3b";
 import { Page3c } from "./components/Page3c";
+import { LogoManager } from "./components/LogoManager";
 import { Page4 } from "./components/Page4";
 import { Page5 } from "./components/Page5";
 import { Page6 } from "./components/Page6";
@@ -616,41 +617,6 @@ export default function Home() {
       }}
       id="main-scroll-container"
     >
-      {/* Logo Yellow SVG - Shared across Page4 and Page5 */}
-      <div
-        data-logo-yellow
-        className="fixed left-1/2 pointer-events-none"
-        style={{
-          transformOrigin: "center center",
-          zIndex: 30,
-          opacity: 0,
-          top: "100vh",
-          transform: "translate(-50%, -50%)",
-          width: "40px",
-          height: "40px",
-        }}
-      >
-        <svg
-          width="246"
-          height="210"
-          viewBox="0 0 246 210"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            display: "absolute",
-            width: "100%",
-            height: "100%",
-            zIndex: 1,
-          }}
-        >
-          <path
-            data-logo-path
-            d="M174.011 1.5C174.029 17.4525 174.358 29.8097 175.814 39.3369C177.317 49.1665 180.048 56.2148 185.089 61.127C190.126 66.0356 197.249 68.5948 207.03 69.9609C216.506 71.2844 228.703 71.5115 244.313 71.5244V138.475C228.7 138.488 216.501 138.716 207.024 140.039C197.243 141.405 190.12 143.965 185.084 148.873C180.044 153.785 177.314 160.834 175.812 170.663C174.358 180.19 174.029 192.548 174.011 208.5H71.8027C71.7841 192.547 71.455 180.19 69.999 170.663C68.4968 160.833 65.7646 153.785 60.7236 148.873C55.6863 143.965 48.5641 141.405 38.7832 140.039C29.3072 138.716 17.1101 138.488 1.5 138.475V71.5244C17.1136 71.5115 29.3124 71.2845 38.7891 69.9609C48.5707 68.5948 55.693 66.0356 60.7295 61.127C65.7696 56.2148 68.4999 49.1664 70.001 39.3369C71.4559 29.8097 71.7842 17.4525 71.8027 1.5H174.011Z"
-            stroke="#FFED00"
-            strokeWidth="3"
-          />
-        </svg>
-      </div>
       {/* Page 1: Hero Section - Exactly 100vh */}
       <section
         ref={(el) => {
@@ -738,45 +704,87 @@ export default function Home() {
         <Page3c />
       </section>
 
-      {/* Page 4: Solution Section - Exactly 100vh */}
-      <section
-        ref={(el) => {
-          sectionRefs.current[3] = el;
-        }}
-        data-page="page4"
-        className="h-dvh text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ 
-          flexShrink: 0,
-        }}
-      >
-        <Page4 scrollContainerRef={scrollContainerRef} />
-      </section>
+      {/* Wrapper for Page4 and Page5 with shared yellow logo */}
+      <div className="relative" style={{ display: 'contents' }}>
+        {/* Logo Yellow SVG - Shared across Page4 and Page5 */}
+        <div
+          data-logo-yellow
+          className="fixed left-1/2 pointer-events-none"
+          style={{
+            transformOrigin: "center center",
+            zIndex: 30,
+            opacity: 0,
+            top: "100vh",
+            transform: "translate(-50%, -50%)",
+            width: "40px",
+            height: "40px",
+          }}
+        >
+          <svg
+            width="246"
+            height="210"
+            viewBox="0 0 246 210"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              display: "absolute",
+              width: "100%",
+              height: "100%",
+              zIndex: 1,
+            }}
+          >
+            <path
+              data-logo-path
+              d="M174.011 1.5C174.029 17.4525 174.358 29.8097 175.814 39.3369C177.317 49.1665 180.048 56.2148 185.089 61.127C190.126 66.0356 197.249 68.5948 207.03 69.9609C216.506 71.2844 228.703 71.5115 244.313 71.5244V138.475C228.7 138.488 216.501 138.716 207.024 140.039C197.243 141.405 190.12 143.965 185.084 148.873C180.044 153.785 177.314 160.834 175.812 170.663C174.358 180.19 174.029 192.548 174.011 208.5H71.8027C71.7841 192.547 71.455 180.19 69.999 170.663C68.4968 160.833 65.7646 153.785 60.7236 148.873C55.6863 143.965 48.5641 141.405 38.7832 140.039C29.3072 138.716 17.1101 138.488 1.5 138.475V71.5244C17.1136 71.5115 29.3124 71.2845 38.7891 69.9609C48.5707 68.5948 55.693 66.0356 60.7295 61.127C65.7696 56.2148 68.4999 49.1664 70.001 39.3369C71.4559 29.8097 71.7842 17.4525 71.8027 1.5H174.011Z"
+              stroke="#FFED00"
+              strokeWidth="3"
+            />
+          </svg>
+        </div>
 
-      {/* Page 5: Final Section - Exactly 100vh */}
-      <section
-        ref={(el) => {
-          sectionRefs.current[4] = el;
-          // Ensure background is set immediately to prevent flickering
-          if (el) {
-            el.style.backgroundColor = '#ffffff';
-            // Optimize rendering to prevent flicker
-            el.style.backfaceVisibility = 'hidden';
-            el.style.transform = 'translateZ(0)'; // Force GPU acceleration
-          }
-        }}
-        className="h-dvh relative bg-white md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ 
-          backgroundColor: '#ffffff', // Set inline style as well to prevent flickering
-          opacity: 1, // Always visible, never animate
-          backfaceVisibility: 'hidden', // Prevent flicker during scroll
-          transform: 'translateZ(0)', // Force GPU layer
-          zIndex: 49, 
-          position: 'relative',
-          flexShrink: 0, // Prevent flex shrinking
-        }}
-      >
-        <Page5 scrollContainerRef={scrollContainerRef} />
-      </section>
+        {/* Logo Manager - handles visibility based on Page4 and Page5 */}
+        <LogoManager scrollContainerRef={scrollContainerRef} />
+
+        {/* Page 4: Solution Section - Exactly 100vh */}
+        <section
+          ref={(el) => {
+            sectionRefs.current[3] = el;
+          }}
+          data-page="page4"
+          className="h-dvh text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+          style={{ 
+            flexShrink: 0,
+          }}
+        >
+          <Page4 scrollContainerRef={scrollContainerRef} />
+        </section>
+
+        {/* Page 5: Final Section - Exactly 100vh */}
+        <section
+          ref={(el) => {
+            sectionRefs.current[4] = el;
+            // Ensure background is set immediately to prevent flickering
+            if (el) {
+              el.style.backgroundColor = '#ffffff';
+              // Optimize rendering to prevent flicker
+              el.style.backfaceVisibility = 'hidden';
+              el.style.transform = 'translateZ(0)'; // Force GPU acceleration
+            }
+          }}
+          className="h-dvh relative bg-white md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+          style={{ 
+            backgroundColor: '#ffffff', // Set inline style as well to prevent flickering
+            opacity: 1, // Always visible, never animate
+            backfaceVisibility: 'hidden', // Prevent flicker during scroll
+            transform: 'translateZ(0)', // Force GPU layer
+            zIndex: 49, 
+            position: 'relative',
+            flexShrink: 0, // Prevent flex shrinking
+          }}
+        >
+          <Page5 scrollContainerRef={scrollContainerRef} />
+        </section>
+      </div>
 
       {/* Page 6: Yellow Background Section - No snapping */}
       <section
