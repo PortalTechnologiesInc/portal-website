@@ -103,10 +103,27 @@ export default function Home() {
 
     // Handle wheel events (desktop)
     const handleWheel = (e: WheelEvent) => {
+      if (!snappingEnabled) {
+        // If snapping is disabled, allow free scrolling
+        return;
+      }
+      
       if (isScrolling) {
         e.preventDefault();
         return;
       }
+
+      const currentScrollTop = container.scrollTop;
+      
+      // Check if we're past page 5 - if so, allow free scrolling
+      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
+      if (currentScrollTop >= page5Bottom) {
+        // Past page 5, allow free scrolling
+        return;
+      }
+
+      // Only prevent default if we're within snapping range
+      e.preventDefault();
 
       wheelDelta += e.deltaY;
       
@@ -114,12 +131,11 @@ export default function Home() {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         wheelDelta = 0;
-      }, 150);
+      }, 200);
 
       // If accumulated delta exceeds threshold, snap
-      const threshold = 50;
+      const threshold = 30; // Lower threshold for more responsive snapping
       if (Math.abs(wheelDelta) > threshold) {
-        const currentScrollTop = container.scrollTop;
         const currentIndex = getNearestSectionIndex(currentScrollTop);
         
         if (wheelDelta > 0 && currentIndex < sections.length - 1) {
@@ -127,34 +143,45 @@ export default function Home() {
           isScrolling = true;
           snapToSection(currentIndex + 1);
           wheelDelta = 0;
-          setTimeout(() => { isScrolling = false; }, 500);
+          setTimeout(() => { isScrolling = false; }, 600);
         } else if (wheelDelta < 0 && currentIndex > 0) {
           // Scroll up
           isScrolling = true;
           snapToSection(currentIndex - 1);
           wheelDelta = 0;
-          setTimeout(() => { isScrolling = false; }, 500);
+          setTimeout(() => { isScrolling = false; }, 600);
+        } else {
+          // Can't scroll further, reset delta
+          wheelDelta = 0;
         }
       }
     };
 
     // Handle touch events (mobile)
     const handleTouchStart = (e: TouchEvent) => {
+      if (!snappingEnabled) return; // Don't handle if snapping is disabled
       isTouching = true;
       touchStartY = e.touches[0].clientY;
       touchStartScrollTop = container.scrollTop;
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      if (!isTouching) return;
+      if (!snappingEnabled || !isTouching) return; // Don't handle if snapping is disabled
       isTouching = false;
 
       const touchEndY = e.changedTouches[0].clientY;
       const deltaY = touchStartY - touchEndY;
       const threshold = 30; // Minimum swipe distance
 
+      // Check if we're within snapping range (pages 1-5)
+      const currentScrollTop = container.scrollTop;
+      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
+      if (currentScrollTop >= page5Bottom) {
+        // Past page 5, allow free scrolling
+        return;
+      }
+
       if (Math.abs(deltaY) > threshold) {
-        const currentScrollTop = container.scrollTop;
         const currentIndex = getNearestSectionIndex(currentScrollTop);
         
         if (deltaY > 0 && currentIndex < sections.length - 1) {
@@ -167,20 +194,30 @@ export default function Home() {
       }
     };
 
-    // Also handle scroll end to ensure perfect alignment
+    // Also handle scroll end to ensure perfect alignment (only for pages 1-5)
     let scrollEndTimeout: NodeJS.Timeout;
     const handleScroll = () => {
+      if (!snappingEnabled) return; // Don't handle if snapping is disabled
+      
       clearTimeout(scrollEndTimeout);
       
       scrollEndTimeout = setTimeout(() => {
         if (isTouching || isScrolling) return;
         
         const scrollTop = container.scrollTop;
+        
+        // Check if we're past page 5 - if so, don't snap
+        const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
+        if (scrollTop >= page5Bottom) {
+          // Past page 5, allow free scrolling
+          return;
+        }
+        
         const currentIndex = getNearestSectionIndex(scrollTop);
         const targetTop = sections[currentIndex].offsetTop;
         const misalignment = Math.abs(scrollTop - targetTop);
 
-        // If misaligned by more than 10px, correct it
+        // If misaligned by more than 10px, correct it (only within pages 1-5)
         if (misalignment > 10) {
           container.scrollTo({
             top: targetTop,
