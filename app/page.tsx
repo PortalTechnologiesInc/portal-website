@@ -622,7 +622,7 @@ export default function Home() {
         className="fixed left-1/2 pointer-events-none"
         style={{
           transformOrigin: "center center",
-          zIndex: 48,
+          zIndex: 30,
           opacity: 0,
           top: "100vh",
           transform: "translate(-50%, -50%)",
