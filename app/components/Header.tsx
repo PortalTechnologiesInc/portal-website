@@ -189,10 +189,10 @@ export default function Header() {
             <Image
               src="/logo.svg"
               alt=""
-              width={150}
-              height={22}
+              width={200}
+              height={200}
               priority
-              className={`transition duration-300 ${
+              className={`transition duration-300 w-[150px] md:w-[200px] h-auto ${
                 onLightBackground ? "" : "invert"
               }`}
             />

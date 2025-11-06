@@ -149,7 +149,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[1] = el;
         }}
-        className="h-dvh snap-center text-white px-6 relative z-40 pt-28 md:pt-36"
+        className="h-dvh snap-center text-white px-6 relative z-40 pt-28 md:pt-36 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ scrollSnapStop: "always" }}
       >
         <Page2 scrollContainerRef={scrollContainerRef} />
@@ -160,7 +160,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[2] = el;
         }}
-        className="h-dvh snap-center text-white relative z-40"
+        className="h-dvh snap-center text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ scrollSnapStop: "always" }}
       >
         <Page3 scrollContainerRef={scrollContainerRef} />
@@ -171,7 +171,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[3] = el;
         }}
-        className="h-dvh snap-center text-white relative z-40"
+        className="h-dvh snap-center text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ scrollSnapStop: "always" }}
       >
         <Page4 scrollContainerRef={scrollContainerRef} />
@@ -182,7 +182,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[4] = el;
         }}
-        className="h-dvh snap-center relative"
+        className="h-dvh snap-center relative md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ 
           scrollSnapStop: "always", 
           zIndex: 49, 
@@ -197,7 +197,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[5] = el;
         }}
-        className="min-h-dvh relative overflow-hidden"
+        className="min-h-dvh relative overflow-hidden md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
       >
         <Page6 />
       </section>
@@ -207,7 +207,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[6] = el;
         }}
-        className="min-h-dvh relative overflow-hidden"
+        className="min-h-dvh relative overflow-hidden md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
       >
         <Page7 />
       </section>
