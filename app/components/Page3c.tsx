@@ -1,0 +1,31 @@
+"use client";
+
+import Image from "next/image";
+
+export function Page3c() {
+  return (
+    <div className="h-full flex flex-row items-center justify-center px-6 md:max-w-[98rem] md:mx-auto w-full">
+      {/* Image Container - Left side */}
+      <div className="relative flex items-center justify-center md:mr-12">
+        <Image
+          src="/sentiment_sad.svg"
+          alt="Poor User Experience"
+          width={128}
+          height={128}
+          className="w-[12rem] h-[12rem]"
+        />
+      </div>
+
+      {/* Text Content - Right side */}
+      <div className="text-left max-w-lg flex flex-col">
+        <h1 className="text-4xl lg:text-4xl font-bold tracking-tight mb-4 leading-tight font-eurostile text-white">
+          Poor User Experience
+        </h1>
+        <p className="text-xl font-normal leading-tight text-white opacity-90">
+          Authentication and payment systems are often clunky and unintuitive, creating friction for customers and leading to a high percentage of abandoned carts.
+        </p>
+      </div>
+    </div>
+  );
+}
+

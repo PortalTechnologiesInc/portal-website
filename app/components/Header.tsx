@@ -20,87 +20,14 @@ export default function Header() {
   }, [open]);
 
   useEffect(() => {
-    // IntersectionObserver-based color switch for performance
     const scrollContainer = (document.querySelector(
       "div.h-dvh.overflow-y-scroll"
     ) || null) as HTMLElement | null;
 
-    const sections = Array.from(
-      document.querySelectorAll("section")
-    ) as HTMLElement[];
-    const firstSection = sections[0];
-    const secondSection = sections[1];
-    const fifthSection = sections[4];
-    const sixthSection = sections[5];
-    const seventhSection = sections[6];
-
-    if (!firstSection || !secondSection) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const headerHeight = 56; // h-14
-        const lead = 56; // start at header height for instant switch
-
-        const rootTop = entries[0]?.rootBounds ? entries[0].rootBounds.top : 0;
-        const triggerY = rootTop + headerHeight;
-
-        let firstActive = false;
-        let secondActive = false;
-        let fifthActive = false;
-        let sixthActive = false;
-        let seventhActive = false;
-
-        for (const entry of entries) {
-          const top = entry.boundingClientRect.top;
-          const bottom = entry.boundingClientRect.bottom;
-
-          if (entry.target === firstSection) {
-            const y = triggerY - lead;
-            firstActive = top <= y && bottom > y;
-          } else if (entry.target === secondSection) {
-            const y = triggerY + lead;
-            secondActive = top <= y && bottom > y;
-          } else if (fifthSection && entry.target === fifthSection) {
-            const y = triggerY + lead;
-            fifthActive = top <= y && bottom > y;
-          } else if (sixthSection && entry.target === sixthSection) {
-            const y = triggerY + lead;
-            sixthActive = top <= y && bottom > y;
-          } else if (seventhSection && entry.target === seventhSection) {
-            const y = triggerY + lead;
-            seventhActive = top <= y && bottom > y;
-          }
-        }
-
-        if (seventhActive) {
-          setOnLightBackground(true);
-        } else if (sixthActive) {
-          setOnLightBackground(true);
-        } else if (fifthActive) {
-          setOnLightBackground(true);
-        } else if (firstActive) {
-          setOnLightBackground(true);
-        } else if (secondActive) {
-          setOnLightBackground(false);
-        } else {
-          // Default to dark background when neither section is active
-          setOnLightBackground(false);
-        }
-      },
-      {
-        root: scrollContainer || null,
-        threshold: [0, 0.1, 0.5, 1],
-      }
-    );
-
-    observer.observe(firstSection);
-    observer.observe(secondSection);
-    if (fifthSection) observer.observe(fifthSection);
-    if (sixthSection) observer.observe(sixthSection);
-    if (seventhSection) observer.observe(seventhSection);
-
-    // Add a tiny rAF-throttled scroll handler to remove any perceived IO delay
-    const handleScroll = () => {
+    // Sections that need white text (dark backgrounds)
+    const WHITE_TEXT_PAGES = ['page2', 'page3', 'page4'];
+    
+    const checkActiveSection = () => {
       const headerHeight = 56;
       const lead = 56;
       const containerRect = (
@@ -108,49 +35,75 @@ export default function Header() {
       ).getBoundingClientRect();
       const triggerY = containerRect.top + headerHeight;
 
-      const firstRect = firstSection.getBoundingClientRect();
-      const secondRect = secondSection.getBoundingClientRect();
-      const fifthRect = fifthSection?.getBoundingClientRect();
-      const sixthRect = sixthSection?.getBoundingClientRect();
-      const seventhRect = seventhSection?.getBoundingClientRect();
+      // Check all sections with data-page attribute
+      const sections = Array.from(
+        document.querySelectorAll("section[data-page]")
+      ) as HTMLElement[];
+      
+      // Check footer
+      const footer = document.querySelector("footer") as HTMLElement;
 
-      const firstActive =
-        firstRect.top <= triggerY - lead && firstRect.bottom > triggerY - lead;
-      const secondActive =
-        secondRect.top <= triggerY + lead &&
-        secondRect.bottom > triggerY + lead;
-      const fifthActive = fifthRect
-        ? fifthRect.top <= triggerY + lead && fifthRect.bottom > triggerY + lead
-        : false;
-      const sixthActive = sixthRect
-        ? sixthRect.top <= triggerY + lead && sixthRect.bottom > triggerY + lead
-        : false;
-      const seventhActive = seventhRect
-        ? seventhRect.top <= triggerY + lead && seventhRect.bottom > triggerY + lead
-        : false;
-
-      if (seventhActive) {
-        setOnLightBackground(true);
-      } else if (sixthActive) {
-        setOnLightBackground(true);
-      } else if (fifthActive) {
-        setOnLightBackground(true);
-      } else if (firstActive) {
-        setOnLightBackground(true);
-      } else if (secondActive) {
-        setOnLightBackground(false);
-      } else {
-        // Default to dark background when neither section is active
-        setOnLightBackground(false);
+      // Find active section (check in DOM order, use the one with most visibility)
+      let activePage: string | null = null;
+      let maxVisibility = 0;
+      
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect();
+        const isActive = rect.top <= triggerY + lead && rect.bottom > triggerY + lead;
+        if (isActive) {
+          // Calculate visibility ratio (how much of section is in viewport)
+          const visibleTop = Math.max(rect.top, triggerY - lead);
+          const visibleBottom = Math.min(rect.bottom, triggerY + lead + window.innerHeight);
+          const visibility = Math.max(0, visibleBottom - visibleTop) / rect.height;
+          
+          if (visibility > maxVisibility) {
+            maxVisibility = visibility;
+            activePage = section.getAttribute('data-page');
+          }
+        }
       }
+
+      // Check if footer is visible (only if no section is active)
+      if (!activePage && footer) {
+        const footerRect = footer.getBoundingClientRect();
+        const footerActive = footerRect.top <= triggerY + lead && footerRect.bottom > triggerY + lead;
+        if (footerActive) {
+          activePage = 'footer';
+        }
+      }
+
+      // Determine text color: white text for page2, page3, and footer
+      const needsWhiteText = activePage && (WHITE_TEXT_PAGES.includes(activePage) || activePage === 'footer');
+      setOnLightBackground(!needsWhiteText);
     };
 
+    const observer = new IntersectionObserver(
+      () => {
+        checkActiveSection();
+      },
+      {
+        root: scrollContainer || null,
+        threshold: [0, 0.1, 0.5, 1],
+      }
+    );
+
+    // Observe all sections with data-page
+    const sections = Array.from(
+      document.querySelectorAll("section[data-page]")
+    ) as HTMLElement[];
+    sections.forEach(section => observer.observe(section));
+
+    // Observe footer
+    const footer = document.querySelector("footer");
+    if (footer) observer.observe(footer);
+
+    // Add rAF-throttled scroll handler for instant updates
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(() => {
-          handleScroll();
+          checkActiveSection();
           ticking = false;
         });
       }
@@ -162,7 +115,9 @@ export default function Header() {
     window.addEventListener("resize", onScroll, {
       passive: true,
     } as AddEventListenerOptions);
-    handleScroll();
+    
+    // Initial check
+    checkActiveSection();
 
     return () => {
       observer.disconnect();

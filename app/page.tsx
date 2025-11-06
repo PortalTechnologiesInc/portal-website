@@ -5,6 +5,9 @@ import { useRevealOnIntersect } from "./hooks/useRevealOnIntersect";
 import { Page1 } from "./components/Page1";
 import { Page2 } from "./components/Page2";
 import { Page3 } from "./components/Page3";
+import { Page3a } from "./components/Page3a";
+import { Page3b } from "./components/Page3b";
+import { Page3c } from "./components/Page3c";
 import { Page4 } from "./components/Page4";
 import { Page5 } from "./components/Page5";
 import { Page6 } from "./components/Page6";
@@ -17,7 +20,7 @@ export default function Home() {
   const [snappingEnabled, setSnappingEnabled] = useState(true);
 
   useRevealOnIntersect(
-    () => sectionRefs.current.filter((el, index) => el && index !== 4 && index !== 5) as HTMLElement[]
+    () => sectionRefs.current.filter((el, index) => el && index !== 6 && index !== 7) as HTMLElement[]
   );
 
   // Ensure Page5 background stays white and opacity stays at 1 - no animations
@@ -82,8 +85,20 @@ export default function Home() {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const sections = sectionRefs.current.slice(0, 5).filter(Boolean) as HTMLElement[];
-    if (sections.length === 0) return;
+    // Helper to get visible sections (filters out hidden sections)
+    const getVisibleSections = (): HTMLElement[] => {
+      // Get all sections: 0=Page1, 1=Page2, 2=Page3(mobile), 3=Page4, 4=Page5, 7=Page3a(desktop), 8=Page3b(desktop), 9=Page3c(desktop)
+      const indices = [0, 1, 2, 3, 4, 7, 8, 9];
+      const sections = indices.map(i => sectionRefs.current[i]).filter((el): el is HTMLElement => {
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        // Hidden elements have display: none
+        return style.display !== 'none';
+      });
+      
+      // Sort by offsetTop to ensure correct order
+      return sections.sort((a, b) => a.offsetTop - b.offsetTop);
+    };
 
     let isScrolling = false;
     let scrollTimeout: NodeJS.Timeout;
@@ -97,6 +112,8 @@ export default function Home() {
 
     // Find nearest section index
     const getNearestSectionIndex = (scrollTop: number): number => {
+      const sections = getVisibleSections();
+      if (sections.length === 0) return 0;
       let nearestIndex = 0;
       let minDistance = Math.abs(sections[0].offsetTop - scrollTop);
 
@@ -112,6 +129,8 @@ export default function Home() {
 
     // Snap to section
     const snapToSection = (index: number) => {
+      const sections = getVisibleSections();
+      if (sections.length === 0) return;
       if (index < 0 || index >= sections.length) return;
       const targetTop = sections[index].offsetTop;
       container.scrollTo({
@@ -122,8 +141,15 @@ export default function Home() {
 
     // Helper to check if we're past page 5 midpoint
     const isPastPage5Midpoint = (scrollTop: number): boolean => {
-      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
-      const page5Top = sections[4]?.offsetTop || 0;
+      const sections = getVisibleSections();
+      if (sections.length === 0) return false;
+      // Page5 is the last snapping section (index varies: 4 on mobile, 6 on desktop)
+      const page5Index = sections.length - 1;
+      const page5Section = sections[page5Index];
+      if (!page5Section) return false;
+      
+      const page5Bottom = page5Section.offsetTop + page5Section.offsetHeight;
+      const page5Top = page5Section.offsetTop;
       const page5Height = page5Bottom - page5Top;
       const page5Midpoint = page5Top + page5Height / 2;
       return scrollTop >= page5Midpoint;
@@ -131,9 +157,15 @@ export default function Home() {
 
     // Handle wheel events (desktop)
     const handleWheel = (e: WheelEvent) => {
+      const sections = getVisibleSections();
+      if (sections.length === 0) return;
+      
       const currentScrollTop = container.scrollTop;
-      const page5Top = sections[4]?.offsetTop || 0;
-      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
+      // Page5 is the last snapping section
+      const page5Index = sections.length - 1;
+      const page5Section = sections[page5Index];
+      const page5Top = page5Section?.offsetTop || 0;
+      const page5Bottom = (page5Section?.offsetTop || 0) + (page5Section?.offsetHeight || 0);
       
       // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and scrolling up, FORCE snap to page 5 - NO EXCEPTIONS
       if (wasOnPage6 && e.deltaY < 0 && !snappingToPage5) {
@@ -160,9 +192,28 @@ export default function Home() {
         return;
       }
       
-      // PRIMARY CHECK: COMPLETELY DISABLE ALL SNAPPING when past page 5 midpoint
+      // PRIMARY CHECK: If past page 5 midpoint, only handle UP scrolls (to snap back to Page5)
       if (isPastPage5Midpoint(currentScrollTop)) {
         wasOnPage6 = true;
+        // Only prevent default and snap if scrolling UP
+        if (e.deltaY < 0) {
+          e.preventDefault();
+          // Handle snap to Page5 on up scroll
+          if (!snappingToPage5) {
+            isScrolling = true;
+            snappingToPage5 = true;
+            container.scrollTo({
+              top: page5Top,
+              behavior: 'smooth'
+            });
+            setTimeout(() => {
+              isScrolling = false;
+              snappingToPage5 = false;
+              wasOnPage6 = false;
+            }, 600);
+          }
+        }
+        // Allow free scrolling DOWN past Page5
         return;
       }
       
@@ -242,7 +293,11 @@ export default function Home() {
       touchStartScrollTop = container.scrollTop;
       
       // If we're starting a touch on page 6, set the flag immediately
-      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
+      const sections = getVisibleSections();
+      if (sections.length === 0) return;
+      // Page5 is the last snapping section
+      const page5Index = sections.length - 1;
+      const page5Bottom = sections[page5Index]?.offsetTop + sections[page5Index]?.offsetHeight || 0;
       if (touchStartScrollTop >= page5Bottom) {
         wasOnPage6 = true;
       }
@@ -257,8 +312,13 @@ export default function Home() {
       const threshold = 30;
 
       const currentScrollTop = container.scrollTop;
-      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
-      const page5Top = sections[4]?.offsetTop || 0;
+      const sections = getVisibleSections();
+      if (sections.length === 0) return;
+      // Page5 is the last snapping section
+      const page5Index = sections.length - 1;
+      const page5Section = sections[page5Index];
+      const page5Bottom = page5Section?.offsetTop + page5Section?.offsetHeight || 0;
+      const page5Top = page5Section?.offsetTop || 0;
       
       // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and swiping up, FORCE snap to page 5 - NO EXCEPTIONS
       if (wasOnPage6 && deltaY > 0 && Math.abs(deltaY) > threshold && !snappingToPage5) {
@@ -327,14 +387,22 @@ export default function Home() {
     let scrollEndTimeout: NodeJS.Timeout;
     let lastScrollTop = container.scrollTop;
     const handleScroll = () => {
+      const sections = getVisibleSections();
+      if (sections.length === 0) return;
+      
       const currentScrollTop = container.scrollTop;
-      const page5Top = sections[4]?.offsetTop || 0;
-      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
+      const scrollDirection = currentScrollTop > lastScrollTop ? 'down' : currentScrollTop < lastScrollTop ? 'up' : null;
+      
+      // Page5 is the last snapping section
+      const page5Index = sections.length - 1;
+      const page5Section = sections[page5Index];
+      const page5Top = page5Section?.offsetTop || 0;
+      const page5Bottom = (page5Section?.offsetTop || 0) + (page5Section?.offsetHeight || 0);
       const page5Height = page5Bottom - page5Top;
       const page5Midpoint = page5Top + page5Height / 2;
       
-      // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and scrolling up, FORCE snap to page 5 - NO EXCEPTIONS
-      if (wasOnPage6 && !snappingToPage5 && currentScrollTop < lastScrollTop) {
+      // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and scrolling up, FORCE snap to page 5
+      if (wasOnPage6 && !snappingToPage5 && scrollDirection === 'up') {
         snappingToPage5 = true;
         container.scrollTo({
           top: page5Top,
@@ -360,20 +428,34 @@ export default function Home() {
         snappingToPage5 = false;
       }
       
-      // PRIMARY CHECK: COMPLETELY DISABLE SNAPPING when past page 5 midpoint - return IMMEDIATELY
-      // This check happens FIRST, before any other logic including snappingEnabled
+      // PRIMARY CHECK: If past page 5 midpoint, allow free scrolling DOWN, only snap UP
       if (isPastPage5Midpoint(currentScrollTop)) {
         wasOnPage6 = true;
         scrollStartTop = currentScrollTop;
         lastScrollTop = currentScrollTop;
         // Clear any pending timeout to prevent snapping callbacks from running
         clearTimeout(scrollEndTimeout);
-        // Don't set up timeout - completely skip ALL snapping logic
+        // Only snap if scrolling UP (back towards Page5)
+        if (scrollDirection === 'up' && !snappingToPage5) {
+          snappingToPage5 = true;
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'smooth'
+          });
+          setTimeout(() => {
+            wasOnPage6 = false;
+            snappingToPage5 = false;
+          }, 600);
+        }
+        // Allow free scrolling DOWN - don't interfere
         return;
       }
       
       // Only check snappingEnabled if we're before the midpoint
-      if (!snappingEnabled) return;
+      if (!snappingEnabled) {
+        lastScrollTop = currentScrollTop;
+        return;
+      }
       
       // Reset scroll start if this is a new scroll gesture
       if (Math.abs(currentScrollTop - scrollStartTop) > 50) {
@@ -388,15 +470,20 @@ export default function Home() {
         if (isTouching || isScrolling) return;
         
         const scrollTop = container.scrollTop;
-        const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
-        const page5Top = sections[4]?.offsetTop || 0;
+        const sections = getVisibleSections();
+        if (sections.length === 0) return;
+        // Page5 is the last snapping section, Page4 is second to last
+        const page5Index = sections.length - 1;
+        const page4Index = sections.length - 2;
+        const page5Section = sections[page5Index];
+        const page5Bottom = page5Section?.offsetTop + page5Section?.offsetHeight || 0;
+        const page5Top = page5Section?.offsetTop || 0;
         const page5Height = page5Bottom - page5Top;
         const page5Midpoint = page5Top + page5Height / 2;
-        const page4Top = sections[3]?.offsetTop || 0;
+        const page4Top = sections[page4Index]?.offsetTop || 0;
         
-        // ABSOLUTE FIRST CHECK: If wasOnPage6 is true, FORCE snap to page 5 - NO EXCEPTIONS
-        // This MUST be the first check, before ANY other logic including midpoint checks
-        if (wasOnPage6 && !snappingToPage5) {
+        // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and scrolling UP, FORCE snap to page 5
+        if (wasOnPage6 && !snappingToPage5 && scrollTop < scrollStartTop) {
           snappingToPage5 = true;
           container.scrollTo({
             top: page5Top,
@@ -416,11 +503,11 @@ export default function Home() {
           return;
         }
         
-        // Double-check: COMPLETELY DISABLE SNAPPING when past page 5 midpoint
+        // If past Page5 midpoint and scrolling DOWN, allow free scroll (don't snap)
         if (isPastPage5Midpoint(scrollTop)) {
           wasOnPage6 = true;
           scrollStartTop = scrollTop;
-          return; // Completely disable snapping logic
+          return;
         }
         
         // Determine scroll direction
@@ -584,6 +671,7 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[1] = el;
         }}
+        data-page="page2"
         className="h-dvh text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ 
           flexShrink: 0, // Prevent flex shrinking
@@ -594,17 +682,60 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Page 3: Horizontal Carousel Section - Exactly 100vh */}
+      {/* Page 3: Mobile only - Horizontal Carousel */}
       <section
         ref={(el) => {
           sectionRefs.current[2] = el;
         }}
-        className="h-dvh text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        data-page="page3"
+        className="h-dvh md:hidden text-white relative z-40"
         style={{ 
-          flexShrink: 0, // Prevent flex shrinking
+          flexShrink: 0,
         }}
       >
         <Page3 scrollContainerRef={scrollContainerRef} />
+      </section>
+
+      {/* Page 3a: Desktop only - High Costs */}
+      <section
+        ref={(el) => {
+          sectionRefs.current[7] = el; // Use index 7 to avoid conflict
+        }}
+        data-page="page3"
+        className="hidden md:block h-dvh text-white relative z-40"
+        style={{ 
+          flexShrink: 0,
+        }}
+      >
+        <Page3a />
+      </section>
+
+      {/* Page 3b: Desktop only - Technological Lock-in */}
+      <section
+        ref={(el) => {
+          sectionRefs.current[8] = el; // Use index 8
+        }}
+        data-page="page3"
+        className="hidden md:block h-dvh text-white relative z-40"
+        style={{ 
+          flexShrink: 0,
+        }}
+      >
+        <Page3b />
+      </section>
+
+      {/* Page 3c: Desktop only - Poor User Experience */}
+      <section
+        ref={(el) => {
+          sectionRefs.current[9] = el; // Use index 9
+        }}
+        data-page="page3"
+        className="hidden md:block h-dvh text-white relative z-40"
+        style={{ 
+          flexShrink: 0,
+        }}
+      >
+        <Page3c />
       </section>
 
       {/* Page 4: Solution Section - Exactly 100vh */}
@@ -612,9 +743,10 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[3] = el;
         }}
+        data-page="page4"
         className="h-dvh text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ 
-          flexShrink: 0, // Prevent flex shrinking
+          flexShrink: 0,
         }}
       >
         <Page4 scrollContainerRef={scrollContainerRef} />
