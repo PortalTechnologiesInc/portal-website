@@ -17,12 +17,10 @@ export function LogoManager({ scrollContainerRef }: Props) {
 
     if (!scrollContainerEl || !logoYellow) return;
 
-    // Find Page4 and Page5 sections by data-page attribute and position
+    // Find Page4 and all Page5 sections by data-page attribute
     const page4Section = document.querySelector('[data-page="page4"]')?.closest('section') as HTMLElement;
-    const allSections = Array.from(document.querySelectorAll('section')) as HTMLElement[];
-    const page4Index = page4Section ? allSections.indexOf(page4Section) : -1;
-    const page5Section = page4Index >= 0 && page4Index + 1 < allSections.length ? allSections[page4Index + 1] : null;
-
+    const allPage5Sections = Array.from(document.querySelectorAll('section[data-page="page5"]')) as HTMLElement[];
+    
     if (!page4Section) return;
 
     const checkAndUpdateLogo = () => {
@@ -33,23 +31,69 @@ export function LogoManager({ scrollContainerRef }: Props) {
       const viewportHeight = scrollContainerEl.clientHeight;
       const viewportCenter = viewportHeight / 2;
       
-      // Check if Page4 is significantly visible
+      // Get Page4 bounds
       const page4Rect = page4Section.getBoundingClientRect();
       const page4Top = page4Rect.top;
       const page4Bottom = page4Rect.bottom;
       const page4Center = page4Top + (page4Bottom - page4Top) / 2;
       const page4Visible = page4Top < viewportCenter && page4Bottom > viewportCenter;
       
-      // Check if Page5 is significantly visible
+      // Get all Page5 sections bounds and find the last one
+      let lastPage5Section: HTMLElement | null = null;
+      let lastPage5Bottom = 0;
       let page5Visible = false;
       let page5Center = 0;
-      if (page5Section) {
+      let visiblePage5Section: HTMLElement | null = null;
+      let minDistanceToCenter = Infinity;
+      
+      // Find the last Page5 section (furthest down)
+      for (const page5Section of allPage5Sections) {
+        const page5Rect = page5Section.getBoundingClientRect();
+        const page5Bottom = page5Rect.bottom;
+        if (page5Bottom > lastPage5Bottom) {
+          lastPage5Bottom = page5Bottom;
+          lastPage5Section = page5Section;
+        }
+      }
+      
+      // Check all Page5 sections to find which one is currently visible and most centered
+      // Also calculate centers for all Page5 sections for transition logic
+      for (const page5Section of allPage5Sections) {
         const page5Rect = page5Section.getBoundingClientRect();
         const page5Top = page5Rect.top;
         const page5Bottom = page5Rect.bottom;
-        page5Center = page5Top + (page5Bottom - page5Top) / 2;
-        page5Visible = page5Top < viewportCenter && page5Bottom > viewportCenter;
+        const page5CenterCandidate = page5Top + (page5Bottom - page5Top) / 2;
+        const isPage5Visible = page5Top < viewportCenter && page5Bottom > viewportCenter;
+        
+        if (isPage5Visible) {
+          const distanceToCenter = Math.abs(page5CenterCandidate - viewportCenter);
+          if (distanceToCenter < minDistanceToCenter) {
+            minDistanceToCenter = distanceToCenter;
+            page5Visible = true;
+            visiblePage5Section = page5Section;
+            page5Center = page5CenterCandidate;
+          }
+        } else if (!page5Visible) {
+          // If no Page5 section is visible, use the closest one for transition calculations
+          const distanceToCenter = Math.abs(page5CenterCandidate - viewportCenter);
+          if (distanceToCenter < minDistanceToCenter) {
+            minDistanceToCenter = distanceToCenter;
+            page5Center = page5CenterCandidate;
+          }
+        }
       }
+
+      // Check if we're within the range from Page4 to the last Page5 section
+      // This ensures the logo stays visible during transitions
+      const viewportTop = scrollContainerEl.scrollTop;
+      const viewportBottom = viewportTop + viewportHeight;
+      const page4SectionTop = page4Section.offsetTop;
+      const lastPage5SectionTop = lastPage5Section ? lastPage5Section.offsetTop : 0;
+      const lastPage5SectionHeight = lastPage5Section ? lastPage5Section.offsetHeight : 0;
+      const lastPage5SectionBottom = lastPage5SectionTop + lastPage5SectionHeight;
+      
+      // Check if viewport overlaps with the range from Page4 start to last Page5 end
+      const isInPage4To5Range = viewportBottom >= page4SectionTop && viewportTop <= lastPage5SectionBottom;
 
       // Determine current page
       let currentPage: 'page4' | 'page5' | null = null;
@@ -62,10 +106,19 @@ export function LogoManager({ scrollContainerRef }: Props) {
         currentPage = 'page4';
       } else if (page5Visible) {
         currentPage = 'page5';
+      } else if (isInPage4To5Range) {
+        // During transition, determine which page we're closer to
+        const page4Distance = Math.abs(page4Center - viewportCenter);
+        const page5Distance = page5Center > 0 ? Math.abs(page5Center - viewportCenter) : Infinity;
+        if (page5Center > 0 && page5Distance < page4Distance) {
+          currentPage = 'page5';
+        } else {
+          currentPage = 'page4';
+        }
       }
 
-      // Show logo only if Page4 or Page5 is significantly visible in viewport
-      if (page4Visible || page5Visible) {
+      // Show logo if we're in the range from Page4 to last Page5 section
+      if (isInPage4To5Range) {
         const isMobile = window.matchMedia("(max-width: 767px)").matches;
         const baseWidth = 246; // SVG viewBox width
         const baseHeight = 210; // SVG viewBox height
@@ -74,7 +127,7 @@ export function LogoManager({ scrollContainerRef }: Props) {
         const targetWidth = isMobile 
           ? viewportWidth * 1.5  // ~800px at 768px viewport
           : Math.max(viewportWidth * 1.04, 1200); // Responsive but minimum 1200px
-        const targetHeight = isMobile ? 1200 : 2400; // 37.5rem = 600px, 180rem = 2880px
+        const targetHeight = isMobile ? 1450 : 2400; // 37.5rem = 600px, 180rem = 2880px
         const scaleX = targetWidth / baseWidth;
         const scaleY = targetHeight / baseHeight;
         const clipPath = isMobile ? "inset(20% 5% 20% 5%)" : "inset(20% 5% 20% 5%)";
@@ -131,15 +184,15 @@ export function LogoManager({ scrollContainerRef }: Props) {
         }
       }
 
-      // Check if we're leaving Page4 backwards or Page5 forwards
-      if (!page4Visible && !page5Visible) {
-        // Leaving both pages - reset anchor
+      // Check if we're leaving Page4 backwards or Page5 forwards (only when clearly outside the range)
+      if (!isInPage4To5Range) {
+        // Leaving the range - reset anchor
         currentPageRef.current = null;
-      } else if (currentPageRef.current === 'page4' && !page4Visible && scrollDirection === 'up') {
+      } else if (currentPageRef.current === 'page4' && viewportTop < page4SectionTop && scrollDirection === 'up') {
         // Leaving Page4 backwards
         currentPageRef.current = null;
-      } else if (currentPageRef.current === 'page5' && !page5Visible && scrollDirection === 'down') {
-        // Leaving Page5 forwards
+      } else if (currentPageRef.current === 'page5' && viewportTop > lastPage5SectionBottom && scrollDirection === 'down') {
+        // Leaving last Page5 forwards
         currentPageRef.current = null;
       }
 
@@ -182,21 +235,25 @@ export function LogoManager({ scrollContainerRef }: Props) {
       }
     );
 
-    // Observer for Page5
-    const page5Observer = page5Section ? new IntersectionObserver(
-      () => {
-        checkAndUpdateLogo();
-      },
-      {
-        root: scrollContainerEl,
-        threshold: [0, 0.5, 1],
-      }
-    ) : null;
+    // Observer for all Page5 sections
+    const page5Observers = allPage5Sections.map(page5Section => {
+      return new IntersectionObserver(
+        () => {
+          checkAndUpdateLogo();
+        },
+        {
+          root: scrollContainerEl,
+          threshold: [0, 0.5, 1],
+        }
+      );
+    });
 
     page4Observer.observe(page4Section);
-    if (page5Section && page5Observer) {
-      page5Observer.observe(page5Section);
-    }
+    allPage5Sections.forEach((page5Section, index) => {
+      if (page5Observers[index]) {
+        page5Observers[index].observe(page5Section);
+      }
+    });
 
     // Add scroll listener to continuously check visibility
     let ticking = false;
@@ -225,9 +282,7 @@ export function LogoManager({ scrollContainerRef }: Props) {
 
     return () => {
       page4Observer.disconnect();
-      if (page5Observer) {
-        page5Observer.disconnect();
-      }
+      page5Observers.forEach(observer => observer.disconnect());
       scrollContainerEl.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
     };
