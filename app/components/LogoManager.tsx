@@ -9,8 +9,6 @@ type Props = {
 export function LogoManager({ scrollContainerRef }: Props) {
   const lastScrollTopRef = useRef(0);
   const currentPageRef = useRef<'page4' | 'page5' | null>(null);
-  const isVisibleRef = useRef(false);
-  const opacityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const scrollContainerEl = scrollContainerRef.current;
@@ -74,12 +72,12 @@ export function LogoManager({ scrollContainerRef }: Props) {
         const viewportWidth = window.innerWidth;
         // Calculate responsive width: mobile uses ~78% of viewport, desktop uses ~104% (2000px at 1920px viewport)
         const targetWidth = isMobile 
-          ? viewportWidth * 0.78  // ~600px at 768px viewport
+          ? viewportWidth * 1.5  // ~800px at 768px viewport
           : Math.max(viewportWidth * 1.04, 1200); // Responsive but minimum 1200px
-        const targetHeight = isMobile ? 600 : 2400; // 37.5rem = 600px, 180rem = 2880px
+        const targetHeight = isMobile ? 1200 : 2400; // 37.5rem = 600px, 180rem = 2880px
         const scaleX = targetWidth / baseWidth;
         const scaleY = targetHeight / baseHeight;
-        const clipPath = isMobile ? "inset(15% 5% 15% 5%)" : "inset(20% 5% 20% 5%)";
+        const clipPath = isMobile ? "inset(20% 5% 20% 5%)" : "inset(20% 5% 20% 5%)";
         
       // Determine target center position
       let targetCenter: number;
@@ -146,8 +144,9 @@ export function LogoManager({ scrollContainerRef }: Props) {
       }
 
         // Always update position to follow the anchored page's center (instant, no transition)
-        // Update position properties first, without any transition - this happens every frame
-        logoYellow.style.transitionProperty = "none";
+        logoYellow.style.transitionProperty = "opacity";
+        logoYellow.style.transitionDuration = "100ms";
+        logoYellow.style.transitionTimingFunction = "ease-in-out";
         logoYellow.style.top = `${targetCenter}px`;
         logoYellow.style.transform = `translate(-50%, -50%) scale(${scaleX}, ${scaleY})`;
         logoYellow.style.width = `${baseWidth}px`;
@@ -156,27 +155,7 @@ export function LogoManager({ scrollContainerRef }: Props) {
         logoYellow.style.maxWidth = "none";
         logoYellow.style.zIndex = "30";
         logoYellow.style.clipPath = clipPath;
-        
-        // Only update opacity transition when visibility state changes
-        if (!isVisibleRef.current) {
-          // Clear any pending opacity timeout
-          if (opacityTimeoutRef.current) {
-            clearTimeout(opacityTimeoutRef.current);
-          }
-          
-          isVisibleRef.current = true;
-          // Force a reflow, then set opacity transition
-          void logoYellow.offsetWidth;
-          requestAnimationFrame(() => {
-            logoYellow.style.transitionProperty = "opacity";
-            logoYellow.style.transitionDuration = "200ms";
-            logoYellow.style.transitionTimingFunction = "ease-in-out";
-            logoYellow.style.opacity = "1";
-          });
-        } else {
-          // Already visible, just ensure opacity is 1
-          logoYellow.style.opacity = "1";
-        }
+        logoYellow.style.opacity = "1";
         
         if (logoPath) {
           logoPath.style.strokeWidth = "1.2";
@@ -184,24 +163,10 @@ export function LogoManager({ scrollContainerRef }: Props) {
         }
       } else {
         // Hide logo when neither Page4 nor Page5 is significantly visible
-        // Only update opacity transition when visibility state changes
-        if (isVisibleRef.current) {
-          // Clear any pending opacity timeout
-          if (opacityTimeoutRef.current) {
-            clearTimeout(opacityTimeoutRef.current);
-          }
-          
-          isVisibleRef.current = false;
-          // Force a reflow, then fade out
-          void logoYellow.offsetWidth;
-          requestAnimationFrame(() => {
-            logoYellow.style.transitionProperty = "opacity";
-            logoYellow.style.transitionDuration = "200ms";
-            logoYellow.style.transitionTimingFunction = "ease-in-out";
-            logoYellow.style.opacity = "0";
-          });
-        }
-        
+        logoYellow.style.transitionProperty = "opacity";
+        logoYellow.style.transitionDuration = "100ms";
+        logoYellow.style.transitionTimingFunction = "ease-in-out";
+        logoYellow.style.opacity = "0";
         currentPageRef.current = null;
       }
     };
