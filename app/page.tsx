@@ -59,56 +59,148 @@ export default function Home() {
     };
   }, []);
 
-  // Minimal fallback: Only correct misalignment after scrolling completely stops
-  // This doesn't interfere with CSS scroll snap's smooth behavior
+  // Proper scroll snapping implementation that works during scroll
   useEffect(() => {
     if (!snappingEnabled) return;
     
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    let scrollEndTimeout: NodeJS.Timeout;
+    const sections = sectionRefs.current.slice(0, 5).filter(Boolean) as HTMLElement[];
+    if (sections.length === 0) return;
+
     let isScrolling = false;
+    let scrollTimeout: NodeJS.Timeout;
+    let wheelDelta = 0;
+    let touchStartY = 0;
+    let touchStartScrollTop = 0;
+    let isTouching = false;
 
-    const handleScroll = () => {
-      isScrolling = true;
-      clearTimeout(scrollEndTimeout);
-      
-      // Wait for scrolling to completely stop (including momentum)
-      scrollEndTimeout = setTimeout(() => {
-        isScrolling = false;
-        
-        // Only correct if significantly misaligned (>20px)
-        const sections = sectionRefs.current.slice(0, 5).filter(Boolean) as HTMLElement[];
-        if (sections.length === 0) return;
+    // Find nearest section index
+    const getNearestSectionIndex = (scrollTop: number): number => {
+      let nearestIndex = 0;
+      let minDistance = Math.abs(sections[0].offsetTop - scrollTop);
 
-        const scrollTop = container.scrollTop;
-        let nearestSection = sections[0];
-        let minDistance = Math.abs(nearestSection.offsetTop - scrollTop);
-
-        for (const section of sections) {
-          const distance = Math.abs(section.offsetTop - scrollTop);
-          if (distance < minDistance) {
-            minDistance = distance;
-            nearestSection = section;
-          }
+      for (let i = 1; i < sections.length; i++) {
+        const distance = Math.abs(sections[i].offsetTop - scrollTop);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestIndex = i;
         }
-
-        const targetTop = nearestSection.offsetTop;
-        const misalignment = Math.abs(scrollTop - targetTop);
-
-        // Only correct if misaligned by more than 20px
-        if (misalignment > 20) {
-          // Use instant scroll to correct without interfering with CSS scroll snap
-          container.scrollTop = targetTop;
-        }
-      }, 150); // Wait for momentum scrolling to finish
+      }
+      return nearestIndex;
     };
 
+    // Snap to section
+    const snapToSection = (index: number) => {
+      if (index < 0 || index >= sections.length) return;
+      const targetTop = sections[index].offsetTop;
+      container.scrollTo({
+        top: targetTop,
+        behavior: 'smooth'
+      });
+    };
+
+    // Handle wheel events (desktop)
+    const handleWheel = (e: WheelEvent) => {
+      if (isScrolling) {
+        e.preventDefault();
+        return;
+      }
+
+      wheelDelta += e.deltaY;
+      
+      // Reset delta after a delay
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        wheelDelta = 0;
+      }, 150);
+
+      // If accumulated delta exceeds threshold, snap
+      const threshold = 50;
+      if (Math.abs(wheelDelta) > threshold) {
+        const currentScrollTop = container.scrollTop;
+        const currentIndex = getNearestSectionIndex(currentScrollTop);
+        
+        if (wheelDelta > 0 && currentIndex < sections.length - 1) {
+          // Scroll down
+          isScrolling = true;
+          snapToSection(currentIndex + 1);
+          wheelDelta = 0;
+          setTimeout(() => { isScrolling = false; }, 500);
+        } else if (wheelDelta < 0 && currentIndex > 0) {
+          // Scroll up
+          isScrolling = true;
+          snapToSection(currentIndex - 1);
+          wheelDelta = 0;
+          setTimeout(() => { isScrolling = false; }, 500);
+        }
+      }
+    };
+
+    // Handle touch events (mobile)
+    const handleTouchStart = (e: TouchEvent) => {
+      isTouching = true;
+      touchStartY = e.touches[0].clientY;
+      touchStartScrollTop = container.scrollTop;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!isTouching) return;
+      isTouching = false;
+
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaY = touchStartY - touchEndY;
+      const threshold = 30; // Minimum swipe distance
+
+      if (Math.abs(deltaY) > threshold) {
+        const currentScrollTop = container.scrollTop;
+        const currentIndex = getNearestSectionIndex(currentScrollTop);
+        
+        if (deltaY > 0 && currentIndex < sections.length - 1) {
+          // Swipe up - go to next section
+          snapToSection(currentIndex + 1);
+        } else if (deltaY < 0 && currentIndex > 0) {
+          // Swipe down - go to previous section
+          snapToSection(currentIndex - 1);
+        }
+      }
+    };
+
+    // Also handle scroll end to ensure perfect alignment
+    let scrollEndTimeout: NodeJS.Timeout;
+    const handleScroll = () => {
+      clearTimeout(scrollEndTimeout);
+      
+      scrollEndTimeout = setTimeout(() => {
+        if (isTouching || isScrolling) return;
+        
+        const scrollTop = container.scrollTop;
+        const currentIndex = getNearestSectionIndex(scrollTop);
+        const targetTop = sections[currentIndex].offsetTop;
+        const misalignment = Math.abs(scrollTop - targetTop);
+
+        // If misaligned by more than 10px, correct it
+        if (misalignment > 10) {
+          container.scrollTo({
+            top: targetTop,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
     container.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
+      clearTimeout(scrollTimeout);
       clearTimeout(scrollEndTimeout);
+      container.removeEventListener('wheel', handleWheel);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchend', handleTouchEnd);
       container.removeEventListener('scroll', handleScroll);
     };
   }, [snappingEnabled]);
@@ -118,10 +210,11 @@ export default function Home() {
       ref={(el) => {
         scrollContainerRef.current = el as unknown as HTMLElement;
       }}
-      className={`h-dvh overflow-y-scroll overflow-x-hidden ${snappingEnabled ? 'snap-y snap-mandatory' : ''}`}
+      className="h-dvh overflow-y-scroll overflow-x-hidden"
       style={{
-        scrollSnapType: snappingEnabled ? 'y mandatory' : 'none',
-        WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+        scrollSnapType: 'none', // Disable CSS scroll snap, we handle it with JS
+        WebkitOverflowScrolling: 'touch',
+        scrollBehavior: 'smooth', // Use smooth for our JS snapping
       }}
       id="main-scroll-container"
     >
@@ -165,8 +258,12 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[0] = el;
         }}
-        className="relative h-screen snap-start bg-white text-[#141416]"
-        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
+        className="relative h-dvh snap-start bg-white text-[#141416]"
+        style={{ 
+          scrollSnapStop: "always", 
+          scrollSnapAlign: "start",
+          flexShrink: 0, // Prevent flex shrinking
+        }}
       >
         <div className="h-full pt-20">
           <Page1 />
@@ -178,8 +275,12 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[1] = el;
         }}
-        className="h-screen snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
+        className="h-dvh snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        style={{ 
+          scrollSnapStop: "always", 
+          scrollSnapAlign: "start",
+          flexShrink: 0, // Prevent flex shrinking
+        }}
       >
         <div className="h-full px-6 pt-28 md:pt-36">
           <Page2 scrollContainerRef={scrollContainerRef} />
@@ -191,8 +292,12 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[2] = el;
         }}
-        className="h-screen snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
+        className="h-dvh snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        style={{ 
+          scrollSnapStop: "always", 
+          scrollSnapAlign: "start",
+          flexShrink: 0, // Prevent flex shrinking
+        }}
       >
         <Page3 scrollContainerRef={scrollContainerRef} />
       </section>
@@ -202,8 +307,12 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[3] = el;
         }}
-        className="h-screen snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
-        style={{ scrollSnapStop: "always", scrollSnapAlign: "start" }}
+        className="h-dvh snap-start text-white relative z-40 md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        style={{ 
+          scrollSnapStop: "always", 
+          scrollSnapAlign: "start",
+          flexShrink: 0, // Prevent flex shrinking
+        }}
       >
         <Page4 scrollContainerRef={scrollContainerRef} />
       </section>
@@ -213,12 +322,13 @@ export default function Home() {
         ref={(el) => {
           sectionRefs.current[4] = el;
         }}
-        className="h-screen snap-start relative md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
+        className="h-dvh snap-start relative md:[&>*]:max-w-[95rem] md:[&>*]:mx-auto"
         style={{ 
           scrollSnapStop: "always",
           scrollSnapAlign: "start",
           zIndex: 49, 
-          position: 'relative'
+          position: 'relative',
+          flexShrink: 0, // Prevent flex shrinking
         }}
       >
         <Page5 scrollContainerRef={scrollContainerRef} />
