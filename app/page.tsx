@@ -24,68 +24,94 @@ export default function Home() {
   useEffect(() => {
     const container = scrollContainerRef.current;
     const page5Section = sectionRefs.current[4];
+    const page6Section = sectionRefs.current[5];
 
     if (!container || !page5Section) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         const page5Entry = entries.find(e => e.target === page5Section);
+        const page6Entry = page6Section ? entries.find(e => e.target === page6Section) : null;
         
-        if (page5Entry) {
+        if (page6Entry && page6Entry.isIntersecting && page6Entry.intersectionRatio > 0.3) {
+          // Page 6 is visible - disable snapping
+          setSnappingEnabled(false);
+        } else if (page5Entry) {
           // Page 5 is visible - enable snapping
-          if (page5Entry.isIntersecting && page5Entry.intersectionRatio > 0.5) {
+          if (page5Entry.isIntersecting && page5Entry.intersectionRatio > 0.3) {
             setSnappingEnabled(true);
-          } else {
-            // Check if we're past page 5
-            const scrollTop = container.scrollTop;
-            const page5Bottom = page5Section.offsetTop + page5Section.offsetHeight;
-            
-            if (scrollTop >= page5Bottom) {
-              // Past page 5 - disable snapping
-              setSnappingEnabled(false);
-            }
           }
         }
       },
       {
         root: container,
-        threshold: [0, 0.5, 1],
+        threshold: [0, 0.3, 0.5, 1],
       }
     );
 
     observer.observe(page5Section);
-
-    // Also check on scroll to handle edge cases
-    let ticking = false;
-    const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
-
-      requestAnimationFrame(() => {
-        const scrollTop = container.scrollTop;
-        const page5Bottom = page5Section.offsetTop + page5Section.offsetHeight;
-        const page5Top = page5Section.offsetTop;
-
-        if (scrollTop >= page5Bottom) {
-          // Past page 5 - disable snapping
-          setSnappingEnabled(false);
-        } else if (scrollTop >= page5Top && scrollTop < page5Bottom) {
-          // On page 5 - enable snapping
-          setSnappingEnabled(true);
-        }
-
-        ticking = false;
-      });
-    };
-
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    if (page6Section) {
+      observer.observe(page6Section);
+    }
 
     return () => {
       observer.disconnect();
-      container.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Minimal fallback: Only correct misalignment after scrolling completely stops
+  // This doesn't interfere with CSS scroll snap's smooth behavior
+  useEffect(() => {
+    if (!snappingEnabled) return;
+    
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let scrollEndTimeout: NodeJS.Timeout;
+    let isScrolling = false;
+
+    const handleScroll = () => {
+      isScrolling = true;
+      clearTimeout(scrollEndTimeout);
+      
+      // Wait for scrolling to completely stop (including momentum)
+      scrollEndTimeout = setTimeout(() => {
+        isScrolling = false;
+        
+        // Only correct if significantly misaligned (>20px)
+        const sections = sectionRefs.current.slice(0, 5).filter(Boolean) as HTMLElement[];
+        if (sections.length === 0) return;
+
+        const scrollTop = container.scrollTop;
+        let nearestSection = sections[0];
+        let minDistance = Math.abs(nearestSection.offsetTop - scrollTop);
+
+        for (const section of sections) {
+          const distance = Math.abs(section.offsetTop - scrollTop);
+          if (distance < minDistance) {
+            minDistance = distance;
+            nearestSection = section;
+          }
+        }
+
+        const targetTop = nearestSection.offsetTop;
+        const misalignment = Math.abs(scrollTop - targetTop);
+
+        // Only correct if misaligned by more than 20px
+        if (misalignment > 20) {
+          // Use instant scroll to correct without interfering with CSS scroll snap
+          container.scrollTop = targetTop;
+        }
+      }, 150); // Wait for momentum scrolling to finish
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(scrollEndTimeout);
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [snappingEnabled]);
 
   return (
     <div
@@ -95,6 +121,7 @@ export default function Home() {
       className={`h-dvh overflow-y-scroll overflow-x-hidden ${snappingEnabled ? 'snap-y snap-mandatory' : ''}`}
       style={{
         scrollSnapType: snappingEnabled ? 'y mandatory' : 'none',
+        WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
       }}
       id="main-scroll-container"
     >
