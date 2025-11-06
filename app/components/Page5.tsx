@@ -210,19 +210,8 @@ export function Page5({ scrollContainerRef }: Props) {
     };
   }, [scrollContainerRef]);
 
-  // Set section background color to white
-  useEffect(() => {
-    const section = page5ContainerRef.current?.closest("section");
-    if (section) {
-      section.style.backgroundColor = '#ffffff';
-    }
-    return () => {
-      const section = page5ContainerRef.current?.closest("section");
-      if (section) {
-        section.style.backgroundColor = '';
-      }
-    };
-  }, []);
+  // Background color is now set via CSS class on the section element
+  // No need to set it dynamically to prevent flickering
 
   return (
     <div 

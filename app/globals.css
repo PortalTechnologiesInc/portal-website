@@ -91,6 +91,6 @@ html {
   inset: 0;
   z-index: 47; /* Below yellow SVG (48) */
   pointer-events: none;
-  background-color: var(--page5-bg-color, #141416);
-  transition: background-color 1000ms ease-out;
+  background-color: var(--page5-bg-color, #ffffff);
+  /* No transition - background should always be white and never animate */
 }
