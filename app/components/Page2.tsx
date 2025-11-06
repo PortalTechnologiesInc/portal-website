@@ -59,7 +59,7 @@ export function Page2({ scrollContainerRef }: Props) {
   return (
     <>
       {/* Desktop Layout: Text vertically centered */}
-      <div className="relative z-50 h-full flex flex-col md:flex-row md:items-center md:justify-start px-3 md:px-6 md:max-w-[98rem] md:mx-auto">
+      <div className="relative z-50 h-full flex flex-col md:flex-row md:items-center md:justify-start px-0 md:px-6 md:max-w-[98rem] md:mx-auto">
         <div className="max-w-4xl text-left">
           <h1 className="text-3xl md:text-4xl lg:text-5xl tracking-tight mb-6 leading-tight font-eurostile text-white">
             Payments and Wallets

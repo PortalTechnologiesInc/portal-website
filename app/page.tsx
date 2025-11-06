@@ -132,32 +132,49 @@ export default function Home() {
     // Handle wheel events (desktop)
     const handleWheel = (e: WheelEvent) => {
       const currentScrollTop = container.scrollTop;
+      const page5Top = sections[4]?.offsetTop || 0;
+      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
+      
+      // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and scrolling up, FORCE snap to page 5 - NO EXCEPTIONS
+      if (wasOnPage6 && e.deltaY < 0 && !snappingToPage5) {
+        isScrolling = true;
+        snappingToPage5 = true;
+        // Instant hard snap to page 5
+        container.scrollTo({
+          top: page5Top,
+          behavior: 'auto'
+        });
+        setTimeout(() => {
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'smooth'
+          });
+        }, 10);
+        wasOnPage6 = false;
+        wheelDelta = 0;
+        setTimeout(() => { 
+          isScrolling = false;
+          snappingToPage5 = false;
+        }, 600);
+        e.preventDefault();
+        return;
+      }
       
       // PRIMARY CHECK: COMPLETELY DISABLE ALL SNAPPING when past page 5 midpoint
-      // This check happens FIRST, before any other logic
       if (isPastPage5Midpoint(currentScrollTop)) {
         wasOnPage6 = true;
-        // Allow completely free scrolling - don't prevent default, don't do anything
         return;
+      }
+      
+      // Also set wasOnPage6 if we're past page 5 bottom (on page 6)
+      if (currentScrollTop >= page5Bottom) {
+        wasOnPage6 = true;
       }
       
       // Only check snappingEnabled if we're before the midpoint
       if (!snappingEnabled) return;
       
       if (isScrolling) {
-        e.preventDefault();
-        return;
-      }
-
-      // Check if scrolling up from page 6 - if so, snap directly to page 5
-      const page5Top = sections[4]?.offsetTop || 0;
-      const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
-      if (wasOnPage6 && e.deltaY < 0 && currentScrollTop < page5Bottom) {
-        // Scrolling up from page 6 - snap directly to page 5
-        isScrolling = true;
-        snapToSection(4); // Page 5 is index 4
-        wasOnPage6 = false;
-        setTimeout(() => { isScrolling = false; }, 600);
         e.preventDefault();
         return;
       }
@@ -176,16 +193,37 @@ export default function Home() {
       // If accumulated delta exceeds threshold, snap
       const threshold = 30;
       if (Math.abs(wheelDelta) > threshold) {
+        // CRITICAL: If wasOnPage6 is true, NEVER use getNearestSectionIndex - always snap to page 5
+        if (wasOnPage6 && wheelDelta < 0) {
+          isScrolling = true;
+          snappingToPage5 = true;
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'auto'
+          });
+          setTimeout(() => {
+            container.scrollTo({
+              top: page5Top,
+              behavior: 'smooth'
+            });
+          }, 10);
+          wasOnPage6 = false;
+          wheelDelta = 0;
+          setTimeout(() => { 
+            isScrolling = false;
+            snappingToPage5 = false;
+          }, 600);
+          return;
+        }
+        
         const currentIndex = getNearestSectionIndex(currentScrollTop);
         
         if (wheelDelta > 0 && currentIndex < sections.length - 1) {
-          // Scroll down
           isScrolling = true;
           snapToSection(currentIndex + 1);
           wheelDelta = 0;
           setTimeout(() => { isScrolling = false; }, 600);
         } else if (wheelDelta < 0 && currentIndex > 0) {
-          // Scroll up
           isScrolling = true;
           snapToSection(currentIndex - 1);
           wheelDelta = 0;
@@ -222,6 +260,26 @@ export default function Home() {
       const page5Bottom = sections[4]?.offsetTop + sections[4]?.offsetHeight || 0;
       const page5Top = sections[4]?.offsetTop || 0;
       
+      // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and swiping up, FORCE snap to page 5 - NO EXCEPTIONS
+      if (wasOnPage6 && deltaY > 0 && Math.abs(deltaY) > threshold && !snappingToPage5) {
+        snappingToPage5 = true;
+        container.scrollTo({
+          top: page5Top,
+          behavior: 'auto'
+        });
+        setTimeout(() => {
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'smooth'
+          });
+        }, 10);
+        wasOnPage6 = false;
+        setTimeout(() => {
+          snappingToPage5 = false;
+        }, 600);
+        return;
+      }
+      
       // PRIMARY CHECK: Check both start and end positions - if either is past midpoint, COMPLETELY DISABLE SNAPPING
       const wasPastMidpoint = isPastPage5Midpoint(touchStartScrollTop);
       const isPastMidpoint = isPastPage5Midpoint(currentScrollTop);
@@ -229,27 +287,29 @@ export default function Home() {
       if (wasPastMidpoint || isPastMidpoint) {
         wasOnPage6 = true;
         
-        // ONLY handle upward swipes from page 6 to snap back to page 5
-        // Check if swiping up (deltaY > 0) and we're coming from page 6
-        if (deltaY > 0 && Math.abs(deltaY) > threshold && (wasPastMidpoint || currentScrollTop >= page5Bottom)) {
-          snapToSection(4); // Page 5 is index 4
+        // FORCE snap to page 5 on ANY upward swipe from page 6
+        if (deltaY > 0 && Math.abs(deltaY) > threshold) {
+          snappingToPage5 = true;
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'auto'
+          });
+          setTimeout(() => {
+            container.scrollTo({
+              top: page5Top,
+              behavior: 'smooth'
+            });
+          }, 10);
           wasOnPage6 = false;
+          setTimeout(() => {
+            snappingToPage5 = false;
+          }, 600);
           return;
         }
         
-        // Otherwise, COMPLETELY DISABLE SNAPPING - allow free scrolling
         return;
       }
       
-      // Check if scrolling up from page 6 - if so, snap directly to page 5
-      if (wasOnPage6 && deltaY > 0 && currentScrollTop < page5Bottom) {
-        // Swiping up from page 6 - snap directly to page 5
-        snapToSection(4); // Page 5 is index 4
-        wasOnPage6 = false;
-        return;
-      }
-      
-      // Only check snappingEnabled if we're before the midpoint
       if (!snappingEnabled) return;
 
       if (Math.abs(deltaY) > threshold) {
@@ -273,21 +333,25 @@ export default function Home() {
       const page5Height = page5Bottom - page5Top;
       const page5Midpoint = page5Top + page5Height / 2;
       
-      // Check if scrolling up from page 6 - detect this immediately by checking if wasOnPage6 and scrolling up
-      if (wasOnPage6 && !snappingToPage5 && currentScrollTop < lastScrollTop && currentScrollTop < page5Midpoint) {
-        // Scrolling up from page 6 - snap immediately to page 5
+      // ABSOLUTE FIRST CHECK: If wasOnPage6 is true and scrolling up, FORCE snap to page 5 - NO EXCEPTIONS
+      if (wasOnPage6 && !snappingToPage5 && currentScrollTop < lastScrollTop) {
         snappingToPage5 = true;
         container.scrollTo({
           top: page5Top,
-          behavior: 'smooth'
+          behavior: 'auto'
         });
-        // Reset flags after snap completes
+        setTimeout(() => {
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'smooth'
+          });
+        }, 10);
         setTimeout(() => {
           wasOnPage6 = false;
           snappingToPage5 = false;
         }, 600);
-        scrollStartTop = currentScrollTop;
-        lastScrollTop = currentScrollTop;
+        scrollStartTop = page5Top;
+        lastScrollTop = page5Top;
         return;
       }
       
@@ -330,6 +394,28 @@ export default function Home() {
         const page5Midpoint = page5Top + page5Height / 2;
         const page4Top = sections[3]?.offsetTop || 0;
         
+        // ABSOLUTE FIRST CHECK: If wasOnPage6 is true, FORCE snap to page 5 - NO EXCEPTIONS
+        // This MUST be the first check, before ANY other logic including midpoint checks
+        if (wasOnPage6 && !snappingToPage5) {
+          snappingToPage5 = true;
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'auto'
+          });
+          setTimeout(() => {
+            container.scrollTo({
+              top: page5Top,
+              behavior: 'smooth'
+            });
+          }, 10);
+          setTimeout(() => {
+            wasOnPage6 = false;
+            snappingToPage5 = false;
+          }, 600);
+          scrollStartTop = page5Top;
+          return;
+        }
+        
         // Double-check: COMPLETELY DISABLE SNAPPING when past page 5 midpoint
         if (isPastPage5Midpoint(scrollTop)) {
           wasOnPage6 = true;
@@ -347,38 +433,28 @@ export default function Home() {
           return;
         }
         
-        // CRITICAL: If we were on page 6, ALWAYS snap to page 5 when scrolling up (not page 4)
-        // Check this BEFORE getNearestSectionIndex to prevent snapping to page 4
-        if (wasOnPage6 && !snappingToPage5) {
-          // If we're anywhere between page 4 top and page 5 midpoint, snap to page 5
-          if (scrollTop >= page4Top && scrollTop < page5Midpoint) {
-            // Coming from page 6, anywhere between page 4 and page 5 - force snap to page 5
-            snappingToPage5 = true;
+        // FORCE snap to page 5 when scrolling up from page 6 - ANY upward movement triggers hard snap
+        if (wasOnPage6 && !snappingToPage5 && finalScrollDirection === 'up') {
+          // ANY upward scroll from page 6 - FORCE snap immediately to page 5
+          snappingToPage5 = true;
+          // Use instant scroll for hard snap
+          container.scrollTo({
+            top: page5Top,
+            behavior: 'auto' // Instant, hard snap
+          });
+          // Then smooth it slightly
+          setTimeout(() => {
             container.scrollTo({
               top: page5Top,
               behavior: 'smooth'
             });
-            setTimeout(() => {
-              wasOnPage6 = false;
-              snappingToPage5 = false;
-            }, 600);
-            scrollStartTop = scrollTop;
-            return;
-          }
-          // If scrolling up and we're before page 5 midpoint, also snap to page 5
-          if (finalScrollDirection === 'up' && scrollTop < page5Midpoint) {
-            snappingToPage5 = true;
-            container.scrollTo({
-              top: page5Top,
-              behavior: 'smooth'
-            });
-            setTimeout(() => {
-              wasOnPage6 = false;
-              snappingToPage5 = false;
-            }, 600);
-            scrollStartTop = scrollTop;
-            return;
-          }
+          }, 10);
+          setTimeout(() => {
+            wasOnPage6 = false;
+            snappingToPage5 = false;
+          }, 600);
+          scrollStartTop = page5Top;
+          return;
         }
         
         // If we're in page 5's range (before midpoint), ensure alignment
@@ -396,39 +472,32 @@ export default function Home() {
           return;
         }
         
-        // Only reset wasOnPage6 if we're clearly before page 4 (not between page 4 and page 5)
-        if (scrollTop < page4Top) {
+        // Only reset wasOnPage6 if we're clearly on page 5 (at the top of page 5)
+        // Don't reset it if we're between page 4 and page 5 when coming from page 6
+        if (scrollTop >= page5Top && scrollTop < page5Midpoint && finalScrollDirection !== 'up') {
+          // Only reset if we're properly on page 5 and not scrolling up (which means we came from above, not from page 6)
+          wasOnPage6 = false;
+        } else if (scrollTop < page4Top) {
+          // Only reset if we're clearly before page 4
           wasOnPage6 = false;
         }
         
-        const currentIndex = getNearestSectionIndex(scrollTop);
-        const targetTop = sections[currentIndex].offsetTop;
-        const misalignment = Math.abs(scrollTop - targetTop);
+        // Only call getNearestSectionIndex if wasOnPage6 is false
+        // This prevents snapping to page 4 when coming from page 6
+        // Also only snap if there was actual scroll movement (not just a timeout firing)
+        if (!wasOnPage6 && Math.abs(scrollTop - scrollStartTop) > 5) {
+          const currentIndex = getNearestSectionIndex(scrollTop);
+          const targetTop = sections[currentIndex].offsetTop;
+          const misalignment = Math.abs(scrollTop - targetTop);
 
-        // CRITICAL: If wasOnPage6 is still true and we're trying to snap, force snap to page 5 instead
-        if (wasOnPage6 && !snappingToPage5 && currentIndex === 3) { // Page 4 is index 3
-          // Don't snap to page 4 - snap to page 5 instead
-          snappingToPage5 = true;
-          container.scrollTo({
-            top: page5Top,
-            behavior: 'smooth'
-          });
-          setTimeout(() => {
-            wasOnPage6 = false;
-            snappingToPage5 = false;
-          }, 600);
-          scrollStartTop = scrollTop;
-          return;
+          // Only snap if misalignment is significant AND we're not in the middle of a scroll gesture
+          if (misalignment > 10 && !isScrolling && !isTouching) {
+            container.scrollTo({
+              top: targetTop,
+              behavior: 'smooth'
+            });
+          }
         }
-
-        if (misalignment > 10) {
-          container.scrollTo({
-            top: targetTop,
-            behavior: 'smooth'
-          });
-        }
-        
-        scrollStartTop = scrollTop;
       }, 100);
     };
 
