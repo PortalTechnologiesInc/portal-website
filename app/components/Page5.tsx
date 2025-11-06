@@ -169,7 +169,7 @@ export function Page5({ scrollContainerRef }: Props) {
           transition: 'opacity 300ms ease-out'
         }}
       >
-        <div className="flex h-full gap-6 py-6 z-52" style={{ paddingLeft: '11.5vw', paddingRight: '0' }}>
+        <div className="flex h-full gap-6 z-52 items-center" style={{ paddingLeft: '11.5vw', paddingRight: '0' }}>
           {/* Card 1 - Hidden when animated card1 is showing, visible when expanded */}
           <div 
             className="flex-shrink-0 w-[77vw] flex items-center justify-center snap-center"
