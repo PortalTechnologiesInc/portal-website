@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type Props = {
   scrollContainerRef: React.RefObject<HTMLElement | null>;
 };
 
 export function LogoManager({ scrollContainerRef }: Props) {
+  const lastScrollTopRef = useRef(0);
+  const currentPageRef = useRef<'page4' | 'page5' | null>(null);
+  const isVisibleRef = useRef(false);
+  const opacityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     const scrollContainerEl = scrollContainerRef.current;
     const logoYellow = document.querySelector('[data-logo-yellow]') as HTMLElement;
@@ -23,6 +28,10 @@ export function LogoManager({ scrollContainerRef }: Props) {
     if (!page4Section) return;
 
     const checkAndUpdateLogo = () => {
+      const currentScrollTop = scrollContainerEl.scrollTop;
+      const scrollDirection = currentScrollTop > lastScrollTopRef.current ? 'down' : currentScrollTop < lastScrollTopRef.current ? 'up' : null;
+      lastScrollTopRef.current = currentScrollTop;
+
       const viewportHeight = scrollContainerEl.clientHeight;
       const viewportCenter = viewportHeight / 2;
       
@@ -30,30 +39,144 @@ export function LogoManager({ scrollContainerRef }: Props) {
       const page4Rect = page4Section.getBoundingClientRect();
       const page4Top = page4Rect.top;
       const page4Bottom = page4Rect.bottom;
+      const page4Center = page4Top + (page4Bottom - page4Top) / 2;
       const page4Visible = page4Top < viewportCenter && page4Bottom > viewportCenter;
       
       // Check if Page5 is significantly visible
       let page5Visible = false;
+      let page5Center = 0;
       if (page5Section) {
         const page5Rect = page5Section.getBoundingClientRect();
         const page5Top = page5Rect.top;
         const page5Bottom = page5Rect.bottom;
+        page5Center = page5Top + (page5Bottom - page5Top) / 2;
         page5Visible = page5Top < viewportCenter && page5Bottom > viewportCenter;
+      }
+
+      // Determine current page
+      let currentPage: 'page4' | 'page5' | null = null;
+      if (page4Visible && page5Visible) {
+        // Both visible - determine which is more centered
+        const page4Distance = Math.abs(page4Center - viewportCenter);
+        const page5Distance = Math.abs(page5Center - viewportCenter);
+        currentPage = page4Distance < page5Distance ? 'page4' : 'page5';
+      } else if (page4Visible) {
+        currentPage = 'page4';
+      } else if (page5Visible) {
+        currentPage = 'page5';
       }
 
       // Show logo only if Page4 or Page5 is significantly visible in viewport
       if (page4Visible || page5Visible) {
         const isMobile = window.matchMedia("(max-width: 767px)").matches;
-        const largeSize = isMobile ? "600px" : "900px";
+        const baseWidth = 246; // SVG viewBox width
+        const baseHeight = 210; // SVG viewBox height
+        const viewportWidth = window.innerWidth;
+        // Calculate responsive width: mobile uses ~78% of viewport, desktop uses ~104% (2000px at 1920px viewport)
+        const targetWidth = isMobile 
+          ? viewportWidth * 0.78  // ~600px at 768px viewport
+          : Math.max(viewportWidth * 1.04, 1200); // Responsive but minimum 1200px
+        const targetHeight = isMobile ? 600 : 2400; // 37.5rem = 600px, 180rem = 2880px
+        const scaleX = targetWidth / baseWidth;
+        const scaleY = targetHeight / baseHeight;
+        const clipPath = isMobile ? "inset(15% 5% 15% 5%)" : "inset(20% 5% 20% 5%)";
         
-        logoYellow.style.opacity = "1";
-        logoYellow.style.top = "50vh";
-        logoYellow.style.transform = "translate(-50%, -50%)";
-        logoYellow.style.width = largeSize;
-        logoYellow.style.height = largeSize;
+      // Determine target center position
+      let targetCenter: number;
+      let shouldUpdatePosition = false;
+
+      // Determine which page we're anchored to
+      if (currentPage === 'page4') {
+        // On Page4
+        targetCenter = page4Center;
+        // Update position if entering Page4 from outside (not from Page5)
+        if (currentPageRef.current !== 'page4' && currentPageRef.current !== 'page5') {
+          shouldUpdatePosition = true;
+          currentPageRef.current = 'page4';
+        } else if (currentPageRef.current === null) {
+          // First time entering
+          shouldUpdatePosition = true;
+          currentPageRef.current = 'page4';
+        } else {
+          // Already anchored - keep current position (don't update)
+          shouldUpdatePosition = false;
+        }
+      } else if (currentPage === 'page5') {
+        // On Page5
+        targetCenter = page5Center;
+        // Update position if entering Page5 from outside (not from Page4)
+        if (currentPageRef.current !== 'page5' && currentPageRef.current !== 'page4') {
+          shouldUpdatePosition = true;
+          currentPageRef.current = 'page5';
+        } else if (currentPageRef.current === null) {
+          // First time entering
+          shouldUpdatePosition = true;
+          currentPageRef.current = 'page5';
+        } else {
+          // Already anchored - keep current position (don't update)
+          shouldUpdatePosition = false;
+        }
+      } else {
+        // Transitioning between pages or leaving
+        if (currentPageRef.current === 'page4') {
+          // Was on Page4, keep at Page4 center during transition
+          targetCenter = page4Center;
+          shouldUpdatePosition = false;
+        } else if (currentPageRef.current === 'page5') {
+          // Was on Page5, keep at Page5 center during transition
+          targetCenter = page5Center;
+          shouldUpdatePosition = false;
+        } else {
+          // Fallback
+          targetCenter = page4Visible ? page4Center : page5Center;
+          shouldUpdatePosition = true;
+        }
+      }
+
+      // Check if we're leaving Page4 backwards or Page5 forwards
+      if (!page4Visible && !page5Visible) {
+        // Leaving both pages - reset anchor
+        currentPageRef.current = null;
+      } else if (currentPageRef.current === 'page4' && !page4Visible && scrollDirection === 'up') {
+        // Leaving Page4 backwards
+        currentPageRef.current = null;
+      } else if (currentPageRef.current === 'page5' && !page5Visible && scrollDirection === 'down') {
+        // Leaving Page5 forwards
+        currentPageRef.current = null;
+      }
+
+        // Always update position to follow the anchored page's center (instant, no transition)
+        // Update position properties first, without any transition - this happens every frame
+        logoYellow.style.transitionProperty = "none";
+        logoYellow.style.top = `${targetCenter}px`;
+        logoYellow.style.transform = `translate(-50%, -50%) scale(${scaleX}, ${scaleY})`;
+        logoYellow.style.width = `${baseWidth}px`;
+        logoYellow.style.height = `${baseHeight}px`;
+        logoYellow.style.maxHeight = "none";
+        logoYellow.style.maxWidth = "none";
         logoYellow.style.zIndex = "30";
-        logoYellow.style.clipPath = "inset(10% 5% 10% 5%)";
-        logoYellow.style.transition = "none";
+        logoYellow.style.clipPath = clipPath;
+        
+        // Only update opacity transition when visibility state changes
+        if (!isVisibleRef.current) {
+          // Clear any pending opacity timeout
+          if (opacityTimeoutRef.current) {
+            clearTimeout(opacityTimeoutRef.current);
+          }
+          
+          isVisibleRef.current = true;
+          // Force a reflow, then set opacity transition
+          void logoYellow.offsetWidth;
+          requestAnimationFrame(() => {
+            logoYellow.style.transitionProperty = "opacity";
+            logoYellow.style.transitionDuration = "200ms";
+            logoYellow.style.transitionTimingFunction = "ease-in-out";
+            logoYellow.style.opacity = "1";
+          });
+        } else {
+          // Already visible, just ensure opacity is 1
+          logoYellow.style.opacity = "1";
+        }
         
         if (logoPath) {
           logoPath.style.strokeWidth = "1.2";
@@ -61,8 +184,25 @@ export function LogoManager({ scrollContainerRef }: Props) {
         }
       } else {
         // Hide logo when neither Page4 nor Page5 is significantly visible
-        logoYellow.style.opacity = "0";
-        logoYellow.style.transition = "none";
+        // Only update opacity transition when visibility state changes
+        if (isVisibleRef.current) {
+          // Clear any pending opacity timeout
+          if (opacityTimeoutRef.current) {
+            clearTimeout(opacityTimeoutRef.current);
+          }
+          
+          isVisibleRef.current = false;
+          // Force a reflow, then fade out
+          void logoYellow.offsetWidth;
+          requestAnimationFrame(() => {
+            logoYellow.style.transitionProperty = "opacity";
+            logoYellow.style.transitionDuration = "200ms";
+            logoYellow.style.transitionTimingFunction = "ease-in-out";
+            logoYellow.style.opacity = "0";
+          });
+        }
+        
+        currentPageRef.current = null;
       }
     };
 
@@ -106,6 +246,12 @@ export function LogoManager({ scrollContainerRef }: Props) {
     };
 
     scrollContainerEl.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Add resize listener to update logo size responsively
+    const handleResize = () => {
+      checkAndUpdateLogo();
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
 
     // Initial check with a small delay to ensure DOM is ready
     setTimeout(() => {
@@ -118,6 +264,7 @@ export function LogoManager({ scrollContainerRef }: Props) {
         page5Observer.disconnect();
       }
       scrollContainerEl.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
   }, [scrollContainerRef]);
 
