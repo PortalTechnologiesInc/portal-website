@@ -18,8 +18,10 @@ import {
   Page6CurrencyIntro,
   Page6CurrencyCarouselSection,
   Page6EasySecure,
-  Page6DailyLife,
-  Page6Business,
+  Page6DailyLifeHero,
+  Page6DailyLifeFeatures,
+  Page6BusinessHero,
+  Page6BusinessFeatures,
   Page6TakeStep,
 } from "./components/Page6";
 import { Page6Desktop } from "./components/Page6Desktop";
@@ -219,22 +221,42 @@ export default function Home() {
       </section>
 
       <section
-        data-section="page6-daily-life-mobile"
+        data-section="page6-daily-life-hero-mobile"
         data-reveal
         className="snap-section relative flex-none md:hidden"
       >
         <div className="h-full w-full">
-          <Page6DailyLife />
+          <Page6DailyLifeHero />
         </div>
       </section>
 
       <section
-        data-section="page6-business-mobile"
+        data-section="page6-daily-life-features-mobile"
         data-reveal
         className="snap-section relative flex-none md:hidden"
       >
         <div className="h-full w-full">
-          <Page6Business />
+          <Page6DailyLifeFeatures />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-business-hero-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6BusinessHero />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-business-features-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6BusinessFeatures />
         </div>
       </section>
 

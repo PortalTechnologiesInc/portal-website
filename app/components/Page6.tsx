@@ -494,18 +494,18 @@ export function Page6EasySecure() {
   );
 }
 
-export function Page6DailyLife() {
+export function Page6DailyLifeHero() {
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
       <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
-        <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3 text-center">
+        <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3">
           P+RTAL
           <br />
           Is the smartest
           choice for your daily life
         </h2>
-        <div className="flex justify-center w-full mb-3">
-          <div className="relative w-full max-w-[200px] aspect-[2/3] overflow-hidden">
+        <div className="flex justify-center w-full">
+          <div className="relative w-full aspect-[2/3] overflow-hidden">
             <Image
               src="/Rectangle.png"
               alt="Portal Rectangle"
@@ -515,63 +515,71 @@ export function Page6DailyLife() {
             />
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
 
-        <div className="w-full space-y-4">
-          <div className="flex flex-row items-start gap-3">
-            <div className="flex-shrink-0">
+export function Page6DailyLifeFeatures() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
+        <div className="w-full flex flex-col">
+          <div className="flex flex-row items-center gap-3">
+            <div className="flex-shrink-0 flex items-center justify-center">
               <Image
                 src="/confirmation_number.svg"
                 alt="Tickets"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                width={48}
+                height={48}
+                className="w-12 h-12"
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Tickets? No problem
               </h3>
-              <p className="text-xs text-black">
+              <p className="text-sm sm:text-base text-black">
                 Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-row items-start gap-3">
-            <div className="flex-shrink-0">
+          <div className="flex flex-row items-center gap-3" style={{ marginTop: '10vh', marginBottom: '10vh' }}>
+            <div className="flex-shrink-0 flex items-center justify-center">
               <Image
                 src="/assignment_ind.svg"
                 alt="Identity"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                width={48}
+                height={48}
+                className="w-12 h-12"
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Your identity, fully secured
               </h3>
-              <p className="text-xs text-black">
+              <p className="text-sm sm:text-base text-black">
                 Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-row items-start gap-3">
-            <div className="flex-shrink-0">
+          <div className="flex flex-row items-center gap-3">
+            <div className="flex-shrink-0 flex items-center justify-center">
               <Image
                 src="/cached.svg"
                 alt="Control"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                width={48}
+                height={48}
+                className="w-12 h-12"
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Take control of your money
               </h3>
-              <p className="text-xs text-black">
+              <p className="text-sm sm:text-base text-black">
                 Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
               </p>
             </div>
@@ -582,18 +590,18 @@ export function Page6DailyLife() {
   );
 }
 
-export function Page6Business() {
+export function Page6BusinessHero() {
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
       <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
-        <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3 text-center">
+        <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3">
           P+RTAL
           <br />
           gives you complete
           control over your business
         </h2>
-        <div className="flex justify-center w-full mb-3">
-          <div className="relative w-full max-w-[200px] aspect-[2/3] overflow-hidden">
+        <div className="flex justify-center w-full">
+          <div className="relative w-full aspect-[2/3] overflow-hidden">
             <Image
               src="/Rectangle2.png"
               alt="Portal Rectangle"
@@ -603,63 +611,71 @@ export function Page6Business() {
             />
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
 
-        <div className="w-full space-y-4">
-          <div className="flex flex-row items-start gap-3">
-            <div className="flex-shrink-0">
+export function Page6BusinessFeatures() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
+        <div className="w-full flex flex-col">
+          <div className="flex flex-row items-center gap-3">
+            <div className="flex-shrink-0 flex items-center justify-center">
               <Image
                 src="/do_not_touch.svg"
                 alt="Hand"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                width={48}
+                height={48}
+                className="w-12 h-12"
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Only you and your customer
               </h3>
-              <p className="text-xs text-black">
+              <p className="text-sm sm:text-base text-black">
                 Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-row items-start gap-3">
-            <div className="flex-shrink-0">
+          <div className="flex flex-row items-center gap-3" style={{ marginTop: '10vh', marginBottom: '10vh' }}>
+            <div className="flex-shrink-0 flex items-center justify-center">
               <Image
                 src="/sell.svg"
                 alt="Sell"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                width={48}
+                height={48}
+                className="w-12 h-12"
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Sell tickets effortlessly
               </h3>
-              <p className="text-xs text-black">
+              <p className="text-sm sm:text-base text-black">
                 Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-row items-start gap-3">
-            <div className="flex-shrink-0">
+          <div className="flex flex-row items-center gap-3">
+            <div className="flex-shrink-0 flex items-center justify-center">
               <Image
                 src="/cached.svg"
                 alt="Control"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                width={48}
+                height={48}
+                className="w-12 h-12"
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Intruders are kept out
               </h3>
-              <p className="text-xs text-black">
+              <p className="text-sm sm:text-base text-black">
                 Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
               </p>
             </div>
