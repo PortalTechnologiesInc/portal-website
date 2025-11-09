@@ -370,7 +370,7 @@ export function Page6Hero() {
     <div className="relative w-full h-full flex flex-col items-center justify-center" style={{ backgroundColor: "#FFED00" }}>
       <BlackLogoOverlay />
       <div className="relative z-50 flex flex-col gap-4 items-center justify-center text-center px-6">
-        <h1 className="font-eurostile font-bold tracking-tight text-3xl sm:text-4xl text-black">
+        <h1 className="font-eurostile font-bold tracking-tight text-4xl sm:text-4xl text-black">
           BE THE ONE IN CONTROL, TRUST NOTHING
         </h1>
         <Image
@@ -378,7 +378,7 @@ export function Page6Hero() {
           alt="Cross"
           width={800}
           height={800}
-          className="mt-2 w-[70vw] h-auto max-h-[50vh] object-cover"
+          className="mt-2 w-[90vw] h-auto max-h-[50vh] object-cover"
           priority
         />
       </div>

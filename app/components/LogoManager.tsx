@@ -140,9 +140,13 @@ export function LogoManager({ scrollContainerRef }: Props) {
         
       // Determine target center position - always use Page4 center when in Page4-5 range
       // This keeps the logo still from Page4 to Page5
-      // Store the initial Page4 center position when Page4 is visible, so it stays fixed
-      if (page4CenterPositionRef.current === null && page4Visible) {
-        page4CenterPositionRef.current = page4Center;
+      // Store the initial Page4 center position when entering the range (from any direction)
+      if (page4CenterPositionRef.current === null && shouldShowLogo) {
+        // Calculate Page4 center based on section position, not visibility
+        // This works even when coming from Page6 to Page5
+        const page4SectionRect = page4Section.getBoundingClientRect();
+        const page4SectionCenter = page4SectionRect.top + (page4SectionRect.bottom - page4SectionRect.top) / 2;
+        page4CenterPositionRef.current = page4SectionCenter;
       }
       
       // Use stored Page4 center position if available, otherwise use current Page4 center
