@@ -105,7 +105,7 @@ export default function Home() {
       <div className="relative" style={{ display: "contents" }}>
         <div
           data-logo-yellow
-          className="pointer-events-none fixed left-1/2"
+          className="pointer-events-none fixed left-1/2 overflow-hidden"
           style={{
             transformOrigin: "center center",
             zIndex: 30,

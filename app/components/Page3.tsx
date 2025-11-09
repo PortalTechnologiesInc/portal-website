@@ -69,17 +69,17 @@ export function Page3({ scrollContainerRef }: Props) {
     {
       image: "/euro_symbol.svg",
       title: "High Costs",
-      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+      subtitle: "Commissions imposed by banks and payment processors eat into your profits, especially for small and medium-sized businesses.",
     },
     {
       image: "/lock.svg",
       title: "Technological Lock-in",
-      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+      subtitle: "Companies are often trapped in proprietary ecosystems, which limit their freedom and make it difficult to change providers or integrate new solutions.",
     },
     {
       image: "/sentiment_sad.svg",
       title: "Poor User Experience",
-      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+      subtitle: "Authentication and payment systems are often clunky and unintuitive, creating friction for customers and leading to a high percentage of abandoned carts.",
     },
   ];
 
@@ -135,14 +135,14 @@ export function Page3({ scrollContainerRef }: Props) {
       </div>
 
       {/* Carousel Indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-3 z-10">
         {steps.map((_, index) => (
           <div
             key={index}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+            className={`rounded-full transition-all duration-300 ${
               carousel.currentStep === index
-                ? "bg-white"
-                : "bg-white/30"
+                ? "bg-white w-2.5 h-2.5"
+                : "bg-white/40 w-2 h-2"
             }`}
           />
         ))}

@@ -16,8 +16,8 @@ export default function ParallaxImage({ variant = "mobile" }: ParallaxImageProps
 
     const handleScroll = () => {
       const scrollContainer = document.querySelector(
-        "div.h-dvh.overflow-y-scroll"
-      );
+        ".snap-container"
+      ) || document.querySelector("#main-scroll-container");
       if (!scrollContainer || !imageRef.current) return;
 
       const firstSection = document.querySelector("section:first-of-type");
@@ -47,8 +47,8 @@ export default function ParallaxImage({ variant = "mobile" }: ParallaxImageProps
     };
 
     const scrollContainer = document.querySelector(
-      "div.h-dvh.overflow-y-scroll"
-    );
+      ".snap-container"
+    ) || document.querySelector("#main-scroll-container");
     if (scrollContainer) {
       scrollContainer.addEventListener("scroll", handleScroll, {
         passive: true,

@@ -9,6 +9,7 @@ type Props = {
 export function LogoManager({ scrollContainerRef }: Props) {
   const lastScrollTopRef = useRef(0);
   const currentPageRef = useRef<'page4' | 'page5' | null>(null);
+  const page4CenterPositionRef = useRef<number | null>(null);
 
   useEffect(() => {
     const scrollContainerEl = scrollContainerRef.current;
@@ -94,6 +95,10 @@ export function LogoManager({ scrollContainerRef }: Props) {
       
       // Check if viewport overlaps with the range from Page4 start to last Page5 end
       const isInPage4To5Range = viewportBottom >= page4SectionTop && viewportTop <= lastPage5SectionBottom;
+      
+      // Only show logo when Page4 is actually visible (not just when viewport bottom reaches Page4 top)
+      // This prevents the logo from showing at the bottom of Page3
+      const shouldShowLogo = (page4Visible || page5Visible) && viewportTop >= page4SectionTop;
 
       // Determine current page
       let currentPage: 'page4' | 'page5' | null = null;
@@ -106,8 +111,9 @@ export function LogoManager({ scrollContainerRef }: Props) {
         currentPage = 'page4';
       } else if (page5Visible) {
         currentPage = 'page5';
-      } else if (isInPage4To5Range) {
+      } else if (isInPage4To5Range && viewportTop >= page4SectionTop) {
         // During transition, determine which page we're closer to
+        // Only if we've actually scrolled past Page4's top
         const page4Distance = Math.abs(page4Center - viewportCenter);
         const page5Distance = page5Center > 0 ? Math.abs(page5Center - viewportCenter) : Infinity;
         if (page5Center > 0 && page5Distance < page4Distance) {
@@ -117,8 +123,8 @@ export function LogoManager({ scrollContainerRef }: Props) {
         }
       }
 
-      // Show logo if we're in the range from Page4 to last Page5 section
-      if (isInPage4To5Range) {
+      // Show logo only when Page4 is visible or we've scrolled past Page4's top
+      if (shouldShowLogo) {
         const isMobile = window.matchMedia("(max-width: 767px)").matches;
         const baseWidth = 246; // SVG viewBox width
         const baseHeight = 210; // SVG viewBox height
@@ -132,68 +138,35 @@ export function LogoManager({ scrollContainerRef }: Props) {
         const scaleY = targetHeight / baseHeight;
         const clipPath = isMobile ? "inset(20% 5% 20% 5%)" : "inset(20% 5% 20% 5%)";
         
-      // Determine target center position
-      let targetCenter: number;
-      let shouldUpdatePosition = false;
+      // Determine target center position - always use Page4 center when in Page4-5 range
+      // This keeps the logo still from Page4 to Page5
+      // Store the initial Page4 center position when Page4 is visible, so it stays fixed
+      if (page4CenterPositionRef.current === null && page4Visible) {
+        page4CenterPositionRef.current = page4Center;
+      }
+      
+      // Use stored Page4 center position if available, otherwise use current Page4 center
+      // This ensures the logo stays at the same position from Page4 to Page5
+      let targetCenter: number = page4CenterPositionRef.current ?? page4Center;
 
-      // Determine which page we're anchored to
-      if (currentPage === 'page4') {
-        // On Page4
-        targetCenter = page4Center;
-        // Update position if entering Page4 from outside (not from Page5)
-        if (currentPageRef.current !== 'page4' && currentPageRef.current !== 'page5') {
-          shouldUpdatePosition = true;
-          currentPageRef.current = 'page4';
-        } else if (currentPageRef.current === null) {
-          // First time entering
-          shouldUpdatePosition = true;
-          currentPageRef.current = 'page4';
-        } else {
-          // Already anchored - keep current position (don't update)
-          shouldUpdatePosition = false;
-        }
-      } else if (currentPage === 'page5') {
-        // On Page5
-        targetCenter = page5Center;
-        // Update position if entering Page5 from outside (not from Page4)
-        if (currentPageRef.current !== 'page5' && currentPageRef.current !== 'page4') {
-          shouldUpdatePosition = true;
-          currentPageRef.current = 'page5';
-        } else if (currentPageRef.current === null) {
-          // First time entering
-          shouldUpdatePosition = true;
-          currentPageRef.current = 'page5';
-        } else {
-          // Already anchored - keep current position (don't update)
-          shouldUpdatePosition = false;
-        }
-      } else {
-        // Transitioning between pages or leaving
-        if (currentPageRef.current === 'page4') {
-          // Was on Page4, keep at Page4 center during transition
-          targetCenter = page4Center;
-          shouldUpdatePosition = false;
-        } else if (currentPageRef.current === 'page5') {
-          // Was on Page5, keep at Page5 center during transition
-          targetCenter = page5Center;
-          shouldUpdatePosition = false;
-        } else {
-          // Fallback
-          targetCenter = page4Visible ? page4Center : page5Center;
-          shouldUpdatePosition = true;
-        }
+      // Set anchor when first entering Page4-5 range
+      if (currentPageRef.current === null && shouldShowLogo) {
+        currentPageRef.current = 'page4';
       }
 
-      // Check if we're leaving Page4 backwards or Page5 forwards (only when clearly outside the range)
+      // Check if we're leaving Page4-5 range entirely
       if (!isInPage4To5Range) {
-        // Leaving the range - reset anchor
+        // Leaving the range - reset anchor and stored position
         currentPageRef.current = null;
+        page4CenterPositionRef.current = null;
       } else if (currentPageRef.current === 'page4' && viewportTop < page4SectionTop && scrollDirection === 'up') {
         // Leaving Page4 backwards
         currentPageRef.current = null;
-      } else if (currentPageRef.current === 'page5' && viewportTop > lastPage5SectionBottom && scrollDirection === 'down') {
+        page4CenterPositionRef.current = null;
+      } else if (viewportTop > lastPage5SectionBottom && scrollDirection === 'down') {
         // Leaving last Page5 forwards
         currentPageRef.current = null;
+        page4CenterPositionRef.current = null;
       }
 
         // Always update position to follow the anchored page's center (instant, no transition)

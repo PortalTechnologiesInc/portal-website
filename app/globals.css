@@ -169,3 +169,14 @@ html {
 :root {
   --header-height: 3.5rem;
 }
+
+/* Page1 title mobile line-height reduction */
+.page1-title-mobile {
+  line-height: 1; /* Reduced line-height for tighter spacing on mobile */
+}
+
+@media (min-width: 768px) {
+  .page1-title-mobile {
+    line-height: 1.25; /* Restore default leading-tight on desktop */
+  }
+}
