@@ -85,7 +85,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
   return (
     <div className="w-full px-4 md:px-6">
       {/* Title */}
-      <h2 className="font-eurostile font-bold text-xl md:text-2xl text-center text-black mb-3 md:mb-6">
+      <h2 className="font-eurostile font-bold text-2xl md:text-3xl lg:text-4xl text-center text-black mb-3 md:mb-6">
         Take the first step
       </h2>
 
@@ -129,19 +129,19 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
               key={slide.id}
               className="flex-shrink-0 w-full flex items-center justify-center"
             >
-              <div className="relative w-full max-w-[280px] md:max-w-2xl aspect-[2/3] overflow-hidden mx-auto">
+              <div className="relative w-full aspect-[2/3] overflow-hidden">
                 <Image
                   src={slide.image}
                   alt={slide.label}
                   fill
                   className={`object-cover ${
-                    slide.id === 0 ? "object-left" : "object-center grayscale"
+                    slide.id === 0 ? "object-left" : "object-center grayscale blur-[3px]"
                   }`}
                   sizes="(min-width: 768px) 672px, 100vw"
                 />
                 {/* Title overlay */}
-                <div className="absolute top-2 left-2 md:top-6 md:left-6 z-10">
-                  <h3 className="font-eurostile font-bold text-black text-sm md:text-2xl lg:text-3xl leading-tight">
+                <div className="absolute top-4 left-4 right-4 md:top-6 md:left-6 z-10 m-5">
+                  <h3 className="font-eurostile font-bold text-black text-2xl md:text-4xl lg:text-5xl leading-tight">
                     {slide.title.split('\n').map((line, index) => (
                       <span key={index}>
                         {line}
@@ -152,8 +152,8 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                 </div>
                 {/* Coming Soon label - only for business slide */}
                 {slide.id === 1 && (
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-4 py-3 md:px-8 md:py-6 rounded-lg backdrop-blur-md bg-white/80">
-                    <h2 className="font-eurostile font-bold text-black text-2xl md:text-5xl lg:text-6xl">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-8 py-5 md:px-12 md:py-8">
+                    <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl tracking-tight bg-white/80 backdrop-blur-md rounded-lg px-4 py-2">
                       Coming Soon
                     </h2>
                   </div>
