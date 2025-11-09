@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [onLightBackground, setOnLightBackground] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -63,14 +64,18 @@ export default function Header() {
         }
       }
 
-      // Check if footer is visible (only if no section is active)
-      if (!activePage && footer) {
+      // Check if footer is visible and active
+      let footerActive = false;
+      if (footer) {
         const footerRect = footer.getBoundingClientRect();
-        const footerActive = footerRect.top <= triggerY + lead && footerRect.bottom > triggerY + lead;
-        if (footerActive) {
-          activePage = 'footer';
-        }
+        const viewportHeight = window.innerHeight;
+        // Footer is active if it's the active page OR if it's taking up most of the viewport
+        // Only hide header when footer is clearly the main content (more than 50% visible)
+        const footerVisibilityRatio = Math.max(0, Math.min(footerRect.bottom, viewportHeight) - Math.max(footerRect.top, 0)) / viewportHeight;
+        footerActive = activePage === 'footer' || (footerRect.top < viewportHeight * 0.5 && footerVisibilityRatio > 0.5);
       }
+      
+      setIsFooterVisible(footerActive);
 
       // Determine text color: white text for page2, page3, and footer
       const needsWhiteText = activePage && (WHITE_TEXT_PAGES.includes(activePage) || activePage === 'footer');
@@ -130,7 +135,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.7rem]" style={{ zIndex: 10000 }}>
+    <header className={`w-full fixed top-0 before:content-[''] before:absolute before:inset-0 before:-z-10 before:pointer-events-none before:backdrop-blur-[0.7rem] transition-opacity duration-300 ${isFooterVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} style={{ zIndex: 10000 }}>
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6">
         <div className="h-14 flex items-center justify-between">
           <Link

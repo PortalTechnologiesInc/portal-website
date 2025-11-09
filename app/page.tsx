@@ -284,7 +284,8 @@ export default function Home() {
 
       <section
         data-section="footer"
-        className="snap-section-desktop snap-free bg-[#141416] flex-none"
+        data-reveal
+        className="snap-section relative flex-none bg-[#141416] md:snap-section-desktop"
       >
         <div className="h-full w-full flex items-center justify-center">
           <Footer />
