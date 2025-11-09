@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="w-full h-full bg-black text-white flex flex-col items-center overflow-y-auto">
       {/* Main content - centered */}
-      <div className="mx-auto max-w-screen-2xl w-full sm:pl-12 flex flex-col flex-1 justify-center md:py-12 z-10 pt-20 md:pt-12">
+      <div className="mx-auto max-w-screen-2xl w-full sm:pl-12 flex flex-col flex-1 justify-center md:py-12 z-10 pt-[3rem] md:pt-12">
         <div className="flex flex-col md:flex-row gap-8 md:gap-16 lg:gap-20 flex-shrink-0">
           {/* Discover the future section */}
           <div className="flex flex-col gap-4 md:gap-8 lg:gap-10 pl-4 md:pl-8">
