@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useRevealOnIntersect } from "./hooks/useRevealOnIntersect";
+import { useRef } from "react";
 import { Page1 } from "./components/Page1";
 import { Page2 } from "./components/Page2";
 import { Page3 } from "./components/Page3";
@@ -14,7 +13,15 @@ import { Page5 } from "./components/Page5";
 import { Page5a } from "./components/Page5a";
 import { Page5b } from "./components/Page5b";
 import { Page5c } from "./components/Page5c";
-import { Page6Mobile } from "./components/Page6";
+import {
+  Page6Hero,
+  Page6CurrencyIntro,
+  Page6CurrencyCarouselSection,
+  Page6EasySecure,
+  Page6DailyLife,
+  Page6Business,
+  Page6TakeStep,
+} from "./components/Page6";
 import { Page6Desktop } from "./components/Page6Desktop";
 import { Page7 } from "./components/Page7";
 import Footer from "./components/Footer";
@@ -22,44 +29,20 @@ import Footer from "./components/Footer";
 export default function Home() {
   const scrollContainerRef = useRef<HTMLElement | null>(null);
 
-  useRevealOnIntersect(() =>
-    Array.from(
-      document.querySelectorAll<HTMLElement>("[data-reveal]")
-    )
-  );
-
-  useEffect(() => {
-    const page5Section = document.querySelector<HTMLElement>(
-      '[data-section="page5-main"]'
-    );
-
-    if (!page5Section) return;
-
-    page5Section.style.backgroundColor = "#ffffff";
-    page5Section.style.opacity = "1";
-    page5Section.style.transition = "none";
-    page5Section.style.willChange = "auto";
-    page5Section.style.backfaceVisibility = "hidden";
-    page5Section.style.transform = "translateZ(0)";
-  }, []);
-
   return (
     <div
       ref={(el) => {
         scrollContainerRef.current = el;
       }}
-      className="snap-container h-dvh overflow-y-scroll overflow-x-hidden scroll-smooth"
-      style={{
-        WebkitOverflowScrolling: "touch",
-      }}
+      className="snap-container"
       id="main-scroll-container"
     >
       <section
         data-section="page1"
         data-reveal
-        className="snap-section relative h-dvh flex-none bg-white text-[#141416]"
+        className="snap-section relative flex-none bg-white text-[#141416]"
       >
-        <div className="h-full pt-20">
+        <div className="h-full w-full flex items-center justify-center pt-20">
           <Page1 />
         </div>
       </section>
@@ -68,9 +51,9 @@ export default function Home() {
         data-section="page2"
         data-page="page2"
         data-reveal
-        className="snap-section relative z-40 h-dvh flex-none text-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        className="snap-section relative z-40 flex-none text-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
       >
-        <div className="h-full px-6 pt-28 md:pt-36">
+        <div className="h-full w-full flex items-center justify-center px-6 pt-28 md:pt-36">
           <Page2 scrollContainerRef={scrollContainerRef} />
         </div>
       </section>
@@ -79,36 +62,44 @@ export default function Home() {
         data-section="page3-mobile"
         data-page="page3"
         data-reveal
-        className="snap-section relative z-40 h-dvh flex-none text-white md:hidden"
+        className="snap-section relative z-40 flex-none text-white md:hidden"
       >
-        <Page3 scrollContainerRef={scrollContainerRef} />
+        <div className="h-full w-full flex items-center justify-center">
+          <Page3 scrollContainerRef={scrollContainerRef} />
+        </div>
       </section>
 
       <section
         data-section="page3a"
         data-page="page3"
         data-reveal
-        className="snap-section-desktop relative z-40 hidden h-dvh flex-none text-white md:block"
+        className="snap-section-desktop relative z-40 hidden flex-none text-white md:block"
       >
-        <Page3a />
+        <div className="h-full w-full flex items-center justify-center">
+          <Page3a />
+        </div>
       </section>
 
       <section
         data-section="page3b"
         data-page="page3"
         data-reveal
-        className="snap-section-desktop relative z-40 hidden h-dvh flex-none text-white md:block"
+        className="snap-section-desktop relative z-40 hidden flex-none text-white md:block"
       >
-        <Page3b />
+        <div className="h-full w-full flex items-center justify-center">
+          <Page3b />
+        </div>
       </section>
 
       <section
         data-section="page3c"
         data-page="page3"
         data-reveal
-        className="snap-section-desktop relative z-40 hidden h-dvh flex-none text-white md:block"
+        className="snap-section-desktop relative z-40 hidden flex-none text-white md:block"
       >
-        <Page3c />
+        <div className="h-full w-full flex items-center justify-center">
+          <Page3c />
+        </div>
       </section>
 
       <div className="relative" style={{ display: "contents" }}>
@@ -153,26 +144,23 @@ export default function Home() {
           data-section="page4"
           data-page="page4"
           data-reveal
-          className="snap-section relative z-40 h-dvh flex-none text-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+          className="snap-section relative z-40 flex-none text-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
         >
-          <Page4 scrollContainerRef={scrollContainerRef} />
+          <div className="h-full w-full flex items-center justify-center">
+            <Page4 scrollContainerRef={scrollContainerRef} />
+          </div>
         </section>
 
         <section
           data-section="page5-main"
           data-page="page5"
           data-reveal
-          className="snap-section relative h-dvh flex-none bg-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
-          style={{
-            backgroundColor: "#ffffff",
-            backfaceVisibility: "hidden",
-            transform: "translateZ(0)",
-          }}
+          className="snap-section relative flex-none bg-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
         >
-          <div className="flex h-full items-center justify-center md:hidden">
+          <div className="h-full w-full flex items-center justify-center md:hidden">
             <Page5 scrollContainerRef={scrollContainerRef} />
           </div>
-          <div className="hidden h-full items-center justify-center md:flex">
+          <div className="hidden h-full w-full items-center justify-center md:flex">
             <Page5a />
           </div>
         </section>
@@ -182,25 +170,92 @@ export default function Home() {
         data-section="page5b"
         data-page="page5"
         data-reveal
-        className="snap-section-desktop relative hidden h-dvh flex-none bg-white md:block md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        className="snap-section-desktop relative hidden flex-none bg-white md:block md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
       >
-        <Page5b />
+        <div className="h-full w-full flex items-center justify-center">
+          <Page5b />
+        </div>
       </section>
 
       <section
         data-section="page5c"
         data-page="page5"
         data-reveal
-        className="snap-section-desktop relative hidden h-dvh flex-none bg-white md:block md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        className="snap-section-desktop relative hidden flex-none bg-white md:block md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
       >
-        <Page5c />
+        <div className="h-full w-full flex items-center justify-center">
+          <Page5c />
+        </div>
       </section>
 
       <section
-        data-section="page6-mobile"
-        className="snap-free relative h-dvh overflow-hidden md:hidden"
+        data-section="page6-hero-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
       >
-        <Page6Mobile />
+        <div className="h-full w-full">
+          <Page6Hero />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-currency-intro-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6CurrencyIntro />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-currency-carousel-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6CurrencyCarouselSection />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-easy-secure-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6EasySecure />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-daily-life-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6DailyLife />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-business-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6Business />
+        </div>
+      </section>
+
+      <section
+        data-section="page6-take-step-mobile"
+        data-reveal
+        className="snap-section relative flex-none md:hidden"
+      >
+        <div className="h-full w-full">
+          <Page6TakeStep />
+        </div>
       </section>
 
       <Page6Desktop />
@@ -208,16 +263,20 @@ export default function Home() {
       <section
         data-section="page7"
         data-reveal
-        className="snap-section-desktop relative h-dvh overflow-hidden md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        className="snap-section-desktop relative overflow-hidden md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
       >
-        <Page7 />
+        <div className="h-full w-full flex items-center justify-center">
+          <Page7 />
+        </div>
       </section>
 
       <section
         data-section="footer"
-        className="snap-section-desktop snap-free bg-[#141416] h-dvh flex-none"
+        className="snap-section-desktop snap-free bg-[#141416] flex-none"
       >
-        <Footer />
+        <div className="h-full w-full flex items-center justify-center">
+          <Footer />
+        </div>
       </section>
     </div>
   );

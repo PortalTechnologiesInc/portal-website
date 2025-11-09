@@ -83,19 +83,19 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
   ];
 
   return (
-    <div className="w-full px-6">
+    <div className="w-full px-4 md:px-6">
       {/* Title */}
-      <h2 className="font-eurostile font-bold text-2xl text-center text-black mb-6">
+      <h2 className="font-eurostile font-bold text-xl md:text-2xl text-center text-black mb-3 md:mb-6">
         Take the first step
       </h2>
 
       {/* Tabs */}
-      <div className="flex justify-center gap-8 mb-6">
+      <div className="flex justify-center gap-6 md:gap-8 mb-3 md:mb-6">
         {slides.map((slide) => (
           <button
             key={slide.id}
             onClick={() => setActiveSlide(slide.id)}
-            className={`font-eurostile md:text-xl transition-all ${
+            className={`font-eurostile text-base md:text-xl transition-all ${
               activeSlide === slide.id
                 ? "font-bold text-black"
                 : "font-normal text-black opacity-60"
@@ -129,7 +129,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
               key={slide.id}
               className="flex-shrink-0 w-full flex items-center justify-center"
             >
-              <div className="relative w-full max-w-2xl aspect-[2/3] overflow-hidden mx-auto">
+              <div className="relative w-full max-w-[280px] md:max-w-2xl aspect-[2/3] overflow-hidden mx-auto">
                 <Image
                   src={slide.image}
                   alt={slide.label}
@@ -140,8 +140,8 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                   sizes="(min-width: 768px) 672px, 100vw"
                 />
                 {/* Title overlay */}
-                <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10">
-                  <h3 className="font-eurostile font-bold text-black text-lg md:text-2xl lg:text-3xl leading-tight">
+                <div className="absolute top-2 left-2 md:top-6 md:left-6 z-10">
+                  <h3 className="font-eurostile font-bold text-black text-sm md:text-2xl lg:text-3xl leading-tight">
                     {slide.title.split('\n').map((line, index) => (
                       <span key={index}>
                         {line}
@@ -152,8 +152,8 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                 </div>
                 {/* Coming Soon label - only for business slide */}
                 {slide.id === 1 && (
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-6 py-4 md:px-8 md:py-6 rounded-lg backdrop-blur-md bg-white/80">
-                    <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-4 py-3 md:px-8 md:py-6 rounded-lg backdrop-blur-md bg-white/80">
+                    <h2 className="font-eurostile font-bold text-black text-2xl md:text-5xl lg:text-6xl">
                       Coming Soon
                     </h2>
                   </div>
@@ -161,7 +161,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                 {/* Store links - only for first slide */}
                 {slide.id === 0 && (
                   <>
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-3 md:gap-4 items-center">
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 items-center">
                       <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
                         <Image
                           src="/appstore.png"
@@ -183,7 +183,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                     </div>
                     <style jsx>{`
                       .store-badge {
-                        height: 80px;
+                        height: 60px;
                         width: auto;
                       }
                       @media (min-width: 768px) {
@@ -252,8 +252,8 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
   const visualIndex = currentIndex % CAROUSEL_SYMBOLS.length;
 
   return (
-    <div className="w-full max-w-2xl pt-32">
-      <div className="overflow-hidden relative py-8">
+    <div className="w-full max-w-2xl md:pt-32">
+      <div className="overflow-hidden relative py-4 md:py-8">
         <div
           className="flex transition-transform duration-500 ease-out"
           style={{ 
@@ -318,297 +318,297 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
   );
 });
 
-export function Page6Mobile() {
-  // Control variables for SVG shape and position
-  const svgSize = 400; // Size in pixels (controls shape scale)
-  const svgPosition = { x: -30, y: -190 }; // Position offset in pixels from top-left
+function BlackLogoOverlay() {
+  const svgSize = 400;
+  const svgPosition = { x: -30, y: -190 };
 
   return (
-    <>
-      <div className="relative w-full h-full flex flex-col items-center" style={{ backgroundColor: "#FFED00" }}>
-        {/* Black Logo SVG - Absolute position */}
-        <div
-          data-logo-black
-          className="absolute pointer-events-none"
-          style={{
-            top: `${svgPosition.y}%`,
-            left: `${svgPosition.x}%`,
-            transformOrigin: "center center",
-            zIndex: 50,
-            width: `${svgSize}%`,
-            height: `${svgSize}%`,
-            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
-            maskSize: "100% 100%",
-            maskRepeat: "no-repeat",
-            maskPosition: "0 0",
-          }}
-        >
-          <svg
-            width="246"
-            height="210"
-            viewBox="0 0 246 210"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{
-              display: "absolute",
-              width: "100%",
-              height: "100%",
-              zIndex: 1,
-              opacity: 1,
-            }}
-          >
-            <path
-              data-logo-black-path
-              d="M174.011 1.5C174.029 17.4525 174.358 29.8097 175.814 39.3369C177.317 49.1665 180.048 56.2148 185.089 61.127C190.126 66.0356 197.249 68.5948 207.03 69.9609C216.506 71.2844 228.703 71.5115 244.313 71.5244V138.475C228.7 138.488 216.501 138.716 207.024 140.039C197.243 141.405 190.12 143.965 185.084 148.873C180.044 153.785 177.314 160.834 175.812 170.663C174.358 180.19 174.029 192.548 174.011 208.5H71.8027C71.7841 192.547 71.455 180.19 69.999 170.663C68.4968 160.833 65.7646 153.785 60.7236 148.873C55.6863 143.965 48.5641 141.405 38.7832 140.039C29.3072 138.716 17.1101 138.488 1.5 138.475V71.5244C17.1136 71.5115 29.3124 71.2845 38.7891 69.9609C48.5707 68.5948 55.693 66.0356 60.7295 61.127C65.7696 56.2148 68.4999 49.1664 70.001 39.3369C71.4559 29.8097 71.7842 17.4525 71.8027 1.5H174.011Z"
-              stroke="#000000"
-              strokeWidth="0.5"
-            />
-          </svg>
-        </div>
-        
-        {/* Page 6 content */}
-        <div className="relative z-50 flex flex-col gap-6 items-center justify-center text-center min-h-screen">
-          <h1 className="font-eurostile font-bold tracking-tight text-5xl md:text-8xl lg:text-8xl text-black">
-            BE THE ONE IN CONTROL, TRUST NOTHING
-          </h1>
-          <Image
-            src="/cross-gray.png"
-            alt="Cross"
-            width={800}
-            height={800}
-            className="mt-6 w-[90vw] h-auto sm:h-[60vh] md:h-[40vh] lg:h-[35rem] object-cover"
-            priority
-          />
-        </div>
+    <div
+      data-logo-black
+      className="absolute pointer-events-none"
+      style={{
+        top: `${svgPosition.y}%`,
+        left: `${svgPosition.x}%`,
+        transformOrigin: "center center",
+        zIndex: 50,
+        width: `${svgSize}%`,
+        height: `${svgSize}%`,
+        maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+        maskSize: "100% 100%",
+        maskRepeat: "no-repeat",
+        maskPosition: "0 0",
+      }}
+    >
+      <svg
+        width="246"
+        height="210"
+        viewBox="0 0 246 210"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{
+          display: "absolute",
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+          opacity: 1,
+        }}
+      >
+        <path
+          data-logo-black-path
+          d="M174.011 1.5C174.029 17.4525 174.358 29.8097 175.814 39.3369C177.317 49.1665 180.048 56.2148 185.089 61.127C190.126 66.0356 197.249 68.5948 207.03 69.9609C216.506 71.2844 228.703 71.5115 244.313 71.5244V138.475C228.7 138.488 216.501 138.716 207.024 140.039C197.243 141.405 190.12 143.965 185.084 148.873C180.044 153.785 177.314 160.834 175.812 170.663C174.358 180.19 174.029 192.548 174.011 208.5H71.8027C71.7841 192.547 71.455 180.19 69.999 170.663C68.4968 160.833 65.7646 153.785 60.7236 148.873C55.6863 143.965 48.5641 141.405 38.7832 140.039C29.3072 138.716 17.1101 138.488 1.5 138.475V71.5244C17.1136 71.5115 29.3124 71.2845 38.7891 69.9609C48.5707 68.5948 55.693 66.0356 60.7295 61.127C65.7696 56.2148 68.4999 49.1664 70.001 39.3369C71.4559 29.8097 71.7842 17.4525 71.8027 1.5H174.011Z"
+          stroke="#000000"
+          strokeWidth="0.5"
+        />
+      </svg>
+    </div>
+  );
+}
 
-        {/* Works with all currency section */}
-        <div className="relative z-50 flex flex-col px-6">
-        <h2 className="text-left font-eurostile font-bold tracking-tight text-2xl md:text-6xl lg:text-7xl text-black mb-6">
-            Works with <br /> all currency
-          </h2>
-          <p className="text-lg md:text-xl lg:text-xl text-black max-w-2xl">
-            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
-          </p>
-        </div>
-
-          <CurrencyCarousel />
-        {/* Spacing */}
-        <div className="relative z-50 py-20 md:py-40 lg:py-48"></div>
-
-        {/* Easy, Simple and secure section */}
-        <div className="relative z-50 flex flex-col items-center justify-center  px-6">
-          <h2 className="font-eurostile font-bold tracking-tight text-2xl md:text-6xl lg:text-7xl text-black mb-6">
-            Easy, Simple and secure
-          </h2>
-          <p className="text-lg md:text-xl lg:text-xl text-black max-w-2xl">
-            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
-          </p>
-        </div>
-
-        {/* Spacing */}
-        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
-
-        {/* Footer SVG */}
-        <div className="relative z-50 flex flex-col items-center justify-center px-6 pb-32 md:pb-40 lg:pb-48">
-          <Image
-            src="/page6-circle.svg"
-            alt="Portal Footer"
-            width={379}
-            height={302}
-            className="w-full max-w-[379px] h-auto"
-          />
-        </div>
-
-        {/* P+RTAL Is the smartest choice section */}
-        <div className="relative z-50 flex flex-col items-center justify-center px-6">
-          <h2 className="font-eurostile font-semibold tracking-tight text-xl md:text-6xl lg:text-7xl text-black mb-4">
-            P+RTAL
-            <br />
-            Is the smartest
-            choice for your daily life
-          </h2>
-          <div className="flex justify-center w-full">
-            <div className="relative w-full max-w-full aspect-[2/3] overflow-hidden">
-              <Image
-                src="/Rectangle.png"
-                alt="Portal Rectangle"
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
-            </div>
-          </div>
-
-          {/* 3 Rows Section */}
-          <div className="mt-8 md:mt-12 lg:mt-16 w-full max-w-4xl space-y-12 md:space-y-12 lg:space-y-16">
-            {/* Row 1 */}
-            <div className="flex flex-row items-center gap-4 md:gap-6">
-              <div className="flex-shrink-0">
-                <Image
-                  src="/confirmation_number.svg"
-                  alt="Tickets"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 md:w-16 md:h-16"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
-                  Tickets? No problem
-                </h3>
-                <p className="text-sm md:text-base lg:text-lg text-black">
-                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-                </p>
-              </div>
-            </div>
-
-            {/* Row 2 */}
-            <div className="flex flex-row items-center gap-4 md:gap-6">
-              <div className="flex-shrink-0">
-                <Image
-                  src="/assignment_ind.svg"
-                  alt="Identity"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 md:w-16 md:h-16"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
-                  Your identity, fully secured
-                </h3>
-                <p className="text-sm md:text-base lg:text-lg text-black">
-                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-                </p>
-              </div>
-            </div>
-
-            {/* Row 3 */}
-            <div className="flex flex-row items-center gap-4 md:gap-6">
-              <div className="flex-shrink-0">
-                <Image
-                  src="/cached.svg"
-                  alt="Control"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 md:w-16 md:h-16"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
-                  Take control of your money
-                </h3>
-                <p className="text-sm md:text-base lg:text-lg text-black">
-                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Spacing */}
-        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
-
-        {/* P+RTAL Is the smartest choice section - Duplicate */}
-        <div className="relative z-50 flex flex-col items-center justify-center px-6">
-          <h2 className="font-eurostile font-semibold tracking-tight text-xl md:text-6xl lg:text-7xl text-black mb-4">
-            P+RTAL
-            <br />
-            gives you complete
-            control over your business
-          </h2>
-          <div className="flex justify-center w-full">
-            <div className="relative w-full max-w-full aspect-[2/3] overflow-hidden">
-              <Image
-                src="/Rectangle2.png"
-                alt="Portal Rectangle"
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
-            </div>
-          </div>
-
-          {/* 3 Rows Section */}
-          <div className="mt-8 md:mt-12 lg:mt-16 w-full max-w-4xl space-y-12 md:space-y-12 lg:space-y-16">
-            {/* Row 1 */}
-            <div className="flex flex-row items-center gap-4 md:gap-6">
-              <div className="flex-shrink-0">
-                <Image
-                  src="/do_not_touch.svg"
-                  alt="Hand"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 md:w-16 md:h-16"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
-                Only you and
-                your customer
-                </h3>
-                <p className="text-sm md:text-base lg:text-lg text-black">
-                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-                </p>
-              </div>
-            </div>
-
-            {/* Row 2 */}
-            <div className="flex flex-row items-center gap-4 md:gap-6">
-              <div className="flex-shrink-0">
-                <Image
-                  src="/sell.svg"
-                  alt="Sell"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 md:w-16 md:h-16"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
-                Sell tickets effortlessly
-                </h3>
-                <p className="text-sm md:text-base lg:text-lg text-black">
-                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-                </p>
-              </div>
-            </div>
-
-            {/* Row 3 */}
-            <div className="flex flex-row items-center gap-4 md:gap-6">
-              <div className="flex-shrink-0">
-                <Image
-                  src="/cached.svg"
-                  alt="Control"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 md:w-16 md:h-16"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-eurostile font-bold md:text-2xl lg:text-3xl text-black mb-2 md:mb-3">
-                Intruders are kept out
-                </h3>
-                <p className="text-sm md:text-base lg:text-lg text-black">
-                  Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-                </p>
-              </div>
-            </div>
-            {/* Spacing */}
-            <div className="relative z-50 py-12 md:py-20 lg:py-28"></div>
-          </div>
-        </div>
-
-        {/* Take the first step carousel */}
-        <div className="relative z-50 flex flex-col items-center justify-center">
-          <DailyLifeBusinessCarousel />
-        </div>
-
-        {/* Spacing */}
-        <div className="relative z-50 py-32 md:py-40 lg:py-48"></div>
+export function Page6Hero() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center" style={{ backgroundColor: "#FFED00" }}>
+      <BlackLogoOverlay />
+      <div className="relative z-50 flex flex-col gap-4 items-center justify-center text-center px-6">
+        <h1 className="font-eurostile font-bold tracking-tight text-3xl sm:text-4xl text-black">
+          BE THE ONE IN CONTROL, TRUST NOTHING
+        </h1>
+        <Image
+          src="/cross-gray.png"
+          alt="Cross"
+          width={800}
+          height={800}
+          className="mt-2 w-[70vw] h-auto max-h-[50vh] object-cover"
+          priority
+        />
       </div>
-    </>
+    </div>
+  );
+}
+
+export function Page6CurrencyIntro() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col text-left max-w-2xl">
+        <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
+          Works with <br /> all currency
+        </h2>
+        <p className="text-base sm:text-lg text-black">
+          Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function Page6CurrencyCarouselSection() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 w-full flex items-center justify-center">
+        <CurrencyCarousel />
+      </div>
+    </div>
+  );
+}
+
+export function Page6EasySecure() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center text-center max-w-2xl">
+        <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
+          Easy, Simple and secure
+        </h2>
+        <p className="text-base sm:text-lg text-black">
+          Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function Page6DailyLife() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
+        <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3 text-center">
+          P+RTAL
+          <br />
+          Is the smartest
+          choice for your daily life
+        </h2>
+        <div className="flex justify-center w-full mb-3">
+          <div className="relative w-full max-w-[200px] aspect-[2/3] overflow-hidden">
+            <Image
+              src="/Rectangle.png"
+              alt="Portal Rectangle"
+              fill
+              className="object-cover"
+              sizes="200px"
+            />
+          </div>
+        </div>
+
+        <div className="w-full space-y-4">
+          <div className="flex flex-row items-start gap-3">
+            <div className="flex-shrink-0">
+              <Image
+                src="/confirmation_number.svg"
+                alt="Tickets"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+                Tickets? No problem
+              </h3>
+              <p className="text-xs text-black">
+                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-row items-start gap-3">
+            <div className="flex-shrink-0">
+              <Image
+                src="/assignment_ind.svg"
+                alt="Identity"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+                Your identity, fully secured
+              </h3>
+              <p className="text-xs text-black">
+                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-row items-start gap-3">
+            <div className="flex-shrink-0">
+              <Image
+                src="/cached.svg"
+                alt="Control"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+                Take control of your money
+              </h3>
+              <p className="text-xs text-black">
+                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Page6Business() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
+        <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3 text-center">
+          P+RTAL
+          <br />
+          gives you complete
+          control over your business
+        </h2>
+        <div className="flex justify-center w-full mb-3">
+          <div className="relative w-full max-w-[200px] aspect-[2/3] overflow-hidden">
+            <Image
+              src="/Rectangle2.png"
+              alt="Portal Rectangle"
+              fill
+              className="object-cover"
+              sizes="200px"
+            />
+          </div>
+        </div>
+
+        <div className="w-full space-y-4">
+          <div className="flex flex-row items-start gap-3">
+            <div className="flex-shrink-0">
+              <Image
+                src="/do_not_touch.svg"
+                alt="Hand"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+                Only you and your customer
+              </h3>
+              <p className="text-xs text-black">
+                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-row items-start gap-3">
+            <div className="flex-shrink-0">
+              <Image
+                src="/sell.svg"
+                alt="Sell"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+                Sell tickets effortlessly
+              </h3>
+              <p className="text-xs text-black">
+                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-row items-start gap-3">
+            <div className="flex-shrink-0">
+              <Image
+                src="/cached.svg"
+                alt="Control"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-eurostile font-bold text-base text-black mb-1">
+                Intruders are kept out
+              </h3>
+              <p className="text-xs text-black">
+                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Page6TakeStep() {
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center w-full">
+        <DailyLifeBusinessCarousel />
+      </div>
+    </div>
   );
 }
 

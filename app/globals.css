@@ -27,6 +27,8 @@ body {
   font-family: var(--font-open-sans), Arial, Helvetica, sans-serif;
   margin: 0;
   scrollbar-gutter: stable;
+  height: 100%;
+  position: relative;
 }
 
 /* Custom scroll timing function - slower ease in/out */
@@ -51,9 +53,13 @@ body {
   animation: scroll 20s linear infinite;
 }
 
-/* Make scrollbar float on top of content and above header */
+/* === COMPREHENSIVE SCROLL-SNAP FIXES === */
+
+/* 1. Remove overlay conflict and use standard scroll */
 html {
-  overflow-y: overlay;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  height: 100%;
 }
 
 /* Ensure scrollbar appears above header elements */
@@ -95,13 +101,35 @@ html {
   /* No transition - background should always be white and never animate */
 }
 
+/* 3. Main scroll container fixes */
 .snap-container {
   scroll-snap-type: y mandatory;
+  
+  /* Browser-specific fixes */
+  -webkit-overflow-scrolling: touch;
+  -webkit-scroll-snap-type: y mandatory;
+  
+  /* Ensure proper height calculation */
+  height: 100dvh;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
+/* 4. Snap section base styles */
 .snap-section {
-  scroll-snap-align: center;
+  scroll-snap-align: start; /* CHANGE from center to start */
   scroll-snap-stop: always;
+  
+  /* Critical: Remove any transforms that might interfere */
+  transform: none !important;
+  box-sizing: border-box;
+  flex: none;
+  
+  /* Full viewport height - sections fill entire viewport */
+  height: 100dvh;
+  min-height: 100dvh;
 }
 
 .snap-section-desktop {
@@ -112,13 +140,32 @@ html {
   scroll-snap-align: none;
 }
 
+/* 6. iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .snap-container {
+    height: 100vh; /* Use vh instead of dvh on iOS */
+  }
+  .snap-section {
+    height: 100vh;
+    min-height: 100vh;
+  }
+}
+
+/* 7. Desktop specific adjustments */
 @media (min-width: 768px) {
   .snap-container {
     scroll-snap-type: y mandatory;
   }
-
+  
   .snap-section-desktop {
-    scroll-snap-align: center;
+    scroll-snap-align: start; /* CHANGE from center to start */
     scroll-snap-stop: always;
+    height: 100dvh;
+    min-height: 100dvh;
   }
+}
+
+/* 8. Header height variable for consistency */
+:root {
+  --header-height: 3.5rem;
 }
