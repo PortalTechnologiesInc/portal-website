@@ -5,8 +5,9 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full h-full bg-black text-white flex flex-col items-center justify-center overflow-y-auto">
-      <div className="mx-auto max-w-screen-2xl w-full sm:pl-12 md:py-0 flex flex-col">
+    <footer className="w-full h-full bg-black text-white flex flex-col items-center overflow-y-auto">
+      {/* Main content - centered */}
+      <div className="mx-auto max-w-screen-2xl w-full sm:pl-12 flex flex-col flex-1 justify-center md:py-12 z-10 pt-20 md:pt-12">
         <div className="flex flex-col md:flex-row gap-8 md:gap-16 lg:gap-20 flex-shrink-0">
           {/* Discover the future section */}
           <div className="flex flex-col gap-4 md:gap-8 lg:gap-10 pl-4 md:pl-8">
@@ -100,15 +101,17 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        
-        {/* Logo at the end - fills remaining space */}
-        <Link href="/" aria-label="Portal Home" className="flex justify-center items-center w-full max-w-4xl mt-12">
+      </div>
+      
+      {/* Logo block - fills remaining space, centers logo */}
+      <div className="flex-1 flex justify-center items-center w-full min-h-0">
+        <Link href="/" aria-label="Portal Home" className="flex justify-center items-center w-full max-w-4xl px-4">
           <Image
             src="/logo.svg"
             alt="Portal Logo"
             width={150}
             height={200}
-            className="invert w-auto max-h-[60vh] object-contain"
+            className="invert w-auto max-h-[40vh] object-contain"
           />
         </Link>
       </div>
