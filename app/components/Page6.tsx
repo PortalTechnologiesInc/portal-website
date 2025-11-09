@@ -320,7 +320,7 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
 
 function BlackLogoOverlay() {
   const svgSize = 400;
-  const svgPosition = { x: -30, y: -190 };
+  const svgPosition = { x: -30, y: -120 };
 
   return (
     <div
@@ -334,7 +334,7 @@ function BlackLogoOverlay() {
         width: `${svgSize}%`,
         height: `${svgSize}%`,
         maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%)",
         maskSize: "100% 100%",
         maskRepeat: "no-repeat",
         maskPosition: "0 0",
