@@ -253,7 +253,7 @@ export default function Home() {
       <section
         data-section="page7"
         data-reveal
-        className="snap-section-desktop relative overflow-hidden md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        className="snap-section relative flex-none bg-white md:snap-section-desktop md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
       >
         <div className="h-full w-full flex items-center justify-center">
           <Page7 />
