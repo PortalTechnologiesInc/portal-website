@@ -94,3 +94,31 @@ html {
   background-color: var(--page5-bg-color, #ffffff);
   /* No transition - background should always be white and never animate */
 }
+
+.snap-container {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-section {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.snap-section-desktop {
+  scroll-snap-align: none;
+}
+
+.snap-free {
+  scroll-snap-align: none;
+}
+
+@media (min-width: 768px) {
+  .snap-container {
+    scroll-snap-type: y mandatory;
+  }
+
+  .snap-section-desktop {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}

@@ -6,7 +6,7 @@ import { useEffect, useState, memo, useRef } from "react";
 
 const CAROUSEL_SYMBOLS = ["$", "£", "¥", "€", "₺", "₽", "₿", "ƒ"];
 
-const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel() {
+export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel() {
   const [activeSlide, setActiveSlide] = useState(0); // 0 = Daily life, 1 = Business
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
@@ -129,7 +129,7 @@ const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel() {
               key={slide.id}
               className="flex-shrink-0 w-full flex items-center justify-center"
             >
-              <div className="relative w-full aspect-[2/3] overflow-hidden">
+              <div className="relative w-full max-w-2xl aspect-[2/3] overflow-hidden mx-auto">
                 <Image
                   src={slide.image}
                   alt={slide.label}
@@ -137,7 +137,7 @@ const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel() {
                   className={`object-cover ${
                     slide.id === 0 ? "object-left" : "object-center grayscale"
                   }`}
-                  sizes="100vw"
+                  sizes="(min-width: 768px) 672px, 100vw"
                 />
                 {/* Title overlay */}
                 <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10">
@@ -208,7 +208,7 @@ const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel() {
   );
 });
 
-const CurrencyCarousel = memo(function CurrencyCarousel() {
+export const CurrencyCarousel = memo(function CurrencyCarousel() {
   // Control variable for SVG symbol height (in pixels)
   const symbolHeight = 110; // Mobile default
   const symbolHeightSm = 128; // Small screens (640px+)
@@ -318,14 +318,14 @@ const CurrencyCarousel = memo(function CurrencyCarousel() {
   );
 });
 
-export function Page6() {
+export function Page6Mobile() {
   // Control variables for SVG shape and position
   const svgSize = 400; // Size in pixels (controls shape scale)
   const svgPosition = { x: -30, y: -190 }; // Position offset in pixels from top-left
 
   return (
     <>
-      <div className="relative w-full flex flex-col items-center min-h-dvh" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative w-full h-full flex flex-col items-center" style={{ backgroundColor: "#FFED00" }}>
         {/* Black Logo SVG - Absolute position */}
         <div
           data-logo-black
