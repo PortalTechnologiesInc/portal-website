@@ -470,14 +470,25 @@ export function Page6CurrencyCarouselSection() {
 
 export function Page6EasySecure() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
-      <div className="relative z-50 flex flex-col items-center justify-center text-center max-w-2xl">
-        <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
-          Easy, Simple and secure
-        </h2>
-        <p className="text-base sm:text-lg text-black">
-          Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
-        </p>
+    <div className="relative w-full h-full flex flex-col items-center justify-center" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center w-full">
+        <div className="flex flex-col text-left w-full mb-8 px-6 max-w-2xl">
+          <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
+            Easy, Simple and secure
+          </h2>
+          <p className="text-base sm:text-lg text-black">
+            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+          </p>
+        </div>
+        <div className="relative z-50 w-full flex items-center justify-center mt-8">
+          <Image
+            src="/page6-circle.svg"
+            alt=""
+            width={400}
+            height={400}
+            className="w-auto h-auto max-w-[80vw]"
+          />
+        </div>
       </div>
     </div>
   );
