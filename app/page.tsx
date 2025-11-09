@@ -209,16 +209,6 @@ export default function Home() {
       </section>
 
       <section
-        data-section="page6-currency-carousel-mobile"
-        data-reveal
-        className="snap-section relative flex-none md:hidden"
-      >
-        <div className="h-full w-full">
-          <Page6CurrencyCarouselSection />
-        </div>
-      </section>
-
-      <section
         data-section="page6-easy-secure-mobile"
         data-reveal
         className="snap-section relative flex-none md:hidden"

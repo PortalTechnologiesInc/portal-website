@@ -209,11 +209,15 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
 });
 
 export const CurrencyCarousel = memo(function CurrencyCarousel() {
-  // Control variable for SVG symbol height (in pixels)
-  const symbolHeight = 110; // Mobile default
+  // Control variable for SVG symbol height - using viewport-based units for better responsiveness
+  // Mobile: ~15vw (scales with viewport), Small: 128px, Medium: 160px, Large: 176px
+  const symbolHeight = '22vw'; // Mobile - dynamic based on viewport
   const symbolHeightSm = 128; // Small screens (640px+)
   const symbolHeightMd = 160; // Medium screens (768px+)
   const symbolHeightLg = 176; // Large screens (1024px+)
+
+  // Padding value for spacing between symbols
+  const horizontalPadding = '6rem'; // Matches the paddingLeft/Right values
 
   // Duplicate symbols for infinite loop
   const duplicatedSymbols = [...CAROUSEL_SYMBOLS, ...CAROUSEL_SYMBOLS, ...CAROUSEL_SYMBOLS];
@@ -252,12 +256,12 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
   const visualIndex = currentIndex % CAROUSEL_SYMBOLS.length;
 
   return (
-    <div className="w-full max-w-2xl md:pt-32">
-      <div className="overflow-hidden relative py-4 md:py-8">
+    <div className="w-full pt-20 md:pt-32">
+      <div className="overflow-hidden relative py-4 md:py-8" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
         <div
           className="flex transition-transform duration-500 ease-out"
           style={{ 
-            transform: `translateX(calc(33.333% - ${currentIndex * 33.333}%))`,
+            transform: `translateX(calc(50% - ${currentIndex * 33.333}% - 16.666%))`,
             transitionDuration: isTransitioning ? '0ms' : '500ms'
           }}
         >
@@ -268,23 +272,40 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
             return (
               <div
                 key={`${symbol}-${index}`}
-                className="flex w-1/3 flex-shrink-0 items-center justify-center px-6 sm:px-8 md:px-12 py-4"
+                className="flex w-1/3 flex-shrink-0 items-center justify-center py-4"
+                style={{ 
+                  paddingLeft: 'clamp(2rem, 6vw, 8rem)', 
+                  paddingRight: 'clamp(2rem, 6vw, 8rem)', 
+                  boxSizing: 'border-box' 
+                }}
               >
-                <Image
-                  src={src}
-                  alt={`${symbol} currency symbol`}
-                  width={180}
-                  height={180}
-                  className={`transition-all duration-500 ${isActive ? "blur-0 opacity-100" : "blur-sm opacity-60"}`}
+                <div
+                  data-symbol-wrapper
+                  className="flex items-center justify-center"
                   style={{
-                    width: `${symbolHeight}px`,
-                    height: `${symbolHeight}px`,
+                    aspectRatio: '1 / 1',
                   }}
-                  // Apply responsive sizes via CSS custom properties
-                  data-symbol-height-sm={symbolHeightSm}
-                  data-symbol-height-md={symbolHeightMd}
-                  data-symbol-height-lg={symbolHeightLg}
-                />
+                >
+                  <Image
+                    src={src}
+                    alt={`${symbol} currency symbol`}
+                    width={180}
+                    height={180}
+                    className={`transition-all duration-500 flex-shrink-0 ${isActive ? "blur-0 opacity-100" : "blur-sm opacity-60"}`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      minWidth: 0,
+                      minHeight: 0,
+                      flexShrink: 0,
+                      objectFit: 'contain',
+                    }}
+                    // Apply responsive sizes via CSS custom properties
+                    data-symbol-height-sm={symbolHeightSm}
+                    data-symbol-height-md={symbolHeightMd}
+                    data-symbol-height-lg={symbolHeightLg}
+                  />
+                </div>
               </div>
             );
           })}
@@ -292,8 +313,8 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
       </div>
       <style jsx global>{`
         img[data-symbol-height-sm] {
-          width: ${symbolHeight}px;
-          height: ${symbolHeight}px;
+          width: ${symbolHeight};
+          height: ${symbolHeight};
         }
         @media (min-width: 640px) {
           img[data-symbol-height-sm] {
@@ -311,6 +332,37 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
           img[data-symbol-height-lg] {
             width: ${symbolHeightLg}px !important;
             height: ${symbolHeightLg}px !important;
+          }
+        }
+        /* Ensure wrapper maintains square aspect ratio responsively */
+        [data-symbol-wrapper] {
+          width: ${symbolHeight};
+          height: ${symbolHeight};
+          min-width: ${symbolHeight};
+          min-height: ${symbolHeight};
+        }
+        @media (min-width: 640px) {
+          [data-symbol-wrapper] {
+            width: ${symbolHeightSm}px !important;
+            height: ${symbolHeightSm}px !important;
+            min-width: ${symbolHeightSm}px !important;
+            min-height: ${symbolHeightSm}px !important;
+          }
+        }
+        @media (min-width: 768px) {
+          [data-symbol-wrapper] {
+            width: ${symbolHeightMd}px !important;
+            height: ${symbolHeightMd}px !important;
+            min-width: ${symbolHeightMd}px !important;
+            min-height: ${symbolHeightMd}px !important;
+          }
+        }
+        @media (min-width: 1024px) {
+          [data-symbol-wrapper] {
+            width: ${symbolHeightLg}px !important;
+            height: ${symbolHeightLg}px !important;
+            min-width: ${symbolHeightLg}px !important;
+            min-height: ${symbolHeightLg}px !important;
           }
         }
       `}</style>
@@ -388,14 +440,19 @@ export function Page6Hero() {
 
 export function Page6CurrencyIntro() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
-      <div className="relative z-50 flex flex-col text-left max-w-2xl">
-        <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
-          Works with <br /> all currency
-        </h2>
-        <p className="text-base sm:text-lg text-black">
-          Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
-        </p>
+    <div className="relative w-full h-full flex flex-col items-center justify-center" style={{ backgroundColor: "#FFED00" }}>
+      <div className="relative z-50 flex flex-col items-center justify-center w-full">
+        <div className="flex flex-col text-left w-full mb-8 px-6 max-w-2xl">
+          <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
+            Works with <br /> all currency
+          </h2>
+          <p className="text-base sm:text-lg text-black">
+            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+          </p>
+        </div>
+        <div className="relative z-50 w-full">
+          <CurrencyCarousel />
+        </div>
       </div>
     </div>
   );
