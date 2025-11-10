@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, memo, useRef } from "react";
+import type { CSSProperties } from "react";
 
 const CAROUSEL_SYMBOLS = ["$", "£", "¥", "€", "₺", "₽", "₿", "ƒ"];
 
@@ -176,19 +177,31 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                     sizes={isDesktopVariant ? "100vw" : "(min-width: 768px) 672px, 100vw"}
                   />
                   {/* Title overlay */}
+                  {(() => {
+                    let overlayStyle: CSSProperties | undefined;
+                    if (isDesktopVariant) {
+                      if (slide.id === 0) {
+                        overlayStyle = {
+                          left: "60%",
+                          top: "30%",
+                          transform: "translate(-50%, -50%)",
+                        };
+                      } else {
+                        overlayStyle = {
+                          left: "28%",
+                          top: "50%",
+                          transform: "translate(-50%, -50%)",
+                        };
+                      }
+                    }
+                    return (
                   <div
                     className={`absolute z-10 ${
                       isDesktopVariant
-                        ? "top-1/2 left-1/2"
+                        ? "top-1/2 left-1/2 max-w-[40vw] text-left"
                         : "top-4 left-4 right-4 md:top-6 md:left-6 m-5"
                     }`}
-                    style={
-                      isDesktopVariant
-                        ? {
-                            transform: "translate(calc(-40% + 15%), calc(-80% - 20%))",
-                          }
-                        : undefined
-                    }
+                    style={overlayStyle}
                   >
                     <h3 className="font-eurostile font-bold text-black text-2xl md:text-4xl lg:text-5xl leading-tight">
                       {slide.title.split('\n').map((line, index) => (
@@ -199,10 +212,18 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                       ))}
                     </h3>
                   </div>
+                    );
+                  })()}
                   {/* Coming Soon label - only for business slide */}
                   {slide.id === 1 && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-8 py-5 md:px-12 md:py-8">
-                      <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl tracking-tight bg-white/80 backdrop-blur-md rounded-lg px-4 py-2">
+                    <div
+                      className={`absolute z-10 px-8 py-5 md:px-12 md:py-8 ${
+                        isDesktopVariant
+                          ? "top-1/2 right-[6%] -translate-y-1/2"
+                          : "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                      }`}
+                    >
+                      <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl tracking-tight bg-white/80 backdrop-blur-md rounded-lg px-4 py-2 text-center">
                         Coming Soon
                       </h2>
                     </div>
