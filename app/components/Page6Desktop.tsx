@@ -130,7 +130,7 @@ function BlackLogoOverlay() {
 
 function FeatureList({ features }: { features: Feature[] }) {
   return (
-    <div className="mt-12 w-full max-w-5xl space-y-12">
+    <div className="mt-0 w-full max-w-5xl space-y-12">
       {features.map((feature) => (
         <div
           key={feature.title}
@@ -189,40 +189,63 @@ export function Page6Desktop() {
       </section>
 
       <PanelWrapper id="page6-currency-intro">
-        <div className="w-full max-w-5xl text-left text-black">
-          <h2 className="font-eurostile text-6xl font-bold tracking-tight mb-8">
-            Works with <br /> all currency
-          </h2>
-          <p className="text-2xl leading-relaxed max-w-3xl">
-            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
-          </p>
+        <div className="w-full max-w-[98rem] text-black flex flex-col gap-12 h-full mt-32">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-12">
+            <div className="text-left md:max-w-[45%]">
+              <h2 className="font-eurostile text-4xl md:text-[3.25rem] font-bold tracking-tight">
+                Works with <br /> all currency
+              </h2>
+            </div>
+            <div className="md:max-w-[50%] md:text-right">
+              <p className="text-xl md:text-2xl leading-relaxed">
+                Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+              </p>
+            </div>
+          </div>
+          <div className="w-full flex flex-col items-center">
+            <div className="w-full max-w-6xl">
+              <CurrencyCarousel />
+            </div>
+          </div>
         </div>
       </PanelWrapper>
 
-      <PanelWrapper id="page6-currency-carousel">
-        <CurrencyCarousel />
-      </PanelWrapper>
-
       <PanelWrapper id="page6-easy-secure">
-        <div className="w-full max-w-5xl text-center text-black">
-          <h2 className="font-eurostile text-6xl font-bold tracking-tight mb-8">
-            Easy, Simple and secure
-          </h2>
-          <p className="mx-auto max-w-3xl text-2xl leading-relaxed">
-            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
-          </p>
+        <div className="w-full max-w-[98rem] text-black flex flex-col gap-12 h-full mt-32">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-12">
+            <div className="text-left md:max-w-[45%]">
+              <h2 className="font-eurostile text-4xl md:text-[3.25rem] font-bold tracking-tight">
+                Easy, Simple and secure
+              </h2>
+            </div>
+            <div className="md:max-w-[50%] md:text-right">
+              <p className="text-xl md:text-2xl leading-relaxed">
+                Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+              </p>
+            </div>
+          </div>
+          <div className="w-full flex flex-col items-center">
+            <div className="relative max-w-[70vw]">
+              <Image
+                src="/page6-circle-lg.svg"
+                alt="Portal Circle Diagram"
+                width={512}
+                height={512}
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
         </div>
       </PanelWrapper>
 
       <PanelWrapper id="page6-daily-life">
-        <div className="flex w-full max-w-6xl flex-col items-center gap-12 text-black">
-          <h2 className="text-center font-eurostile text-6xl font-semibold tracking-tight">
+        <div className="flex w-full flex-col gap-12 text-black">
+          <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight w-[40rem]">
             P+RTAL
-            <br />
             Is the smartest choice for your daily life
           </h2>
-          <div className="flex w-full items-center justify-center gap-10">
-            <div className="relative aspect-[2/3] w-[28rem] overflow-hidden">
+          <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
+            <div className="relative w-[55vw] aspect-[3/2] overflow-hidden rounded-xl">
               <Image
                 src="/Rectangle.png"
                 alt="Portal Rectangle"
@@ -231,20 +254,21 @@ export function Page6Desktop() {
                 sizes="100vw"
               />
             </div>
-            <FeatureList features={dailyLifeFeatures} />
+            <div className="flex-1">
+              <FeatureList features={dailyLifeFeatures} />
+            </div>
           </div>
         </div>
       </PanelWrapper>
 
       <PanelWrapper id="page6-business">
-        <div className="flex w-full max-w-6xl flex-col items-center gap-12 text-black">
-          <h2 className="text-center font-eurostile text-6xl font-semibold tracking-tight">
+        <div className="flex w-full flex-col gap-12 text-black">
+          <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight w-[40rem]">
             P+RTAL
-            <br />
             gives you complete control over your business
           </h2>
-          <div className="flex w-full items-center justify-center gap-10">
-            <div className="relative aspect-[2/3] w-[28rem] overflow-hidden">
+          <div className="flex w/full flex-col md:flex-row md:items-center gap-10 md:gap-16">
+            <div className="relative w-[55vw] aspect-[3/2] overflow-hidden rounded-xl">
               <Image
                 src="/Rectangle2.png"
                 alt="Portal Rectangle"
@@ -253,7 +277,9 @@ export function Page6Desktop() {
                 sizes="100vw"
               />
             </div>
-            <FeatureList features={businessFeatures} />
+            <div className="flex-1">
+              <FeatureList features={businessFeatures} />
+            </div>
           </div>
         </div>
       </PanelWrapper>
