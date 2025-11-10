@@ -131,14 +131,37 @@ export function useHorizontalStepCarousel(
     // Touch/swipe handler for horizontal navigation
     let touchStartX = 0;
     let touchStartY = 0;
+    let touchDirection: "horizontal" | "vertical" | null = null;
     
     const handleTouchStart = (e: TouchEvent) => {
       if (!isPageActive || isTransitioning) return;
       
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
+      touchDirection = null;
       
       console.log('Touch start:', { touchStartX, touchStartY, currentStep });
+    };
+    
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isPageActive || isTransitioning || e.touches.length !== 1) return;
+      
+      const deltaX = e.touches[0].clientX - touchStartX;
+      const deltaY = e.touches[0].clientY - touchStartY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+      
+      if (!touchDirection) {
+        const movementThreshold = 12;
+        if (absX > movementThreshold || absY > movementThreshold) {
+          touchDirection = absX >= absY ? "horizontal" : "vertical";
+        }
+      }
+      
+      if (touchDirection === "horizontal" && absX > absY) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
     };
     
     const handleTouchEnd = (e: TouchEvent) => {
@@ -153,11 +176,10 @@ export function useHorizontalStepCarousel(
         deltaX, 
         deltaY, 
         currentStep,
-        isHorizontalSwipe: Math.abs(deltaX) > Math.abs(deltaY)
+        detectedDirection: touchDirection
       });
       
-      // Only process horizontal swipes
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (touchDirection === "horizontal" && Math.abs(deltaX) > 50) {
         if (deltaX > 0) {
           // Swipe left - next step
           if (currentStep < totalSteps - 1) {
@@ -185,7 +207,7 @@ export function useHorizontalStepCarousel(
             }, 300);
           }
         }
-      } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
+      } else if (touchDirection === "vertical" && Math.abs(deltaY) > 50) {
         // Vertical swipe - handle exits
         if (deltaY > 0) {
           // Swipe down - exit to Page 4 if on last step
@@ -203,17 +225,21 @@ export function useHorizontalStepCarousel(
           }
         }
       }
+      
+      touchDirection = null;
     };
 
     // Add event listeners
     container.addEventListener("wheel", handleHorizontalScroll, { passive: false });
     container.addEventListener("touchstart", handleTouchStart, { passive: true });
+    container.addEventListener("touchmove", handleTouchMove, { passive: false });
     container.addEventListener("touchend", handleTouchEnd, { passive: true });
     
     return () => {
       observer.disconnect();
       container.removeEventListener("wheel", handleHorizontalScroll);
       container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
       container.removeEventListener("touchend", handleTouchEnd);
     };
   }, [
