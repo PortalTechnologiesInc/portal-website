@@ -10,7 +10,7 @@ export function Page7() {
           Behind the P+RTAL company
         </h2>
         <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
-          <div className="relative w-full md:w-[40vw] aspect-[3/2] overflow-hidden rounded-xl">
+          <div className="relative w-full md:w-[40vw] aspect-[3/2] overflow-hidden rounded-3xl">
             <Image
               src="/company.jpg"
               alt="Behind the P+RTAL company"

@@ -164,7 +164,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                   className={`relative w-full overflow-hidden ${
                     isDesktopVariant
                       ? "h-[60vh] max-h-[720px] min-h-[420px] rounded-3xl"
-                      : "aspect-[2/3] xxs:h-[60vh]"
+                      : "aspect-[2/3] xxs:h-[60vh] rounded-3xl"
                   }`}
                 >
                   <Image
