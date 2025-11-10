@@ -89,17 +89,15 @@ function BlackLogoOverlay() {
   return (
     <div
       data-logo-black
-      className="pointer-events-none absolute"
+      className="pointer-events-none absolute w-[390%] h-[400%] md:h-[300%]"
       style={{
-        top: "-190%",
-        left: "-30%",
+        top: "-30%",
+        left: "-80%",
         transformOrigin: "center center",
         zIndex: 5,
-        width: "400%",
-        height: "400%",
-        maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+        maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 50%)",
         WebkitMaskImage:
-          "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+          "linear-gradient(to bottom, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 50%)",
         maskSize: "100% 100%",
         maskRepeat: "no-repeat",
         maskPosition: "0 0",
@@ -169,18 +167,24 @@ export function Page6Desktop() {
         style={YELLOW_BG}
       >
         <BlackLogoOverlay />
-        <div className="relative z-10 flex w-full flex-col items-center justify-center px-12 text-center">
-          <h1 className="font-eurostile text-black text-7xl font-bold tracking-tight">
-            BE THE ONE IN CONTROL, TRUST NOTHING
-          </h1>
-          <Image
-            src="/cross-gray.png"
-            alt="Cross"
-            width={800}
-            height={800}
-            className="mt-12 h-[36rem] w-auto object-cover"
-            priority
-          />
+        <div className="relative z-10 flex w-full items-center justify-center px-12">
+          <div className="flex w-full max-w-[98rem] items-center justify-between gap-12">
+            <div className="flex-1 max-w-5xl text-left">
+              <h1 className="font-eurostile text-black text-7xl font-bold tracking-tight leading-tight">
+                BE THE ONE IN CONTROL, TRUST NOTHING
+              </h1>
+            </div>
+            <div className="relative flex-shrink-0">
+              <Image
+                src="/cross-gray.png"
+                alt="Cross"
+                width={800}
+                height={800}
+                className="h-[36rem] w-auto object-cover"
+                priority
+              />
+            </div>
+          </div>
         </div>
       </section>
 
