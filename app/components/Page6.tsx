@@ -176,6 +176,17 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                     } ${isDesktopVariant ? "w-full h-full" : ""}`}
                     sizes={isDesktopVariant ? "100vw" : "(min-width: 768px) 672px, 100vw"}
                   />
+                  {isDesktopVariant && slide.id === 0 && (
+                    <div className="absolute bottom-12 right-25 hidden md:block z-[60] w-[20vw] pointer-events-none drop-shadow-lg">
+                      <Image
+                        src="/qr-global.svg"
+                        alt="Portal QR"
+                        width={500}
+                        height={500}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  )}
                   {/* Title overlay */}
                   {(() => {
                     let overlayStyle: CSSProperties | undefined;
@@ -185,12 +196,14 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                           left: "60%",
                           top: "30%",
                           transform: "translate(-50%, -50%)",
+                          maxWidth: "30rem",
                         };
                       } else {
                         overlayStyle = {
                           left: "28%",
                           top: "50%",
                           transform: "translate(-50%, -50%)",
+                          maxWidth: "45rem",
                         };
                       }
                     }
@@ -198,7 +211,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                   <div
                     className={`absolute z-10 ${
                       isDesktopVariant
-                        ? "top-1/2 left-1/2 max-w-[40vw] text-left"
+                        ? "top-1/2 left-1/2 text-left"
                         : "top-4 left-4 right-4 md:top-6 md:left-6 m-5"
                     }`}
                     style={overlayStyle}
@@ -228,46 +241,28 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                       </h2>
                     </div>
                   )}
-                  {/* Store links - only for first slide */}
-                  {slide.id === 0 && (
-                    <>
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 items-center">
-                        <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
-                          <Image
-                            src="/appstore.png"
-                            alt="App Store"
-                            width={240}
-                            height={80}
-                            className="object-contain store-badge"
-                          />
-                        </Link>
-                        <Link href="https://play.google.com/store/apps/details?id=cc.getportal.portal" className="block">
-                          <Image
-                            src="/playstore.png"
-                            alt="Play Store"
-                            width={240}
-                            height={80}
-                            className="object-contain store-badge"
-                          />
-                        </Link>
-                      </div>
-                      <style jsx>{`
-                        .store-badge {
-                          height: 60px;
-                          width: auto;
-                        }
-                        @media (min-width: 768px) {
-                          .store-badge {
-                            height: 120px;
-                          }
-                        }
-                        @media (min-width: 1024px) {
-                          .store-badge {
-                            height: 150px;
-                          }
-                        }
-                      `}</style>
-                    </>
+                  {/* Store links - only for first slide on non-desktop */}
+                  {slide.id === 0 && !isDesktopVariant && (
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 items-center">
+                      <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
+                        <Image
+                          src="/appstore.png"
+                          alt="App Store"
+                          width={240}
+                          height={80}
+                          className="object-contain store-badge"
+                        />
+                      </Link>
+                      <Link href="https://play.google.com/store/apps/details?id=cc.getportal.portal" className="block">
+                        <Image
+                          src="/playstore.png"
+                          alt="Play Store"
+                          width={240}
+                          height={80}
+                          className="object-contain store-badge"
+                        />
+                      </Link>
+                    </div>
                   )}
                 </div>
               </div>
