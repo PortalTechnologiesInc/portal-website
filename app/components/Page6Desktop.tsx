@@ -285,7 +285,7 @@ export function Page6Desktop() {
       </PanelWrapper>
 
       <PanelWrapper id="page6-take-step">
-        <DailyLifeBusinessCarousel />
+        <DailyLifeBusinessCarousel variant="desktop" />
       </PanelWrapper>
     </>
   );

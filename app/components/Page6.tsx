@@ -6,8 +6,15 @@ import { useEffect, useState, memo, useRef } from "react";
 
 const CAROUSEL_SYMBOLS = ["$", "£", "¥", "€", "₺", "₽", "₿", "ƒ"];
 
-export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel() {
+type DailyLifeBusinessCarouselProps = {
+  variant?: "default" | "desktop";
+};
+
+export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel({
+  variant = "default",
+}: DailyLifeBusinessCarouselProps) {
   const [activeSlide, setActiveSlide] = useState(0); // 0 = Daily life, 1 = Business
+  const isDesktopVariant = variant === "desktop";
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
@@ -83,125 +90,168 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
   ];
 
   return (
-    <div className="w-full px-4 md:px-6">
-      {/* Title */}
-      <h2 className="font-eurostile font-bold text-2xl md:text-3xl lg:text-4xl text-center text-black mb-3 md:mb-6">
-        Take the first step
-      </h2>
-
-      {/* Tabs */}
-      <div className="flex justify-center gap-6 md:gap-8 mb-3 md:mb-6">
-        {slides.map((slide) => (
-          <button
-            key={slide.id}
-            onClick={() => setActiveSlide(slide.id)}
-            className={`font-eurostile text-base md:text-xl transition-all ${
-              activeSlide === slide.id
-                ? "font-bold text-black"
-                : "font-normal text-black opacity-60"
+    <div className={`w-full ${isDesktopVariant ? "px-0" : "px-4 md:px-6"}`}>
+      <div className={isDesktopVariant ? "flex flex-col gap-8" : ""}>
+        {/* Title & Tabs */}
+        <div
+          className={
+            isDesktopVariant
+              ? "flex flex-col md:flex-row md:items-start md:justify-between gap-4"
+              : ""
+          }
+        >
+          <h2
+            className={`font-eurostile font-bold text-black ${
+              isDesktopVariant
+                ? "text-left text-3xl md:text-5xl lg:text-6xl"
+                : "text-2xl md:text-3xl lg:text-4xl text-center mb-3 md:mb-6"
             }`}
           >
-            {slide.label}
-          </button>
-        ))}
-      </div>
+            Take the first step
+          </h2>
 
-      {/* Carousel */}
-      <div
-        ref={carouselRef}
-        className="relative w-full overflow-hidden cursor-grab active:cursor-grabbing"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseLeave}
-      >
+          {/* Tabs */}
+          <div
+            className={
+              isDesktopVariant
+                ? "flex items-center gap-4 md:gap-6 justify-start md:justify-end"
+                : "flex justify-center gap-6 md:gap-8 mb-3 md:mb-6"
+            }
+          >
+            {slides.map((slide) => (
+              <button
+                key={slide.id}
+                onClick={() => setActiveSlide(slide.id)}
+                className={`font-eurostile text-base md:text-xl transition-all ${
+                  activeSlide === slide.id
+                    ? "font-bold text-black"
+                    : "font-normal text-black opacity-60"
+                }`}
+              >
+                {slide.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Carousel */}
         <div
-          className="flex transition-transform duration-500 ease-out"
-          style={{
-            transform: `translateX(-${activeSlide * 100}%)`,
-          }}
+          ref={carouselRef}
+          className={`relative w-full overflow-hidden cursor-grab active:cursor-grabbing ${
+            isDesktopVariant ? "rounded-3xl" : ""
+          }`}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
         >
-          {slides.map((slide) => (
-            <div
-              key={slide.id}
-              className="flex-shrink-0 w-full flex items-center justify-center"
-            >
-              <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
-                <Image
-                  src={slide.image}
-                  alt={slide.label}
-                  fill
-                  className={`object-cover ${
-                    slide.id === 0 ? "object-left" : "object-center grayscale blur-[3px]"
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{
+              transform: `translateX(-${activeSlide * 100}%)`,
+            }}
+          >
+            {slides.map((slide) => (
+              <div
+                key={slide.id}
+                className="flex-shrink-0 w-full flex items-center justify-center"
+              >
+                <div
+                  className={`relative w-full overflow-hidden ${
+                    isDesktopVariant
+                      ? "h-[60vh] max-h-[720px] min-h-[420px] rounded-3xl"
+                      : "aspect-[2/3] xxs:h-[60vh]"
                   }`}
-                  sizes="(min-width: 768px) 672px, 100vw"
-                />
-                {/* Title overlay */}
-                <div className="absolute top-4 left-4 right-4 md:top-6 md:left-6 z-10 m-5">
-                  <h3 className="font-eurostile font-bold text-black text-2xl md:text-4xl lg:text-5xl leading-tight">
-                    {slide.title.split('\n').map((line, index) => (
-                      <span key={index}>
-                        {line}
-                        {index < slide.title.split('\n').length - 1 && <br />}
-                      </span>
-                    ))}
-                  </h3>
-                </div>
-                {/* Coming Soon label - only for business slide */}
-                {slide.id === 1 && (
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-8 py-5 md:px-12 md:py-8">
-                    <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl tracking-tight bg-white/80 backdrop-blur-md rounded-lg px-4 py-2">
-                      Coming Soon
-                    </h2>
+                >
+                  <Image
+                    src={slide.image}
+                    alt={slide.label}
+                    fill
+                    className={`object-cover ${
+                      slide.id === 0 ? "object-left" : "object-center grayscale blur-[3px]"
+                    } ${isDesktopVariant ? "w-full h-full" : ""}`}
+                    sizes={isDesktopVariant ? "100vw" : "(min-width: 768px) 672px, 100vw"}
+                  />
+                  {/* Title overlay */}
+                  <div
+                    className={`absolute z-10 ${
+                      isDesktopVariant
+                        ? "top-1/2 left-1/2"
+                        : "top-4 left-4 right-4 md:top-6 md:left-6 m-5"
+                    }`}
+                    style={
+                      isDesktopVariant
+                        ? {
+                            transform: "translate(calc(-40% + 15%), calc(-80% - 20%))",
+                          }
+                        : undefined
+                    }
+                  >
+                    <h3 className="font-eurostile font-bold text-black text-2xl md:text-4xl lg:text-5xl leading-tight">
+                      {slide.title.split('\n').map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          {index < slide.title.split('\n').length - 1 && <br />}
+                        </span>
+                      ))}
+                    </h3>
                   </div>
-                )}
-                {/* Store links - only for first slide */}
-                {slide.id === 0 && (
-                  <>
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 items-center">
-                      <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
-                        <Image
-                          src="/appstore.png"
-                          alt="App Store"
-                          width={240}
-                          height={80}
-                          className="object-contain store-badge"
-                        />
-                      </Link>
-                      <Link href="https://play.google.com/store/apps/details?id=cc.getportal.portal" className="block">
-                        <Image
-                          src="/playstore.png"
-                          alt="Play Store"
-                          width={240}
-                          height={80}
-                          className="object-contain store-badge"
-                        />
-                      </Link>
+                  {/* Coming Soon label - only for business slide */}
+                  {slide.id === 1 && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-8 py-5 md:px-12 md:py-8">
+                      <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl tracking-tight bg-white/80 backdrop-blur-md rounded-lg px-4 py-2">
+                        Coming Soon
+                      </h2>
                     </div>
-                    <style jsx>{`
-                      .store-badge {
-                        height: 60px;
-                        width: auto;
-                      }
-                      @media (min-width: 768px) {
+                  )}
+                  {/* Store links - only for first slide */}
+                  {slide.id === 0 && (
+                    <>
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 items-center">
+                        <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
+                          <Image
+                            src="/appstore.png"
+                            alt="App Store"
+                            width={240}
+                            height={80}
+                            className="object-contain store-badge"
+                          />
+                        </Link>
+                        <Link href="https://play.google.com/store/apps/details?id=cc.getportal.portal" className="block">
+                          <Image
+                            src="/playstore.png"
+                            alt="Play Store"
+                            width={240}
+                            height={80}
+                            className="object-contain store-badge"
+                          />
+                        </Link>
+                      </div>
+                      <style jsx>{`
                         .store-badge {
-                          height: 120px;
+                          height: 60px;
+                          width: auto;
                         }
-                      }
-                      @media (min-width: 1024px) {
-                        .store-badge {
-                          height: 150px;
+                        @media (min-width: 768px) {
+                          .store-badge {
+                            height: 120px;
+                          }
                         }
-                      }
-                    `}</style>
-                  </>
-                )}
+                        @media (min-width: 1024px) {
+                          .store-badge {
+                            height: 150px;
+                          }
+                        }
+                      `}</style>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
