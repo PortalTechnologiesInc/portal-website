@@ -48,7 +48,7 @@ export function Page4({ scrollContainerRef }: Props) {
       {/* Text Content */}
       <div className="text-center relative z-50">
         <h1
-          className="font-eurostile font-bold tracking-tight text-5xl md:text-6xl lg:text-6xl text-white"
+          className="font-eurostile xxs:text-4xl font-bold tracking-tight text-5xl md:text-6xl lg:text-6xl text-white"
           style={{
             opacity: isTextVisible ? 1 : 0,
             transform: isTextVisible ? "translateY(0px)" : "translateY(12px)",

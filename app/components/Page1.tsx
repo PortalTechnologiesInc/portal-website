@@ -34,10 +34,10 @@ export function Page1() {
       </div>
 
       {/* Desktop Layout: Content + Image side by side, vertically centered */}
-      <div className="relative z-50 h-full flex flex-col md:flex-row md:items-center md:justify-between px-6 md:max-w-[98rem] md:mx-auto pt-8 md:pt-0">
+      <div className="relative z-50 h-full flex flex-col md:flex-row md:items-center md:justify-between px-6 md:max-w-[98rem] md:mx-auto pt-8 xxs:pt-0 md:pt-0">
         {/* Left side: Text content */}
         <div className="text-left max-w-4xl md:max-w-2xl lg:max-w-3xl relative z-50">
-          <h1 className="text-5xl md:text-7xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight font-eurostile page1-title-mobile">
+          <h1 className="text-5xl xxs:text-4xl md:text-7xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight font-eurostile page1-title-mobile">
             BE THE ONE IN CONTROL, <span className="md:whitespace-nowrap">TRUST NOTHING</span>
           </h1>
           <p className="text-2xl md:text-xl lg:text-3xl font-normal mb-8 max-w-2xl leading-tight">

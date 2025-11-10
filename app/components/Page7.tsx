@@ -24,12 +24,12 @@ export function Page7() {
 
         {/* Paragraphs */}
         <div className="relative z-50 flex flex-col max-w-4xl w-full pb-8 md:pb-12 mt-5">
-          <p className="text-lg md:text-xl lg:text-2xl text-black mb-4 md:mb-6">
+          <p className="text-lg md:text-xl lg:text-2xl text-black mb-4 md:mb-6 xxs:text-base">
             "Lorem ipsum dolor sit amet consectetur. Adipiscing tempor cursus quis eros ligula
             <br />
             aliquam ultrices egestas tellus.
           </p>
-          <p className="text-lg md:text-xl lg:text-2xl text-black">
+          <p className="text-lg md:text-xl lg:text-2xl text-black xxs:text-base">
             Elementum sed tincidunt sit risus. Porttitor viverra euismod neque pellentesque id. Tempus fusce vivamus consectetur vitae
             <br />
             sed habitant."

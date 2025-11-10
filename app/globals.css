@@ -1,3 +1,4 @@
+/* biome-ignore-file lint/correctness/noUnknownAtRules */
 @import "tailwindcss";
 
 :root {
@@ -5,6 +6,8 @@
   --foreground: #ededed;
   --custom-black: #141416;
 }
+
+@custom-variant xxs (@media (max-height: 700px));
 
 @theme inline {
   --color-background: var(--background);

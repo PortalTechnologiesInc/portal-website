@@ -129,7 +129,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
               key={slide.id}
               className="flex-shrink-0 w-full flex items-center justify-center"
             >
-              <div className="relative w-full aspect-[2/3] overflow-hidden">
+              <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
                 <Image
                   src={slide.image}
                   alt={slide.label}
@@ -419,10 +419,10 @@ function BlackLogoOverlay() {
 
 export function Page6Hero() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center" style={{ backgroundColor: "#FFED00" }}>
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ backgroundColor: "#FFED00" }}>
       <BlackLogoOverlay />
       <div className="relative z-50 flex flex-col gap-4 items-center justify-center text-center px-6">
-        <h1 className="font-eurostile font-bold tracking-tight text-4xl sm:text-4xl text-black">
+        <h1 className="font-eurostile font-bold tracking-tight text-4xl sm:text-4xl text-black xxs:text-3xl">
           BE THE ONE IN CONTROL, TRUST NOTHING
         </h1>
         <Image
@@ -505,7 +505,7 @@ export function Page6DailyLifeHero() {
           choice for your daily life
         </h2>
         <div className="flex justify-center w-full">
-          <div className="relative w-full aspect-[2/3] overflow-hidden">
+          <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
             <Image
               src="/Rectangle.png"
               alt="Portal Rectangle"
@@ -601,7 +601,7 @@ export function Page6BusinessHero() {
           control over your business
         </h2>
         <div className="flex justify-center w-full">
-          <div className="relative w-full aspect-[2/3] overflow-hidden">
+          <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
             <Image
               src="/Rectangle2.png"
               alt="Portal Rectangle"
