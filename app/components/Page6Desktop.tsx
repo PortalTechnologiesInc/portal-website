@@ -18,16 +18,16 @@ type Feature = {
 
 const dailyLifeFeatures: Feature[] = [
   {
-    icon: "/confirmation_number.svg",
-    alt: "Tickets",
-    title: "Tickets? No problem",
+    icon: "/assignment_ind.svg",
+    alt: "Identity",
+    title: "Your identity, fully secured",
     description:
       "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
   },
   {
-    icon: "/assignment_ind.svg",
-    alt: "Identity",
-    title: "Your identity, fully secured",
+    icon: "/confirmation_number.svg",
+    alt: "Tickets",
+    title: "Tickets? No problem",
     description:
       "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
   },
@@ -146,7 +146,7 @@ function FeatureList({ features }: { features: Feature[] }) {
             />
           </div>
           <div className="flex-1 text-black">
-            <h3 className="font-eurostile text-3xl font-bold mb-3">
+            <h3 className="font-eurostile text-xl md:text-2xl lg:text-3xl font-bold lg:mb-3">
               {feature.title}
             </h3>
             <p className="text-lg leading-relaxed">{feature.description}</p>
@@ -225,13 +225,13 @@ export function Page6Desktop() {
             </div>
           </div>
           <div className="w-full flex flex-col items-center">
-            <div className="relative max-w-[70vw]">
+            <div className="relative max-w-[70vw] mb-20">
               <Image
                 src="/page6-circle-lg.svg"
                 alt="Portal Circle Diagram"
                 width={512}
                 height={512}
-                className="w-full h-auto"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
@@ -239,22 +239,24 @@ export function Page6Desktop() {
       </PanelWrapper>
 
       <PanelWrapper id="page6-daily-life">
-        <div className="flex w-full flex-col gap-12 text-black">
-          <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight w-[40rem]">
-            P+RTAL
-            Is the smartest choice for your daily life
-          </h2>
+        <div className="flex w-full h-full flex-col text-black justify-center">
           <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
-            <div className="relative w-[55vw] aspect-[3/2] overflow-hidden rounded-3xl">
-              <Image
-                src="/Rectangle.png"
-                alt="Portal Rectangle"
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
+            <div className="flex w-full md:w-[52vw] flex-col">
+              <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight mb-10 max-w-[40rem]">
+                P+RTAL
+                Is the smartest choice for your daily life
+              </h2>
+              <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
+                <Image
+                  src="/Rectangle.png"
+                  alt="Portal Rectangle"
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              </div>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 md:flex md:flex-col md:justify-center md:h-full">
               <FeatureList features={dailyLifeFeatures} />
             </div>
           </div>
@@ -262,22 +264,24 @@ export function Page6Desktop() {
       </PanelWrapper>
 
       <PanelWrapper id="page6-business">
-        <div className="flex w-full flex-col gap-12 text-black">
-          <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight w-[40rem]">
-            P+RTAL
-            gives you complete control over your business
-          </h2>
-          <div className="flex w/full flex-col md:flex-row-reverse md:items-center gap-10 md:gap-16">
-            <div className="relative w-[55vw] aspect-[3/2] overflow-hidden rounded-3xl">
-              <Image
-                src="/Rectangle2.png"
-                alt="Portal Rectangle"
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
+        <div className="flex w-full h-full flex-col text-black justify-center">
+          <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
+            <div className="flex w-full md:w-[55vw] flex-col md:order-1">
+              <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight mb-10 max-w-[40rem]">
+                P+RTAL
+                gives you complete control over your business
+              </h2>
+              <div className="relative aspect-[3/2] overflow-hidden rounded-3xl mb-10">
+                <Image
+                  src="/Rectangle2.png"
+                  alt="Portal Rectangle"
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              </div>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 md:order-2 md:flex md:flex-col md:justify-center md:h-full mt-20">
               <FeatureList features={businessFeatures} />
             </div>
           </div>
