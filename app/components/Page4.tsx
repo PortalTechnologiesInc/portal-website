@@ -46,9 +46,9 @@ export function Page4({ scrollContainerRef }: Props) {
   return (
     <div ref={page4ContainerRef} className="relative w-full h-full flex flex-col items-center justify-center px-6">
       {/* Text Content */}
-      <div className="text-center relative z-50">
+      <div className="text-center md:text-left md:max-w-5xl lg:max-w-6xl relative z-50">
         <h1
-          className="font-eurostile xxs:text-4xl font-bold tracking-tight text-5xl md:text-6xl lg:text-6xl text-white"
+          className="font-eurostile xxs:text-4xl font-bold tracking-tight text-5xl md:text-6xl lg:text-7xl text-white md:text-center md:w-full"
           style={{
             opacity: isTextVisible ? 1 : 0,
             transform: isTextVisible ? "translateY(0px)" : "translateY(12px)",
@@ -61,7 +61,7 @@ export function Page4({ scrollContainerRef }: Props) {
         </h1>
 
         <p
-          className="mt-3 text-2xl md:text-xl lg:text-2xl opacity-90 text-white"
+          className="md:text-center mt-4 md:mt-6 text-2xl md:text-3xl lg:text-[2rem] opacity-90 text-white leading-snug md:max-w-4xl lg:max-w-full"
           style={{
             opacity: isTextVisible ? 0.9 : 0,
             transform: isTextVisible ? "translateY(0px)" : "translateY(12px)",

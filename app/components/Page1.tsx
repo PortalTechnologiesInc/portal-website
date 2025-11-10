@@ -1,10 +1,52 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import ContactCarousel from "./ContactCarousel";
 import ParallaxImage from "./ParallaxImage";
 
 export function Page1() {
+  const [showDesktopCarousel, setShowDesktopCarousel] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const section = document.querySelector("section[data-section='page1']");
+    if (!section) return;
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const updateVisibility = () => {
+      if (!mediaQuery.matches) {
+        setShowDesktopCarousel(true);
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const isVisible = rect.top < viewportHeight && rect.bottom > 0;
+      setShowDesktopCarousel(isVisible);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!mediaQuery.matches) return;
+        const isVisible = entries.some((entry) => entry.isIntersecting);
+        setShowDesktopCarousel(isVisible);
+      },
+      { threshold: 0.4 }
+    );
+
+    observer.observe(section);
+    mediaQuery.addEventListener("change", updateVisibility);
+    updateVisibility();
+
+    return () => {
+      observer.disconnect();
+      mediaQuery.removeEventListener("change", updateVisibility);
+    };
+  }, []);
+
   return (
     <>
       {/* Background SVG Vector - Mobile (original working state) */}
@@ -74,7 +116,11 @@ export function Page1() {
       </div>
 
       {/* Contact Carousel - Desktop: under header, Mobile: at bottom */}
-      <div className="md:fixed md:top-14 md:left-0 md:right-0 md:z-[9999]">
+      <div
+        className={`md:fixed md:top-14 md:left-0 md:right-0 md:z-[9999] ${
+          showDesktopCarousel ? "" : "md:hidden"
+        }`}
+      >
         <ContactCarousel />
       </div>
     </>
