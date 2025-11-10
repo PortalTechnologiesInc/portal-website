@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { useHorizontalCardCarousel } from "../hooks/useHorizontalCardCarousel";
 
@@ -40,7 +39,7 @@ export function HorizontalEuroCarousel({ onEnterCarousel, onExitCarousel, autoEn
           className="w-[33.333%] h-full flex flex-col items-center justify-center px-6"
         >
           <div className="relative h-[7.03125rem] flex items-center justify-center w-full mb-10">
-            <Image
+            <img
               src="/euro_symbol.svg"
               alt="Euro symbol"
               width={128}
@@ -67,7 +66,7 @@ export function HorizontalEuroCarousel({ onEnterCarousel, onExitCarousel, autoEn
           className="w-[33.333%] h-full flex flex-col items-center justify-center px-6"
         >
           <div className="relative h-[7.03125rem] flex items-center justify-center w-full mb-10">
-            <Image
+            <img
               src="/lock.svg"
               alt="Lock symbol"
               width={128}
@@ -95,7 +94,7 @@ export function HorizontalEuroCarousel({ onEnterCarousel, onExitCarousel, autoEn
           className="w-[33.333%] h-full flex flex-col items-center justify-center px-6"
         >
           <div className="relative h-[7.03125rem] flex items-center justify-center w-full mb-10">
-            <Image
+            <img
               src="/sentiment_sad.svg"
               alt="Sad symbol"
               width={120}

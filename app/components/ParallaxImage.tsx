@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 
 interface ParallaxImageProps {
   variant?: "mobile" | "desktop";
@@ -84,7 +83,7 @@ export default function ParallaxImage({ variant = "mobile" }: ParallaxImageProps
         }
         style={{ transform: isDesktop ? "none" : "translateY(20%)" }}
       >
-        <Image
+        <img
           src="/cross-gray.png"
           alt="Parallax cross"
           width={800}
@@ -94,7 +93,6 @@ export default function ParallaxImage({ variant = "mobile" }: ParallaxImageProps
               ? "h-[50vh] lg:h-[60vh] xl:h-[70vh]"
               : "h-[50vh] sm:h-[60vh] md:h-[40vh] lg:h-[35rem]"
           }`}
-          priority
         />
       </div>
     </div>

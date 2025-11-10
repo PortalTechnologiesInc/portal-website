@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 
 export function Page7() {
   return (
@@ -11,12 +10,11 @@ export function Page7() {
         </h2>
         <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
           <div className="relative w-full md:w-[40vw] aspect-[3/2] overflow-hidden rounded-3xl xxs:max-h-[20vh]">
-            <Image
+            <img
               src="/company.jpg"
               alt="Behind the P+RTAL company"
-              fill
               className="object-cover grayscale"
-              sizes="(min-width: 1280px) 960px, (min-width: 1024px) 800px, 100vw"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
           <div className="flex-1 max-w-3xl sm:space-y-6 text-sm sm:text-base md:text-xl lg:text-2xl">

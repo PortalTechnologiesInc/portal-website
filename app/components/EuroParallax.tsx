@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { useEuroParallax } from "../hooks/useEuroParallax";
 
@@ -35,7 +34,7 @@ export function EuroParallax({
       }
     >
       <div data-euro-svg ref={euroRef} style={{ filter: "blur(0px)" }}>
-        <Image
+        <img
           src="/euro_symbol.svg"
           alt="Euro symbol"
           width={120}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import ContactCarousel from "./ContactCarousel";
 import ParallaxImage from "./ParallaxImage";
@@ -51,27 +50,25 @@ export function Page1() {
     <>
       {/* Background SVG Vector - Mobile (original working state) */}
       <div className="absolute inset-0 flex md:hidden items-center justify-center pointer-events-none">
-        <Image
+        <img
           src="/yellowvec.svg"
           alt=""
           width={300}
           height={300}
           className=""
           style={{ minWidth: "210%", minHeight: "210%" }}
-          priority
         />
       </div>
 
       {/* Background SVG Vector - Desktop (clip bottom 50%) */}
       <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 hidden md:flex items-start justify-center pointer-events-none z-20 w-screen lg:max-w-[120rem] lg:mx-auto">
-        <Image
+        <img
           src="/yellowvec.svg"
           alt=""
           width={1200}
           height={1200}
           className="w-[100vw] lg:w-[150vw] xl:w-[95vw] h-auto object-contain object-top mt-10"
           style={{ clipPath: "inset(0 0 50% 0)" }}
-          priority
         />
       </div>
 

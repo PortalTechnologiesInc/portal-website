@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { useStaggeredScrollRise } from "../hooks/useStaggeredScrollRise";
 
@@ -79,7 +78,7 @@ export function Page2({ scrollContainerRef }: Props) {
           >
             <div className="flex flex-col w-[22rem] lg:w-[26rem]">
               <div ref={step2SadDesktopRef} className="self-start">
-                <Image
+                <img
                   src="/sentiment_sad.svg"
                   alt="Sad symbol"
                   width={150}
@@ -88,7 +87,7 @@ export function Page2({ scrollContainerRef }: Props) {
                 />
               </div>
               <div ref={step2EurDesktopRef} className="-mt-20 self-end">
-                <Image
+                <img
                   src="/euro_symbol.svg"
                   alt="Euro symbol"
                   width={190}
@@ -97,7 +96,7 @@ export function Page2({ scrollContainerRef }: Props) {
                 />
               </div>
               <div ref={step2LockDesktopRef} className="-mt-16 lg:-mt-32 lg:-ml-16 self-start">
-                <Image
+                <img
                   src="/lock.svg"
                   alt="Lock symbol"
                   width={230}
@@ -119,7 +118,7 @@ export function Page2({ scrollContainerRef }: Props) {
       >
         <div className="flex flex-col w-[14rem]">
           <div ref={step2SadRef} className="self-start">
-            <Image
+            <img
               src="/sentiment_sad.svg"
               alt="Sad symbol"
               width={93}
@@ -128,7 +127,7 @@ export function Page2({ scrollContainerRef }: Props) {
             />
           </div>
           <div ref={step2EurRef} className="-mt-20 self-end">
-            <Image
+            <img
               src="/euro_symbol.svg"
               alt="Euro symbol"
               width={116}
@@ -137,7 +136,7 @@ export function Page2({ scrollContainerRef }: Props) {
             />
           </div>
           <div ref={step2LockRef} className="-mt-16 self-start">
-            <Image
+            <img
               src="/lock.svg"
               alt="Lock symbol"
               width={139}

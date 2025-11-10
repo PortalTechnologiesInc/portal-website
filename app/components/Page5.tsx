@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import Image from "next/image";
 import { DUR_STEP_MS } from "../lib/constants/animation";
 
 type Props = {
@@ -179,13 +178,11 @@ export function Page5({ scrollContainerRef }: Props) {
             }}
           >
             <div className="z-52 relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
-              <Image
+              <img
                 src="/card1.png"
                 alt="Card 1"
-                fill
                 className="object-cover rounded-3xl"
-                sizes="77vw"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>
@@ -200,13 +197,11 @@ export function Page5({ scrollContainerRef }: Props) {
             }}
           >
             <div className="relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
-              <Image
+              <img
                 src="/card2.png"
                 alt="Card 2"
-                fill
                 className="object-cover rounded-3xl"
-                sizes="77vw"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>
@@ -220,13 +215,11 @@ export function Page5({ scrollContainerRef }: Props) {
             }}
           >
             <div className="relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
-              <Image
+              <img
                 src="/card3.png"
                 alt="Card 3"
-                fill
                 className="object-cover rounded-3xl"
-                sizes="77vw"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>
@@ -252,7 +245,7 @@ export function Page5({ scrollContainerRef }: Props) {
           visibility: cardPhase === 'expanded' ? 'hidden' : 'visible'
         }}
       >
-        <Image
+        <img
           src="/card1.png"
           alt="Card 1"
           width={200}

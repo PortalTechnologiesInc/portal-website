@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 
 type Props = {
   lockRef?: React.RefObject<HTMLDivElement | null>;
@@ -20,7 +19,7 @@ export function EuroStepSprites({ lockRef, sadRef }: Props) {
           opacity: 0,
         }}
       >
-        <Image
+        <img
           src="/lock.svg"
           alt="Lock symbol"
           width={128}
@@ -39,7 +38,7 @@ export function EuroStepSprites({ lockRef, sadRef }: Props) {
           opacity: 0,
         }}
       >
-        <Image
+        <img
           src="/sentiment_sad.svg"
           alt="Sad symbol"
           width={120}

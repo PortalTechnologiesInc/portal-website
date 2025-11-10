@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
 
@@ -164,7 +163,7 @@ export default function Footer() {
       {/* Logo block - fills remaining space, centers logo */}
       <div className="flex-1 flex justify-center items-center w-full min-h-0">
         <Link href="/" aria-label="Portal Home" className="flex justify-center items-center w-full max-w-4xl px-4">
-          <Image
+          <img
             src="/logo.svg"
             alt="Portal Logo"
             width={150}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { useHorizontalStepCarousel } from "../hooks/useHorizontalStepCarousel";
 import { useStaggeredScrollRise } from "../hooks/useStaggeredScrollRise";
@@ -106,7 +105,7 @@ export function Page3({ scrollContainerRef }: Props) {
               ref={index === 0 ? step1ImageRef : null}
               className="relative h-[8rem] flex items-center justify-center w-full mb-8"
             >
-              <Image
+              <img
                 src={step.image}
                 alt={step.title}
                 width={128}

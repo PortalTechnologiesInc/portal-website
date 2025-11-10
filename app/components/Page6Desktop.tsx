@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import type { ReactNode } from "react";
 import {
   CurrencyCarousel,
@@ -140,7 +139,7 @@ function FeatureList({ features }: { features: Feature[] }) {
           className="flex flex-row items-center gap-6 text-left"
         >
           <div className="flex-shrink-0">
-            <Image
+            <img
               src={feature.icon}
               alt={feature.alt}
               width={64}
@@ -179,13 +178,12 @@ export function Page6Desktop() {
               </h1>
             </div>
             <div className="relative flex-shrink-0">
-              <Image
+              <img
                 src="/cross-gray.png"
                 alt="Cross"
                 width={800}
                 height={800}
                 className="h-[36rem] w-auto object-cover"
-                priority
               />
             </div>
           </div>
@@ -230,7 +228,7 @@ export function Page6Desktop() {
           </div>
           <div className="w-full flex flex-col items-center">
             <div className="relative max-w-[70vw] mb-20">
-              <Image
+              <img
                 src="/page6-circle-lg.svg"
                 alt="Portal Circle Diagram"
                 width={512}
@@ -251,12 +249,11 @@ export function Page6Desktop() {
                 Is the smartest choice for your daily life
               </h2>
               <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
-                <Image
+                <img
                   src="/Rectangle.png"
                   alt="Portal Rectangle"
-                  fill
                   className="object-cover"
-                  sizes="100vw"
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
             </div>
@@ -276,12 +273,11 @@ export function Page6Desktop() {
                 gives you complete control over your business
               </h2>
               <div className="relative aspect-[3/2] overflow-hidden rounded-3xl mb-10">
-                <Image
+                <img
                   src="/Rectangle2.png"
                   alt="Portal Rectangle"
-                  fill
                   className="object-cover"
-                  sizes="100vw"
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
             </div>

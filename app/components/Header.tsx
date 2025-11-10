@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState, type MouseEvent } from "react";
 
 export default function Header() {
@@ -193,12 +192,11 @@ export default function Header() {
             style={onLightBackground ? { color: "#141416" } : {}}
             aria-label="Portal Home"
           >
-            <Image
+            <img
               src="/logo.svg"
               alt=""
               width={200}
               height={200}
-              priority
               className={`transition duration-300 w-[150px] md:w-[200px] h-auto ${
                 onLightBackground ? "" : "invert"
               }`}
@@ -213,7 +211,7 @@ export default function Header() {
             onClick={() => setOpen((v) => !v)}
             className="md:hidden shrink-0 h-10 w-10 inline-flex items-center justify-center bg-transparent text-xl"
           >
-            <Image
+            <img
               src="/asterisk.svg"
               alt=""
               width={22}
@@ -314,7 +312,7 @@ export default function Header() {
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     The Banking System Paradox
                   </span>
-                  <Image
+                  <img
                     src="/arrow.svg"
                     alt=""
                     width={24}
@@ -347,7 +345,7 @@ export default function Header() {
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     Download
                   </span>
-                  <Image
+                  <img
                     src="/arrow.svg"
                     alt=""
                     width={24}
@@ -375,7 +373,7 @@ export default function Header() {
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     Know Portal
                   </span>
-                  <Image
+                  <img
                     src="/arrow.svg"
                     alt=""
                     width={24}
@@ -407,7 +405,7 @@ export default function Header() {
                 aria-label="Instagram"
                 className="inline-flex items-center"
               >
-                <Image
+                <img
                   src="/ig.svg"
                   alt=""
                   width={40}
@@ -422,7 +420,7 @@ export default function Header() {
                 aria-label="X"
                 className="inline-flex items-center"
               >
-                <Image
+                <img
                   src="/x.svg"
                   alt=""
                   width={40}

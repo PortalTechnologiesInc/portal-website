@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 
 export function Page3b() {
   return (
     <div className="h-full flex flex-row items-center justify-center px-6 md:max-w-[98rem] md:mx-auto w-full">
       {/* Image Container - Left side */}
       <div className="relative flex items-center justify-center md:mr-16">
-        <Image
+        <img
           src="/lock.svg"
           alt="Technological Lock-in"
           width={128}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, memo, useRef } from "react";
 import type { CSSProperties } from "react";
@@ -167,18 +166,17 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                       : "aspect-[2/3] xxs:h-[60vh] rounded-3xl"
                   }`}
                 >
-                  <Image
+                  <img
                     src={slide.image}
                     alt={slide.label}
-                    fill
                     className={`object-cover ${
                       slide.id === 0 ? "object-left" : "object-center grayscale blur-[3px]"
                     } ${isDesktopVariant ? "w-full h-full" : ""}`}
-                    sizes={isDesktopVariant ? "100vw" : "(min-width: 768px) 672px, 100vw"}
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   {isDesktopVariant && slide.id === 0 && (
                     <div className="absolute bottom-12 right-25 hidden md:block z-[60] w-[20vw] pointer-events-none drop-shadow-lg">
-                      <Image
+                      <img
                         src="/qr-global.svg"
                         alt="Portal QR"
                         width={500}
@@ -245,7 +243,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                   {slide.id === 0 && !isDesktopVariant && (
                     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 items-center">
                       <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
-                        <Image
+                        <img
                           src="/appstore.png"
                           alt="App Store"
                           width={240}
@@ -254,7 +252,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                         />
                       </Link>
                       <Link href="https://play.google.com/store/apps/details?id=cc.getportal.portal" className="block">
-                        <Image
+                        <img
                           src="/playstore.png"
                           alt="Play Store"
                           width={240}
@@ -352,7 +350,7 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
                     aspectRatio: '1 / 1',
                   }}
                 >
-                  <Image
+                  <img
                     src={src}
                     alt={`${symbol} currency symbol`}
                     width={180}
@@ -495,13 +493,12 @@ export function Page6Hero() {
         <h1 className="font-eurostile font-bold tracking-tight text-4xl sm:text-4xl text-black xxs:text-3xl">
           BE THE ONE IN CONTROL, TRUST NOTHING
         </h1>
-        <Image
+        <img
           src="/cross-gray.png"
           alt="Cross"
           width={800}
           height={800}
           className="mt-2 w-[90vw] h-auto max-h-[50vh] object-cover"
-          priority
         />
       </div>
     </div>
@@ -551,7 +548,7 @@ export function Page6EasySecure() {
           </p>
         </div>
         <div className="relative z-50 w-full flex items-center justify-center mt-8">
-          <Image
+          <img
             src="/page6-circle.svg"
             alt=""
             width={400}
@@ -576,12 +573,11 @@ export function Page6DailyLifeHero() {
         </h2>
         <div className="flex justify-center w-full">
           <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
-            <Image
+            <img
               src="/Rectangle.png"
               alt="Portal Rectangle"
-              fill
               className="object-cover"
-              sizes="200px"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
         </div>
@@ -597,7 +593,7 @@ export function Page6DailyLifeFeatures() {
         <div className="w-full flex flex-col">
           <div className="flex flex-row items-center gap-3">
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Image
+              <img
                 src="/confirmation_number.svg"
                 alt="Tickets"
                 width={48}
@@ -617,7 +613,7 @@ export function Page6DailyLifeFeatures() {
 
           <div className="flex flex-row items-center gap-3" style={{ marginTop: '10vh', marginBottom: '10vh' }}>
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Image
+              <img
                 src="/assignment_ind.svg"
                 alt="Identity"
                 width={48}
@@ -637,7 +633,7 @@ export function Page6DailyLifeFeatures() {
 
           <div className="flex flex-row items-center gap-3">
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Image
+              <img
                 src="/cached.svg"
                 alt="Control"
                 width={48}
@@ -672,12 +668,11 @@ export function Page6BusinessHero() {
         </h2>
         <div className="flex justify-center w-full">
           <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
-            <Image
+            <img
               src="/Rectangle2.png"
               alt="Portal Rectangle"
-              fill
               className="object-cover"
-              sizes="200px"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
         </div>
@@ -693,7 +688,7 @@ export function Page6BusinessFeatures() {
         <div className="w-full flex flex-col">
           <div className="flex flex-row items-center gap-3">
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Image
+              <img
                 src="/do_not_touch.svg"
                 alt="Hand"
                 width={48}
@@ -713,7 +708,7 @@ export function Page6BusinessFeatures() {
 
           <div className="flex flex-row items-center gap-3" style={{ marginTop: '10vh', marginBottom: '10vh' }}>
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Image
+              <img
                 src="/sell.svg"
                 alt="Sell"
                 width={48}
@@ -733,7 +728,7 @@ export function Page6BusinessFeatures() {
 
           <div className="flex flex-row items-center gap-3">
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Image
+              <img
                 src="/cached.svg"
                 alt="Control"
                 width={48}
