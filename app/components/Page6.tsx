@@ -485,7 +485,11 @@ function BlackLogoOverlay() {
 
 export function Page6Hero() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ backgroundColor: "#FFED00" }}>
+    <div
+      id="page6-hero-mobile"
+      className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden"
+      style={{ backgroundColor: "#FFED00" }}
+    >
       <BlackLogoOverlay />
       <div className="relative z-50 flex flex-col gap-4 items-center justify-center text-center px-6">
         <h1 className="font-eurostile font-bold tracking-tight text-4xl sm:text-4xl text-black xxs:text-3xl">

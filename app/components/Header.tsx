@@ -2,12 +2,59 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [onLightBackground, setOnLightBackground] = useState(true);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const scrollContainerSelector = "#main-scroll-container";
+
+  const handleNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    targetSelectors: string[]
+  ) => {
+    event.preventDefault();
+
+    const scrollContainer = document.querySelector(
+      scrollContainerSelector
+    ) as HTMLElement | null;
+    const headerOffset = 64;
+
+    const targets = targetSelectors
+      .map((selector) => document.querySelector(selector) as HTMLElement | null)
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (targets.length === 0) {
+      setOpen(false);
+      return;
+    }
+
+    const visibleTarget =
+      targets.find((el) => el.offsetParent !== null) ?? targets[0];
+
+    if (scrollContainer) {
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const targetRect = visibleTarget.getBoundingClientRect();
+      const offsetTop =
+        targetRect.top - containerRect.top + scrollContainer.scrollTop - headerOffset;
+
+      scrollContainer.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    } else {
+      const targetRect = visibleTarget.getBoundingClientRect();
+      const offsetTop = targetRect.top + window.scrollY - headerOffset;
+
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (open) {
@@ -22,7 +69,7 @@ export default function Header() {
 
   useEffect(() => {
     const scrollContainer = (document.querySelector(
-      "div.h-dvh.overflow-y-scroll"
+      scrollContainerSelector
     ) || null) as HTMLElement | null;
 
     // Sections that need white text (dark backgrounds)
@@ -186,18 +233,29 @@ export default function Header() {
             style={onLightBackground ? { color: "#141416" } : {}}
           >
             <Link
-              href="#banking"
+              href="#page2"
+              onClick={(event) => handleNavClick(event, ["#page2"])}
               className="hover:underline underline-offset-4"
             >
               The Banking System and Wallet Paradox
             </Link>
             <Link
-              href="#download"
+              href="#page6-take-step-desktop"
+              onClick={(event) =>
+                handleNavClick(event, [
+                  "#page6-take-step-desktop",
+                  "#page6-take-step-mobile",
+                ])
+              }
               className="hover:underline underline-offset-4"
             >
               Download
             </Link>
-            <Link href="#know" className="hover:underline underline-offset-4">
+            <Link
+              href="#page7"
+              onClick={(event) => handleNavClick(event, ["#page7"])}
+              className="hover:underline underline-offset-4"
+            >
               Know PORTAL
             </Link>
           </nav>
@@ -249,9 +307,9 @@ export default function Header() {
                 }
               >
                 <Link
-                  href="#banking"
+                  href="#page2"
                   className="flex items-center justify-between"
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => handleNavClick(event, ["#page2"])}
                 >
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     The Banking System Paradox
@@ -277,9 +335,14 @@ export default function Header() {
                 }
               >
                 <Link
-                  href="#download"
+                  href="#page6-take-step-desktop"
                   className="flex items-center justify-between"
-                  onClick={() => setOpen(false)}
+                  onClick={(event) =>
+                    handleNavClick(event, [
+                      "#page6-take-step-desktop",
+                      "#page6-take-step-mobile",
+                    ])
+                  }
                 >
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     Download
@@ -305,9 +368,9 @@ export default function Header() {
                 }
               >
                 <Link
-                  href="#know"
+                  href="#page7"
                   className="flex items-center justify-between"
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => handleNavClick(event, ["#page7"])}
                 >
                   <span className="text-left text-lg font-medium underline underline-offset-4">
                     Know Portal
@@ -339,7 +402,7 @@ export default function Header() {
             <span className="text-lg font-medium">Follow us</span>
             <div className="flex items-center gap-4">
               <Link
-                href="https://instagram.com"
+                href="https://www.instagram.com/portaltechinc/"
                 target="_blank"
                 aria-label="Instagram"
                 className="inline-flex items-center"
@@ -354,7 +417,7 @@ export default function Header() {
                 />
               </Link>
               <Link
-                href="https://x.com"
+                href="https://x.com/portalonx"
                 target="_blank"
                 aria-label="X"
                 className="inline-flex items-center"

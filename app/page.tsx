@@ -54,6 +54,7 @@ export default function Home() {
         data-page="page2"
         data-reveal
         className="snap-section relative z-40 flex-none text-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        id="page2"
       >
         <div className="h-full w-full flex items-center justify-center px-6 pt-28 md:pt-36">
           <Page2 scrollContainerRef={scrollContainerRef} />
@@ -147,6 +148,7 @@ export default function Home() {
           data-page="page4"
           data-reveal
           className="snap-section relative z-40 flex-none text-white md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        id="page4"
         >
           <div className="h-full w-full flex items-center justify-center">
             <Page4 scrollContainerRef={scrollContainerRef} />
@@ -264,6 +266,7 @@ export default function Home() {
         data-section="page6-take-step-mobile"
         data-reveal
         className="snap-section relative flex-none md:hidden"
+        id="page6-take-step-mobile"
       >
         <div className="h-full w-full">
           <Page6TakeStep />
@@ -276,6 +279,7 @@ export default function Home() {
         data-section="page7"
         data-reveal
         className="snap-section relative flex-none bg-white md:snap-section-desktop md:[&>*]:mx-auto md:[&>*]:max-w-[95rem]"
+        id="page7"
       >
         <div className="h-full w-full flex items-center justify-center">
           <Page7 />

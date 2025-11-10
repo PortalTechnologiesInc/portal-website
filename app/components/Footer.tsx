@@ -2,8 +2,54 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { MouseEvent } from "react";
 
 export default function Footer() {
+  const scrollContainerSelector = "#main-scroll-container";
+
+  const handleNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    targetSelectors: string[]
+  ) => {
+    event.preventDefault();
+
+    const scrollContainer = document.querySelector(
+      scrollContainerSelector
+    ) as HTMLElement | null;
+    const headerOffset = 64;
+
+    const targets = targetSelectors
+      .map((selector) => document.querySelector(selector) as HTMLElement | null)
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (targets.length === 0) {
+      return;
+    }
+
+    const visibleTarget =
+      targets.find((el) => el.offsetParent !== null) ?? targets[0];
+
+    if (scrollContainer) {
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const targetRect = visibleTarget.getBoundingClientRect();
+      const offsetTop =
+        targetRect.top - containerRect.top + scrollContainer.scrollTop - headerOffset;
+
+      scrollContainer.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    } else {
+      const targetRect = visibleTarget.getBoundingClientRect();
+      const offsetTop = targetRect.top + window.scrollY - headerOffset;
+
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <footer className="w-full h-full bg-black text-white flex flex-col items-center overflow-y-auto">
       {/* Main content - centered */}
@@ -14,26 +60,25 @@ export default function Footer() {
             <h3 className="text-xl md:text-2xl font-medium xxs:text-lg">Discover the future</h3>
             <div className="flex flex-col gap-3 md:gap-6 lg:gap-8 ml-2 md:ml-4 xxs:gap-2">
               <a
-                href="#paradox"
+                href="#page2"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+                onClick={(event) => handleNavClick(event, ["#page2"])}
               >
                 The Paradox
               </a>
               <a
-                href="#advantages"
+                href="#page4"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
-              >
-                [not] Advantages
-              </a>
-              <a
-                href="#cycle"
-                className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+                onClick={(event) => handleNavClick(event, ["#page4"])}
               >
                 Break the cycle
               </a>
               <a
-                href="#real-advantages"
+                href="#page6-hero-desktop"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+                onClick={(event) =>
+                  handleNavClick(event, ["#page6-hero-desktop", "#page6-hero-mobile"])
+                }
               >
                 Real Advantages
               </a>
@@ -45,14 +90,26 @@ export default function Footer() {
             <h3 className="text-xl md:text-2xl font-medium xxs:text-lg">Take action</h3>
             <div className="flex flex-col gap-3 md:gap-6 lg:gap-8 ml-2 md:ml-4 xxs:gap-2">
               <a
-                href="#download-daily"
+                href="#page6-take-step-desktop"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+                onClick={(event) =>
+                  handleNavClick(event, [
+                    "#page6-take-step-desktop",
+                    "#page6-take-step-mobile",
+                  ])
+                }
               >
                 Download for Daily life usage
               </a>
               <a
-                href="#download-business"
+                href="#page6-take-step-desktop"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+                onClick={(event) =>
+                  handleNavClick(event, [
+                    "#page6-take-step-desktop",
+                    "#page6-take-step-mobile",
+                  ])
+                }
               >
                 Download for your Business
               </a>
@@ -64,8 +121,9 @@ export default function Footer() {
             <h3 className="text-xl md:text-2xl font-medium xxs:text-lg">Know P+RTAL Technologies</h3>
             <div className="flex flex-col gap-3 md:gap-6 lg:gap-8 ml-2 md:ml-4 xxs:gap-2">
               <a
-                href="#founders"
+                href="#page7"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+                onClick={(event) => handleNavClick(event, ["#page7"])}
               >
                 A word of the founders
               </a>
@@ -77,7 +135,7 @@ export default function Footer() {
             <h3 className="text-xl md:text-2xl font-medium xxs:text-lg">Follow Us</h3>
             <div className="flex flex-col gap-3 md:gap-6 lg:gap-8 ml-2 md:ml-4 xxs:gap-2">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/portaltechinc/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
@@ -91,7 +149,7 @@ export default function Footer() {
                 Nostr
               </a>
               <a
-                href="https://x.com"
+                href="https://x.com/portalonx"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"

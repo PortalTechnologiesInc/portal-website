@@ -66,13 +66,16 @@ const businessFeatures: Feature[] = [
 
 function PanelWrapper({
   id,
+  anchorId,
   children,
 }: {
   id: string;
+  anchorId?: string;
   children: ReactNode;
 }) {
   return (
     <section
+      id={anchorId ?? id}
       data-section={id}
       data-reveal
       className="hidden md:flex md:h-dvh snap-section-desktop relative overflow-hidden"
@@ -161,6 +164,7 @@ export function Page6Desktop() {
   return (
     <>
       <section
+        id="page6-hero-desktop"
         data-section="page6-hero"
         data-reveal
         className="hidden md:flex md:h-dvh snap-section-desktop relative overflow-hidden"
@@ -220,7 +224,7 @@ export function Page6Desktop() {
             </div>
             <div className="md:max-w-[50%] md:text-right">
               <p className="text-xl md:text-2xl leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+              We're building Portal as the solution we wished existed: combining the security of Bitcoin, the convenience of passwordless authentication, and a user experience that feels like magic.
               </p>
             </div>
           </div>
@@ -288,7 +292,7 @@ export function Page6Desktop() {
         </div>
       </PanelWrapper>
 
-      <PanelWrapper id="page6-take-step">
+      <PanelWrapper id="page6-take-step" anchorId="page6-take-step-desktop">
         <DailyLifeBusinessCarousel variant="desktop" />
       </PanelWrapper>
     </>

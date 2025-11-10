@@ -67,9 +67,7 @@ export function Page2({ scrollContainerRef }: Props) {
             have a fundamental problem: they're stuck in a paradox.
           </h1>
           <p className="text-xl md:text-xl font-normal mb-8 max-w-2xl leading-tight text-white opacity-90">
-            Lorem ipsum dolor sit amet consectetur. Pretium nibh nibh magna
-            cursus purus hendrerit congue habitant. Mi scelerisque cursus nibh
-            ipsum vel id.
+          The internet's identity and payment systems are broken. Passwords are insecure, credit cards were never designed for the internet.
           </p>
         </div>
 
