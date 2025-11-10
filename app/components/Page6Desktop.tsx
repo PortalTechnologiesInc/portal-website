@@ -267,7 +267,7 @@ export function Page6Desktop() {
             P+RTAL
             gives you complete control over your business
           </h2>
-          <div className="flex w/full flex-col md:flex-row md:items-center gap-10 md:gap-16">
+          <div className="flex w/full flex-col md:flex-row-reverse md:items-center gap-10 md:gap-16">
             <div className="relative w-[55vw] aspect-[3/2] overflow-hidden rounded-xl">
               <Image
                 src="/Rectangle2.png"
