@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description: metaDescription,
     images: [
       {
-        url: "https://preview.twenty-two.xyz/opengraph.png",
+        url: "https://preview.twenty-two.xyz/opengraph.webp",
         width: 1200,
         height: 630,
         alt: "Portal | Trust Nothing",

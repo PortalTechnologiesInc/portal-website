@@ -178,7 +178,7 @@ export function Page6Desktop() {
             </div>
             <div className="relative flex-shrink-0">
               <img
-                src="/cross-gray.png"
+                src="/cross-gray.webp"
                 alt="Cross"
                 width={800}
                 height={800}
@@ -251,7 +251,7 @@ export function Page6Desktop() {
               </h2>
               <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
                 <img
-                  src="/Rectangle.png"
+                  src="/Rectangle.webp"
                   alt="Portal Rectangle"
                   className="object-cover"
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
@@ -275,7 +275,7 @@ export function Page6Desktop() {
               </h2>
               <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
                 <img
-                  src="/Rectangle2.png"
+                  src="/Rectangle2.webp"
                   alt="Portal Rectangle"
                   className="object-cover"
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}

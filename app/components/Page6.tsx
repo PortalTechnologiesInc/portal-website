@@ -78,13 +78,13 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
     { 
       id: 0, 
       label: "Daily life", 
-      image: "/Slides.png",
+      image: "/Slides.webp",
       title: "Download now and be part of next the revolution"
     },
     { 
       id: 1, 
       label: "Business", 
-      image: "/form.jpg",
+      image: "/form.webp",
       title: "Change the way you get payed, sell tickets\nand more"
     },
   ];
@@ -254,7 +254,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 items-center">
                       <Link href="https://apps.apple.com/it/app/portal-digital-wallet/id6748541067" className="block">
                         <img
-                          src="/appstore.png"
+                          src="/appstore.webp"
                           alt="App Store"
                           width={240}
                           height={80}
@@ -263,7 +263,7 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                       </Link>
                       <Link href="https://play.google.com/store/apps/details?id=cc.getportal.portal" className="block">
                         <img
-                          src="/playstore.png"
+                          src="/playstore.webp"
                           alt="Play Store"
                           width={240}
                           height={80}
@@ -601,7 +601,7 @@ export function Page6Hero() {
           BE THE ONE IN CONTROL, TRUST NOTHING
         </h1>
         <img
-          src="/cross-gray.png"
+          src="/cross-gray.webp"
           alt="Cross"
           width={800}
           height={800}
@@ -682,7 +682,7 @@ export function Page6DailyLifeHero() {
         <div className="flex justify-center w-full">
           <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
             <img
-              src="/Rectangle.png"
+              src="/Rectangle.webp"
               alt="Portal Rectangle"
               className="object-cover"
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
@@ -768,7 +768,7 @@ export function Page6BusinessHero() {
         <div className="flex justify-center w-full">
           <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
             <img
-              src="/Rectangle2.png"
+              src="/Rectangle2.webp"
               alt="Portal Rectangle"
               className="object-cover"
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}

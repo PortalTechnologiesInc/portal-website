@@ -179,7 +179,7 @@ export function Page5({ scrollContainerRef }: Props) {
           >
             <div className="z-52 relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
               <img
-                src="/card1.png"
+                src="/card1.webp"
                 alt="Card 1"
                 className="object-cover rounded-3xl"
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
@@ -198,7 +198,7 @@ export function Page5({ scrollContainerRef }: Props) {
           >
             <div className="relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
               <img
-                src="/card2.png"
+                src="/card2.webp"
                 alt="Card 2"
                 className="object-cover rounded-3xl"
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
@@ -216,7 +216,7 @@ export function Page5({ scrollContainerRef }: Props) {
           >
             <div className="relative w-full h-[57vh] max-w-full max-h-[57vh] flex items-center justify-center" style={{ width: '77vw', height: '57vh' }}>
               <img
-                src="/card3.png"
+                src="/card3.webp"
                 alt="Card 3"
                 className="object-cover rounded-3xl"
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
@@ -246,7 +246,7 @@ export function Page5({ scrollContainerRef }: Props) {
         }}
       >
         <img
-          src="/card1.png"
+          src="/card1.webp"
           alt="Card 1"
           width={200}
           height={300}

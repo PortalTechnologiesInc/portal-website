@@ -11,7 +11,7 @@ export function Page7() {
         <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
           <div className="relative w-full md:w-[40vw] aspect-[3/2] overflow-hidden rounded-3xl xxs:max-h-[20vh]">
             <img
-              src="/company.jpg"
+              src="/company.webp"
               alt="Behind the P+RTAL company"
               className="object-cover grayscale"
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}

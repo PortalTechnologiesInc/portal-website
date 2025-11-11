@@ -84,7 +84,7 @@ export default function ParallaxImage({ variant = "mobile" }: ParallaxImageProps
         style={{ transform: isDesktop ? "none" : "translateY(20%)" }}
       >
         <img
-          src="/cross-gray.png"
+          src="/cross-gray.webp"
           alt="Parallax cross"
           width={800}
           height={800}
