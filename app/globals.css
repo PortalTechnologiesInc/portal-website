@@ -56,6 +56,46 @@ body {
   animation: scroll 20s linear infinite;
 }
 
+.marquee {
+  overflow: hidden;
+}
+
+.marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee-slide var(--marquee-duration, 20s) linear infinite;
+  will-change: transform;
+}
+
+.marquee__group {
+  display: flex;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 8rem);
+  flex-shrink: 0;
+  margin-right: clamp(2rem, 6vw, 8rem);
+}
+
+.marquee__item {
+  white-space: nowrap;
+}
+
+@keyframes marquee-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+    transform: translateX(0) !important;
+  }
+}
+
 /* === COMPREHENSIVE SCROLL-SNAP FIXES === */
 
 /* 1. Remove overlay conflict and use standard scroll */

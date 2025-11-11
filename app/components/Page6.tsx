@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, memo, useRef } from "react";
+import { useEffect, useState, memo, useRef, useMemo } from "react";
 import type { CSSProperties } from "react";
 
 const CAROUSEL_SYMBOLS = ["$", "£", "¥", "€", "₺", "₽", "₿", "ƒ"];
@@ -280,57 +280,123 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
   const symbolHeightMd = 160; // Medium screens (768px+)
   const symbolHeightLg = 176; // Large screens (1024px+)
 
-  // Padding value for spacing between symbols
-  const horizontalPadding = '6rem'; // Matches the paddingLeft/Right values
-
   // Duplicate symbols for infinite loop
-  const duplicatedSymbols = [...CAROUSEL_SYMBOLS, ...CAROUSEL_SYMBOLS, ...CAROUSEL_SYMBOLS];
-  const startIndex = CAROUSEL_SYMBOLS.length; // Start in the middle section
+  const duplicationCount = 3;
+  const totalSymbols = CAROUSEL_SYMBOLS.length;
+  const duplicatedSymbols = useMemo(
+    () => Array.from({ length: duplicationCount }, () => CAROUSEL_SYMBOLS).flat(),
+    [duplicationCount]
+  );
+  const startIndex = totalSymbols; // Start in the middle section
+  const resetThreshold = totalSymbols * (duplicationCount - 1);
+  const maxIndex = duplicatedSymbols.length - 1;
+  const transitionDurationMs = 500;
   
   const [currentIndex, setCurrentIndex] = useState(startIndex);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isInstant, setIsInstant] = useState(false);
+  const [needsReset, setNeedsReset] = useState(false);
+
+  const intervalRef = useRef<number | null>(null);
+  const resetFrameRef = useRef<number | null>(null);
+  const resumeFrameRef = useRef<number | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
+    intervalRef.current = window.setInterval(() => {
       setCurrentIndex((prevIndex) => {
         const nextIndex = prevIndex + 1;
-        
-        // If we've reached the end of the middle section, reset to start of middle section
-        // Reset happens before the end to avoid visible boundary
-        if (nextIndex >= CAROUSEL_SYMBOLS.length * 2) {
-          // Immediately disable transition and reset position
-          setIsTransitioning(true);
-          // Use requestAnimationFrame to ensure DOM update happens before re-enabling
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              setIsTransitioning(false);
-            });
-          });
-          return startIndex;
+
+        if (nextIndex > maxIndex) {
+          return prevIndex;
         }
-        
+
+        if (nextIndex === resetThreshold) {
+          setNeedsReset(true);
+        }
+
         return nextIndex;
       });
     }, 2000);
 
-    return () => window.clearInterval(intervalId);
-  }, [startIndex]);
+    return () => {
+      if (intervalRef.current !== null) {
+        window.clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [maxIndex, resetThreshold]);
+
+  useEffect(() => {
+    const trackEl = trackRef.current;
+    if (!trackEl) return;
+
+    const handleTransitionEnd = (event: TransitionEvent) => {
+      if (event.propertyName !== "transform") return;
+      if (!needsReset) return;
+
+      setNeedsReset(false);
+      setIsInstant(true);
+      setCurrentIndex(startIndex);
+    };
+
+    trackEl.addEventListener("transitionend", handleTransitionEnd);
+
+    return () => {
+      trackEl.removeEventListener("transitionend", handleTransitionEnd);
+    };
+  }, [needsReset, startIndex]);
+
+  useEffect(() => {
+    if (!isInstant) {
+      return;
+    }
+
+    if (resetFrameRef.current !== null) {
+      cancelAnimationFrame(resetFrameRef.current);
+      resetFrameRef.current = null;
+    }
+
+    if (resumeFrameRef.current !== null) {
+      cancelAnimationFrame(resumeFrameRef.current);
+      resumeFrameRef.current = null;
+    }
+
+    resetFrameRef.current = requestAnimationFrame(() => {
+      resumeFrameRef.current = requestAnimationFrame(() => {
+        setIsInstant(false);
+        resumeFrameRef.current = null;
+        resetFrameRef.current = null;
+      });
+    });
+
+    return () => {
+      if (resetFrameRef.current !== null) {
+        cancelAnimationFrame(resetFrameRef.current);
+        resetFrameRef.current = null;
+      }
+      if (resumeFrameRef.current !== null) {
+        cancelAnimationFrame(resumeFrameRef.current);
+        resumeFrameRef.current = null;
+      }
+    };
+  }, [isInstant]);
 
   // Calculate the visual index for active state (use modulo to map back to original array)
-  const visualIndex = currentIndex % CAROUSEL_SYMBOLS.length;
+  const visualIndex = currentIndex % totalSymbols;
 
   return (
     <div className="w-full pt-20 md:pt-32">
       <div className="overflow-hidden relative py-4 md:py-8" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
         <div
-          className="flex transition-transform duration-500 ease-out"
+          ref={trackRef}
+          className="flex will-change-transform"
           style={{ 
-            transform: `translateX(calc(50% - ${currentIndex * 33.333}% - 16.666%))`,
-            transitionDuration: isTransitioning ? '0ms' : '500ms'
+            transform: `translateX(calc(50% - ${currentIndex * 33.333333}% - 16.666667%))`,
+            transition: isInstant ? 'none' : `transform ${transitionDurationMs}ms ease-out`
           }}
         >
           {duplicatedSymbols.map((symbol, index) => {
-            const isActive = visualIndex === (index % CAROUSEL_SYMBOLS.length);
+            const isActive = visualIndex === (index % totalSymbols);
             const src = `/letters-carousel/${encodeURIComponent(symbol)}.svg`;
 
             return (
