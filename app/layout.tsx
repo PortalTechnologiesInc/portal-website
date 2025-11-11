@@ -16,9 +16,26 @@ const openSans = Open_Sans({
   weight: ["400", "600", "700"],
 });
 
+const metaDescription =
+  "The next revolution is now. Skip the fees with P+RTAL and get the highest security ever.";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://getportal.cc";
+
 export const metadata: Metadata = {
   title: "Portal | Trust Nothing",
-  description: "Portal | Trust Nothing",
+  description: metaDescription,
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Portal | Trust Nothing",
+    description: metaDescription,
+    images: [
+      {
+        url: "https://preview.twenty-two.xyz/opengraph.png",
+        width: 1200,
+        height: 630,
+        alt: "Portal | Trust Nothing",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
