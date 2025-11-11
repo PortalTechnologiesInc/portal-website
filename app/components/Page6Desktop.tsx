@@ -195,7 +195,7 @@ export function Page6Desktop() {
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-12">
             <div className="text-left md:max-w-[45%]">
               <h2 className="font-eurostile text-4xl md:text-[3.25rem] font-bold tracking-tight">
-                Works with <br /> all currency
+                Works with <br /> all currencies
               </h2>
             </div>
             <div className="md:max-w-[50%] md:text-right">
