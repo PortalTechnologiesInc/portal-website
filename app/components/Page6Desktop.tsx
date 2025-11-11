@@ -182,6 +182,8 @@ export function Page6Desktop() {
                 alt="Cross"
                 width={800}
                 height={800}
+                loading="eager"
+                fetchPriority="high"
                 className="h-[36rem] w-auto object-cover"
               />
             </div>

@@ -4,6 +4,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import { eurostileFont } from "./fonts";
+import { PreloadLCPImage } from "./components/PreloadLCPImage";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -45,9 +46,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preload"
+          href="/cross-gray.webp"
+          as="image"
+          fetchPriority="high"
+        />
+      </head>
       <body
         className={`${geistMono.variable} ${openSans.variable} ${eurostileFont.variable} antialiased`}
       >
+        <PreloadLCPImage />
         <Header />
         {children}
       </body>

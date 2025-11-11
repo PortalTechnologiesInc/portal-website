@@ -605,6 +605,8 @@ export function Page6Hero() {
           alt="Cross"
           width={800}
           height={800}
+          loading="eager"
+          fetchPriority="high"
           className="mt-2 w-[90vw] h-auto max-h-[50vh] object-cover"
         />
       </div>

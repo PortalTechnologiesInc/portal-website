@@ -88,6 +88,8 @@ export default function ParallaxImage({ variant = "mobile" }: ParallaxImageProps
           alt="Parallax cross"
           width={800}
           height={800}
+          loading="eager"
+          fetchPriority="high"
           className={`opacity-100 w-auto object-contain ${
             isDesktop
               ? "h-[50vh] lg:h-[60vh] xl:h-[70vh]"
