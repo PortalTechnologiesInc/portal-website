@@ -237,7 +237,15 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                       }`}
                     >
                       <h2 className="font-eurostile font-bold text-black text-3xl md:text-5xl lg:text-6xl tracking-tight bg-white/80 backdrop-blur-md rounded-lg px-4 py-2 text-center">
-                        Coming Soon
+                        {isDesktopVariant ? (
+                          <>
+                            Coming
+                            <br />
+                            Soon
+                          </>
+                        ) : (
+                          "Coming Soon"
+                        )}
                       </h2>
                     </div>
                   )}
@@ -701,8 +709,8 @@ export function Page6DailyLifeFeatures() {
                 className="w-12 h-12"
               />
             </div>
-            <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
+            <div className="flex-1 flex items-center min-h-12">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
                 Tickets? No problem
               </h3>
             </div>
@@ -718,8 +726,8 @@ export function Page6DailyLifeFeatures() {
                 className="w-12 h-12"
               />
             </div>
-            <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
+            <div className="flex-1 flex items-center min-h-12">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
                 Your identity, fully secured
               </h3>
             </div>
@@ -735,8 +743,8 @@ export function Page6DailyLifeFeatures() {
                 className="w-12 h-12"
               />
             </div>
-            <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
+            <div className="flex-1 flex items-center min-h-12">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
                 Take control of your money
               </h3>
             </div>
@@ -787,8 +795,8 @@ export function Page6BusinessFeatures() {
                 className="w-12 h-12"
               />
             </div>
-            <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
+            <div className="flex-1 flex items-center min-h-12">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
                 Only you and your customer
               </h3>
             </div>
@@ -804,8 +812,8 @@ export function Page6BusinessFeatures() {
                 className="w-12 h-12"
               />
             </div>
-            <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
+            <div className="flex-1 flex items-center min-h-12">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
                 Sell tickets effortlessly
               </h3>
             </div>
@@ -821,8 +829,8 @@ export function Page6BusinessFeatures() {
                 className="w-12 h-12"
               />
             </div>
-            <div className="flex-1">
-              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
+            <div className="flex-1 flex items-center min-h-12">
+              <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
                 Intruders are kept out
               </h3>
             </div>

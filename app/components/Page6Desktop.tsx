@@ -197,9 +197,10 @@ export function Page6Desktop() {
                 Works with <br /> all currencies
               </h2>
             </div>
-            <div className="md:max-w-[50%] md:text-right">
+            <div className="md:max-w-[51%] text-justify">
               <p className="text-xl md:text-2xl leading-relaxed">
               From instant global authentication to secure digital interactions, we're redefining how people connect with both the digital and physical world. 
+              <br />
               We leverage Bitcoin as an agnostic payment network.
               </p>
             </div>
@@ -220,7 +221,7 @@ export function Page6Desktop() {
                 Easy, Simple and secure
               </h2>
             </div>
-            <div className="md:max-w-[50%] md:text-right">
+            <div className="md:max-w-[51%] text-justify">
               <p className="text-xl md:text-2xl leading-relaxed">
               We're building Portal as the solution we wished existed: combining the security of Bitcoin, the convenience of passwordless authentication, and a user experience that feels like magic.
               </p>
