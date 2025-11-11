@@ -132,7 +132,7 @@ function BlackLogoOverlay() {
 
 function FeatureList({ features }: { features: Feature[] }) {
   return (
-    <div className="mt-0 w-full max-w-5xl space-y-12">
+    <div className="mt-0 w-full max-w-5xl space-y-12 md:h-full md:flex md:flex-col md:justify-center">
       {features.map((feature) => (
         <div
           key={feature.title}
@@ -147,11 +147,10 @@ function FeatureList({ features }: { features: Feature[] }) {
               className="w-16 h-16"
             />
           </div>
-          <div className="flex-1 text-black">
-            <h3 className="font-eurostile text-xl md:text-2xl lg:text-3xl font-bold lg:mb-3">
+          <div className="flex-1 text-black flex items-center min-h-16">
+            <h3 className="font-eurostile text-xl md:text-2xl lg:text-3xl font-bold leading-tight">
               {feature.title}
             </h3>
-            <p className="text-lg leading-relaxed">{feature.description}</p>
           </div>
         </div>
       ))}
@@ -243,8 +242,8 @@ export function Page6Desktop() {
 
       <PanelWrapper id="page6-daily-life">
         <div className="flex w-full h-full flex-col text-black justify-center">
-          <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
-            <div className="flex w-full md:w-[52vw] flex-col">
+          <div className="flex w-full flex-col md:flex-row md:items-stretch gap-10 md:gap-16">
+            <div className="flex w-full md:w-[55vw] flex-col md:h-full">
               <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight mb-10 max-w-[40rem]">
                 P+RTAL
                 Is the smartest choice for your daily life
@@ -258,7 +257,7 @@ export function Page6Desktop() {
                 />
               </div>
             </div>
-            <div className="flex-1 md:flex md:flex-col md:justify-center md:h-full">
+            <div className="flex-1 md:order-2 md:flex md:flex-col md:justify-center md:h-full mt-20">
               <FeatureList features={dailyLifeFeatures} />
             </div>
           </div>
@@ -267,13 +266,13 @@ export function Page6Desktop() {
 
       <PanelWrapper id="page6-business">
         <div className="flex w-full h-full flex-col text-black justify-center">
-          <div className="flex w-full flex-col md:flex-row md:items-center gap-10 md:gap-16">
-            <div className="flex w-full md:w-[55vw] flex-col md:order-1">
+          <div className="flex w-full flex-col md:flex-row md:items-stretch gap-10 md:gap-16">
+            <div className="flex w-full md:w-[55vw] flex-col md:order-1 md:h-full">
               <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight mb-10 max-w-[40rem]">
                 P+RTAL
                 gives you complete control over your business
               </h2>
-              <div className="relative aspect-[3/2] overflow-hidden rounded-3xl mb-10">
+              <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
                 <img
                   src="/Rectangle2.png"
                   alt="Portal Rectangle"

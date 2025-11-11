@@ -123,6 +123,8 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
                 key={slide.id}
                 onClick={() => setActiveSlide(slide.id)}
                 className={`font-eurostile text-base md:text-xl transition-all ${
+                  isDesktopVariant ? "cursor-pointer " : ""
+                }${
                   activeSlide === slide.id
                     ? "font-bold text-black"
                     : "font-normal text-black opacity-60"
@@ -703,9 +705,6 @@ export function Page6DailyLifeFeatures() {
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Tickets? No problem
               </h3>
-              <p className="text-sm sm:text-base text-black">
-                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-              </p>
             </div>
           </div>
 
@@ -723,9 +722,6 @@ export function Page6DailyLifeFeatures() {
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Your identity, fully secured
               </h3>
-              <p className="text-sm sm:text-base text-black">
-                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-              </p>
             </div>
           </div>
 
@@ -743,9 +739,6 @@ export function Page6DailyLifeFeatures() {
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Take control of your money
               </h3>
-              <p className="text-sm sm:text-base text-black">
-                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-              </p>
             </div>
           </div>
         </div>
@@ -798,9 +791,6 @@ export function Page6BusinessFeatures() {
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Only you and your customer
               </h3>
-              <p className="text-sm sm:text-base text-black">
-                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-              </p>
             </div>
           </div>
 
@@ -818,9 +808,6 @@ export function Page6BusinessFeatures() {
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Sell tickets effortlessly
               </h3>
-              <p className="text-sm sm:text-base text-black">
-                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-              </p>
             </div>
           </div>
 
@@ -838,9 +825,6 @@ export function Page6BusinessFeatures() {
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black mb-2 leading-tight">
                 Intruders are kept out
               </h3>
-              <p className="text-sm sm:text-base text-black">
-                Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.
-              </p>
             </div>
           </div>
         </div>
