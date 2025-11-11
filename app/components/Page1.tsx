@@ -6,6 +6,38 @@ import ParallaxImage from "./ParallaxImage";
 
 export function Page1() {
   const [showDesktopCarousel, setShowDesktopCarousel] = useState(true);
+  const handleDiscoverMoreClick = () => {
+    const scrollContainer = document.querySelector(
+      "#main-scroll-container"
+    ) as HTMLElement | null;
+    const target = document.querySelector("#page2") as HTMLElement | null;
+    const headerOffset = 64;
+
+    if (!target) {
+      return;
+    }
+
+    if (scrollContainer) {
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const offsetTop =
+        targetRect.top - containerRect.top + scrollContainer.scrollTop - headerOffset;
+
+      scrollContainer.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    const targetRect = target.getBoundingClientRect();
+    const offsetTop = targetRect.top + window.scrollY - headerOffset;
+
+    window.scrollTo({
+      top: offsetTop,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -88,8 +120,9 @@ export function Page1() {
           </p>
           <button
             type="button"
-            className="text-white px-4 py-2 text-lg font-semibold transition-colors duration-200"
+            className="text-white px-4 py-2 text-lg font-semibold transition-colors duration-200 cursor-pointer"
             style={{ backgroundColor: "#141416" }}
+            onClick={handleDiscoverMoreClick}
             onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.currentTarget.style.backgroundColor = "#1a1a1c";
             }}
