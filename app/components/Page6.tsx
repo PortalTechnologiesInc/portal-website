@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, memo, useRef, useMemo } from "react";
+import { useEffect, useState, memo, useRef, useMemo, useCallback } from "react";
 import type { CSSProperties } from "react";
 
 const CAROUSEL_SYMBOLS = ["$", "£", "¥", "€", "₺", "₽", "₿", "ƒ"];
@@ -300,6 +300,7 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
   const resetFrameRef = useRef<number | null>(null);
   const resumeFrameRef = useRef<number | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const resetTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     intervalRef.current = window.setInterval(() => {
@@ -326,25 +327,55 @@ export const CurrencyCarousel = memo(function CurrencyCarousel() {
     };
   }, [maxIndex, resetThreshold]);
 
+  const completeReset = useCallback(() => {
+    setNeedsReset(false);
+    setIsInstant(true);
+    setCurrentIndex(startIndex);
+  }, [startIndex]);
+
   useEffect(() => {
+    if (!needsReset) {
+      return;
+    }
+
     const trackEl = trackRef.current;
-    if (!trackEl) return;
+    const fallbackDelay = transitionDurationMs + 50;
 
-    const handleTransitionEnd = (event: TransitionEvent) => {
-      if (event.propertyName !== "transform") return;
-      if (!needsReset) return;
-
-      setNeedsReset(false);
-      setIsInstant(true);
-      setCurrentIndex(startIndex);
+    const handleReset = () => {
+      if (resetTimeoutRef.current !== null) {
+        window.clearTimeout(resetTimeoutRef.current);
+        resetTimeoutRef.current = null;
+      }
+      completeReset();
     };
 
-    trackEl.addEventListener("transitionend", handleTransitionEnd);
+    if (trackEl) {
+      const handleTransitionEnd = (event: TransitionEvent) => {
+        if (event.propertyName !== "transform") return;
+        handleReset();
+      };
+
+      trackEl.addEventListener("transitionend", handleTransitionEnd);
+      resetTimeoutRef.current = window.setTimeout(handleReset, fallbackDelay);
+
+      return () => {
+        trackEl.removeEventListener("transitionend", handleTransitionEnd);
+        if (resetTimeoutRef.current !== null) {
+          window.clearTimeout(resetTimeoutRef.current);
+          resetTimeoutRef.current = null;
+        }
+      };
+    }
+
+    resetTimeoutRef.current = window.setTimeout(handleReset, fallbackDelay);
 
     return () => {
-      trackEl.removeEventListener("transitionend", handleTransitionEnd);
+      if (resetTimeoutRef.current !== null) {
+        window.clearTimeout(resetTimeoutRef.current);
+        resetTimeoutRef.current = null;
+      }
     };
-  }, [needsReset, startIndex]);
+  }, [needsReset, completeReset, transitionDurationMs]);
 
   useEffect(() => {
     if (!isInstant) {
@@ -580,7 +611,8 @@ export function Page6CurrencyIntro() {
             Works with <br /> all currency
           </h2>
           <p className="text-base sm:text-lg text-black">
-            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+          From instant global authentication to secure digital interactions, we're redefining how people connect with both the digital and physical world. 
+          We leverage Bitcoin as an agnostic payment network.
           </p>
         </div>
         <div className="relative z-50 w-full">
@@ -610,7 +642,7 @@ export function Page6EasySecure() {
             Easy, Simple and secure
           </h2>
           <p className="text-base sm:text-lg text-black">
-            Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+          We're building Portal as the solution we wished existed: combining the security of Bitcoin, the convenience of passwordless authentication, and a user experience that feels like magic.
           </p>
         </div>
         <div className="relative z-50 w-full flex items-center justify-center mt-8">

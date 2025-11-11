@@ -134,20 +134,6 @@ export default function Footer() {
             <h3 className="text-xl md:text-2xl font-medium xxs:text-lg">Follow Us</h3>
             <div className="flex flex-col gap-3 md:gap-6 lg:gap-8 ml-2 md:ml-4 xxs:gap-2">
               <a
-                href="https://www.instagram.com/portaltechinc/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
-              >
-                Instagram
-              </a>
-              <a
-                href="#nostr"
-                className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
-              >
-                Nostr
-              </a>
-              <a
                 href="https://x.com/portalonx"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -155,11 +141,27 @@ export default function Footer() {
               >
                 X/Twitter
               </a>
+              <a
+                href="https://primal.net/p/nprofile1qqsqh347l4uutk4upu0u0kwu70td6ngm8ulvq6zvze982k2aun7semszu3604"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+              >
+                Nostr
+              </a>
+              <a
+                href="https://www.instagram.com/portaltechinc/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
+              >
+                Instagram
+              </a>
             </div>
           </div>
         </div>
       </div>
-      
+
       {/* Logo block - fills remaining space, centers logo */}
       <div className="flex-1 flex justify-center items-center w-full min-h-0">
         <Link href="/" aria-label="Portal Home" className="flex justify-center items-center w-full max-w-4xl px-4">

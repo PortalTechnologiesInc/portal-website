@@ -400,6 +400,21 @@ export default function Header() {
             <span className="text-lg font-medium">Follow us</span>
             <div className="flex items-center gap-4">
               <Link
+                href="https://x.com/portalonx"
+                target="_blank"
+                aria-label="X"
+                className="inline-flex items-center"
+              >
+                <img
+                  src="/x.svg"
+                  alt=""
+                  width={40}
+                  height={40}
+                  aria-hidden
+                  className={`${onLightBackground ? "" : "invert"}`}
+                />
+              </Link>
+              <Link
                 href="https://www.instagram.com/portaltechinc/"
                 target="_blank"
                 aria-label="Instagram"
@@ -415,16 +430,16 @@ export default function Header() {
                 />
               </Link>
               <Link
-                href="https://x.com/portalonx"
+                href="https://primal.net/p/nprofile1qqsqh347l4uutk4upu0u0kwu70td6ngm8ulvq6zvze982k2aun7semszu3604"
                 target="_blank"
-                aria-label="X"
+                aria-label="Nostr"
                 className="inline-flex items-center"
               >
                 <img
-                  src="/x.svg"
+                  src="/nostr.svg"
                   alt=""
-                  width={40}
-                  height={40}
+                  width={32}
+                  height={32}
                   aria-hidden
                   className={`${onLightBackground ? "" : "invert"}`}
                 />

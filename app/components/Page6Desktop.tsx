@@ -200,7 +200,8 @@ export function Page6Desktop() {
             </div>
             <div className="md:max-w-[50%] md:text-right">
               <p className="text-xl md:text-2xl leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Adipiscing ac tortor curabitur aliquet iaculis. Eu quam id aliquet feugiat pharetra volutpat. Nibh ac et fermentum lobortis. Pulvinar tellus id tincidunt orci.
+              From instant global authentication to secure digital interactions, we're redefining how people connect with both the digital and physical world. 
+              We leverage Bitcoin as an agnostic payment network.
               </p>
             </div>
           </div>
