@@ -61,12 +61,12 @@ export function Page2({ scrollContainerRef }: Props) {
       <div className="relative z-50 h-full flex flex-col md:flex-row md:items-center md:justify-start px-0 md:px-6 md:max-w-[98rem] md:mx-auto">
         <div className="max-w-4xl text-left md:mr-20 lg:mr-96">
           <h1 className="text-3xl xxs:text-3xl md:text-4xl lg:text-5xl tracking-tight mb-6 leading-tight font-eurostile text-white">
-            Payments and Wallets
+            Digital Identity Today
             <br />
-            have a fundamental problem: they're stuck in a paradox.
+            is Broken and Exploited
           </h1>
           <p className="text-xl md:text-xl font-normal mb-8 max-w-2xl leading-tight text-white opacity-90">
-          The internet's identity and payment systems are broken. Passwords are insecure, credit cards were never designed for the internet.
+          Every login, every verification, every interaction exposes your identity. Personal data is harvested, tracked across sites, and sold. Your digital footprint becomes your digital prison.
           </p>
         </div>
 

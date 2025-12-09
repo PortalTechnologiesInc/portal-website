@@ -63,14 +63,14 @@ export default function Footer() {
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
                 onClick={(event) => handleNavClick(event, ["#page2"])}
               >
-                The Paradox
+                The Identity Problem
               </a>
               <a
                 href="#page4"
                 className="text-base md:text-lg underline underline-offset-4 hover:opacity-80 transition-opacity xxs:text-sm"
                 onClick={(event) => handleNavClick(event, ["#page4"])}
               >
-                Break the cycle
+                The Identity Solution
               </a>
               <a
                 href="#page6-hero-desktop"
@@ -79,7 +79,7 @@ export default function Footer() {
                   handleNavClick(event, ["#page6-hero-desktop", "#page6-hero-mobile"])
                 }
               >
-                Real Advantages
+                Identity Applications
               </a>
             </div>
           </div>
@@ -98,7 +98,7 @@ export default function Footer() {
                   ])
                 }
               >
-                Download for Daily life usage
+                Download for Users
               </a>
               <a
                 href="#page6-take-step-desktop"
@@ -110,14 +110,14 @@ export default function Footer() {
                   ])
                 }
               >
-                Download for your Business
+                Integrate for Business
               </a>
             </div>
           </div>
 
-          {/* Know P+RTAL Technologies section */}
+          {/* Know Portal Technologies section */}
           <div className="flex flex-col gap-4 md:gap-8 lg:gap-10 pl-4 md:pl-8 xxs:gap-3">
-            <h3 className="text-xl md:text-2xl font-medium xxs:text-lg">Know P+RTAL Technologies</h3>
+            <h3 className="text-xl md:text-2xl font-medium xxs:text-lg">Know Portal Technologies</h3>
             <div className="flex flex-col gap-3 md:gap-6 lg:gap-8 ml-2 md:ml-4 xxs:gap-2">
               <a
                 href="#page7"

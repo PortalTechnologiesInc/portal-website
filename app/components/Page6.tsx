@@ -77,15 +77,15 @@ export const DailyLifeBusinessCarousel = memo(function DailyLifeBusinessCarousel
   const slides = [
     { 
       id: 0, 
-      label: "Daily life", 
+      label: "For Users", 
       image: "/Slides.webp",
-      title: "Download now and be part of next the revolution"
+      title: "Download Portal and take control of your digital identity"
     },
     { 
       id: 1, 
-      label: "Business", 
+      label: "For Business", 
       image: "/form.webp",
-      title: "Change the way you get payed, sell tickets\nand more"
+      title: "Integrate identity services without the privacy liability"
     },
   ];
 
@@ -598,7 +598,7 @@ export function Page6Hero() {
       <BlackLogoOverlay />
       <div className="relative z-50 flex flex-col gap-4 items-center justify-center text-center px-6">
         <h1 className="font-eurostile font-bold tracking-tight text-4xl sm:text-4xl text-black xxs:text-3xl">
-          BE THE ONE IN CONTROL, TRUST NOTHING
+          YOUR DIGITAL IDENTITY, PROTECTED BY DESIGN
         </h1>
         <img
           src="/cross-gray.webp"
@@ -620,11 +620,10 @@ export function Page6CurrencyIntro() {
       <div className="relative z-50 flex flex-col items-center justify-center w-full">
         <div className="flex flex-col text-left w-full mb-8 px-6 max-w-2xl">
           <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
-            Works with <br /> all currency
+            One identity, <br /> endless possibilities
           </h2>
           <p className="text-base sm:text-lg text-black">
-          From instant global authentication to secure digital interactions, we're redefining how people connect with both the digital and physical world. 
-          We leverage Bitcoin as an agnostic payment network.
+          Use Portal for social media on Nostr, passwordless login to services, age verification, and more. Your identity stays private while unlocking the full potential of the digital world.
           </p>
         </div>
         <div className="relative z-50 w-full">
@@ -651,10 +650,10 @@ export function Page6EasySecure() {
       <div className="relative z-50 flex flex-col items-center justify-center w-full">
         <div className="flex flex-col text-left w-full mb-8 px-6 max-w-2xl">
           <h2 className="font-eurostile font-bold tracking-tight text-2xl sm:text-3xl text-black mb-4">
-            Easy, Simple and secure
+            Cryptographically protected
           </h2>
           <p className="text-base sm:text-lg text-black">
-          We're building Portal as the solution we wished existed: combining the security of Bitcoin, the convenience of passwordless authentication, and a user experience that feels like magic.
+          Your identity is protected by blind signature cryptography and the decentralized Nostr network. No tracking, no data harvesting, no surveillance. Just you, in control of your digital life.
           </p>
         </div>
         <div className="relative z-50 w-full flex items-center justify-center mt-8">
@@ -676,10 +675,10 @@ export function Page6DailyLifeHero() {
     <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
       <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
         <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3">
-          P+RTAL
+          Portal
           <br />
-          Is the smartest
-          choice for your daily life
+          Your gateway to
+          the digital world
         </h2>
         <div className="flex justify-center w-full">
           <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
@@ -705,7 +704,7 @@ export function Page6DailyLifeFeatures() {
             <div className="flex-shrink-0 flex items-center justify-center">
               <img
                 src="/confirmation_number.svg"
-                alt="Tickets"
+                alt="Nostr"
                 width={48}
                 height={48}
                 className="w-12 h-12"
@@ -713,7 +712,7 @@ export function Page6DailyLifeFeatures() {
             </div>
             <div className="flex-1 flex items-center min-h-12">
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
-                Tickets? No problem
+                Connect to Nostr social media
               </h3>
             </div>
           </div>
@@ -722,7 +721,7 @@ export function Page6DailyLifeFeatures() {
             <div className="flex-shrink-0 flex items-center justify-center">
               <img
                 src="/assignment_ind.svg"
-                alt="Identity"
+                alt="Login"
                 width={48}
                 height={48}
                 className="w-12 h-12"
@@ -730,7 +729,7 @@ export function Page6DailyLifeFeatures() {
             </div>
             <div className="flex-1 flex items-center min-h-12">
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
-                Your identity, fully secured
+                Passwordless login to services
               </h3>
             </div>
           </div>
@@ -739,7 +738,7 @@ export function Page6DailyLifeFeatures() {
             <div className="flex-shrink-0 flex items-center justify-center">
               <img
                 src="/cached.svg"
-                alt="Control"
+                alt="Age Verification"
                 width={48}
                 height={48}
                 className="w-12 h-12"
@@ -747,7 +746,7 @@ export function Page6DailyLifeFeatures() {
             </div>
             <div className="flex-1 flex items-center min-h-12">
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
-                Take control of your money
+                Private age verification
               </h3>
             </div>
           </div>
@@ -762,10 +761,10 @@ export function Page6BusinessHero() {
     <div className="relative w-full h-full flex flex-col items-center justify-center px-6" style={{ backgroundColor: "#FFED00" }}>
       <div className="relative z-50 flex flex-col items-center justify-center w-full max-w-2xl">
         <h2 className="font-eurostile font-semibold tracking-tight text-xl sm:text-2xl text-black mb-3">
-          P+RTAL
+          Portal
           <br />
-          gives you complete
-          control over your business
+          Built for businesses
+          that respect users
         </h2>
         <div className="flex justify-center w-full">
           <div className="relative w-full aspect-[2/3] overflow-hidden xxs:h-[60vh]">
@@ -791,7 +790,7 @@ export function Page6BusinessFeatures() {
             <div className="flex-shrink-0 flex items-center justify-center">
               <img
                 src="/do_not_touch.svg"
-                alt="Hand"
+                alt="No Data"
                 width={48}
                 height={48}
                 className="w-12 h-12"
@@ -799,7 +798,7 @@ export function Page6BusinessFeatures() {
             </div>
             <div className="flex-1 flex items-center min-h-12">
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
-                Only you and your customer
+                Never collect user identity data
               </h3>
             </div>
           </div>
@@ -808,7 +807,7 @@ export function Page6BusinessFeatures() {
             <div className="flex-shrink-0 flex items-center justify-center">
               <img
                 src="/sell.svg"
-                alt="Sell"
+                alt="GDPR"
                 width={48}
                 height={48}
                 className="w-12 h-12"
@@ -816,7 +815,7 @@ export function Page6BusinessFeatures() {
             </div>
             <div className="flex-1 flex items-center min-h-12">
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
-                Sell tickets effortlessly
+                GDPR compliant by design
               </h3>
             </div>
           </div>
@@ -825,7 +824,7 @@ export function Page6BusinessFeatures() {
             <div className="flex-shrink-0 flex items-center justify-center">
               <img
                 src="/cached.svg"
-                alt="Control"
+                alt="Integration"
                 width={48}
                 height={48}
                 className="w-12 h-12"
@@ -833,7 +832,7 @@ export function Page6BusinessFeatures() {
             </div>
             <div className="flex-1 flex items-center min-h-12">
               <h3 className="font-eurostile font-bold text-lg sm:text-xl text-black leading-tight">
-                Intruders are kept out
+                Simple, open-source integration
               </h3>
             </div>
           </div>

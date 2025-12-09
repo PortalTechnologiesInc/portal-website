@@ -7,8 +7,8 @@ export function Page3c() {
       {/* Image Container - Left side */}
       <div className="relative flex items-center justify-center md:mr-16">
         <img
-          src="/sentiment_sad.svg"
-          alt="Poor User Experience"
+          src="/euro_symbol.svg"
+          alt="Data Breach Exposure"
           width={128}
           height={128}
           className="w-[12rem] h-[12rem] md:w-[16rem] md:h-[16rem] lg:w-[18rem] lg:h-[18rem]"
@@ -18,10 +18,10 @@ export function Page3c() {
       {/* Text Content - Right side */}
       <div className="text-left max-w-xl flex flex-col">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight font-eurostile text-white">
-          Poor User Experience
+          Data Breach Exposure
         </h1>
         <p className="text-xl md:text-2xl lg:text-[1.75rem] font-normal leading-snug text-white opacity-90">
-          Authentication and payment systems are often clunky and unintuitive, creating friction for customers and leading to a high percentage of abandoned carts.
+          Centralized databases become targets for hackers. Every breach exposes your most sensitive information permanently. Your identity becomes a commodity on the dark web.
         </p>
       </div>
     </div>

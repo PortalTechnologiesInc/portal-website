@@ -55,9 +55,9 @@ export function Page4({ scrollContainerRef }: Props) {
             transition: "opacity 1000ms ease-in-out, transform 1000ms ease-out",
           }}
         >
-          BREAK THE CYCLE,
+          ONE IDENTITY,
           <br />
-          SKIP THE THIRD WHEEL
+          INFINITE POSSIBILITIES
         </h1>
 
         <p
@@ -68,7 +68,7 @@ export function Page4({ scrollContainerRef }: Props) {
             transition: "opacity 1000ms ease-in-out, transform 1000ms ease-out",
           }}
         >
-          A peer-to-peer system for direct business-to-customer communication
+          Social media, service login, age verification - all protected by cryptography and Nostr
         </p>
       </div>
     </div>

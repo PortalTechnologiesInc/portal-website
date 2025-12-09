@@ -109,14 +109,14 @@ export function Page1() {
         {/* Left side: Text content */}
         <div className="text-left max-w-4xl md:max-w-2xl lg:max-w-3xl relative z-50">
           <h1 className="text-5xl xxs:text-4xl md:text-7xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight font-eurostile page1-title-mobile">
-            BE THE ONE IN CONTROL, <span className="md:whitespace-nowrap">TRUST NOTHING</span>
+            YOUR IDENTITY, <span className="md:whitespace-nowrap">FINALLY PROTECTED</span>
           </h1>
           <p className="text-2xl md:text-xl lg:text-3xl font-normal mb-8 max-w-2xl leading-tight">
-            The next revolution is now,
+            One app for secure login, social media,
             <br />
-            Skip the fees with P+RTAL
+            and age verification.
             <br />
-            and get the highest security ever
+            Zero tracking. Complete privacy.
           </p>
           <button
             type="button"

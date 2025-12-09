@@ -8,7 +8,7 @@ export function Page3b() {
       <div className="relative flex items-center justify-center md:mr-16">
         <img
           src="/lock.svg"
-          alt="Technological Lock-in"
+          alt="Cross-Site Tracking"
           width={128}
           height={128}
           className="w-[12rem] h-[12rem] md:w-[16rem] md:h-[16rem] lg:w-[18rem] lg:h-[18rem]"
@@ -18,10 +18,10 @@ export function Page3b() {
       {/* Text Content - Right side */}
       <div className="text-left max-w-xl flex flex-col">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight font-eurostile text-white">
-          Technological Lock-in
+          Cross-Site Tracking
         </h1>
         <p className="text-xl md:text-2xl lg:text-[1.75rem] font-normal leading-snug text-white opacity-90">
-          Companies are often trapped in proprietary ecosystems, which limit their freedom and make it difficult to change providers or integrate new solutions.
+          Your identity follows you everywhere online. Companies track you across websites, building detailed profiles of your behavior, preferences, and life to monetize your data.
         </p>
       </div>
     </div>

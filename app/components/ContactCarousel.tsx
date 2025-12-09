@@ -2,7 +2,7 @@
 
 export default function ContactCarousel() {
   const message =
-    "Get in touch to know more about the P+RTAL potential to your business, private and public events";
+    "Get in touch to know more about Portal identity protection for your business, services, and applications";
 
   const marqueeItems = Array.from({ length: 3 }, () => message);
 

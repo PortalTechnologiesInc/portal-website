@@ -18,22 +18,22 @@ const openSans = Open_Sans({
 });
 
 const metaDescription =
-  "The next revolution is now. Skip the fees with P+RTAL and get the highest security ever.";
+  "Your digital identity, finally protected. One app for secure social media, passwordless login, and private age verification. Zero tracking. Complete control.";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://getportal.cc";
 
 export const metadata: Metadata = {
-  title: "Portal | Trust Nothing",
+  title: "Portal | Your Identity Protected",
   description: metaDescription,
   metadataBase: new URL(siteUrl),
   openGraph: {
-    title: "Portal | Trust Nothing",
+    title: "Portal | Your Identity Protected",
     description: metaDescription,
     images: [
       {
         url: "https://preview.twenty-two.xyz/opengraph.webp",
         width: 1200,
         height: 630,
-        alt: "Portal | Trust Nothing",
+        alt: "Portal | Your Identity Protected",
       },
     ],
   },

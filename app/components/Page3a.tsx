@@ -7,8 +7,8 @@ export function Page3a() {
       {/* Image Container - Left side */}
       <div className="relative flex items-center justify-center md:mr-16">
         <img
-          src="/euro_symbol.svg"
-          alt="High Costs"
+          src="/sentiment_sad.svg"
+          alt="Identity Harvesting"
           width={128}
           height={128}
           className="w-[12rem] h-[12rem] md:w-[16rem] md:h-[16rem] lg:w-[18rem] lg:h-[18rem]"
@@ -18,10 +18,10 @@ export function Page3a() {
       {/* Text Content - Right side */}
       <div className="text-left max-w-xl flex flex-col">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight font-eurostile text-white">
-          High Costs
+          Identity Harvesting
         </h1>
         <p className="text-xl md:text-2xl lg:text-[1.75rem] font-normal leading-snug text-white opacity-90">
-          Commissions imposed by banks and payment processors eat into your profits, especially for small and medium-sized businesses.
+          Every service you use collects your personal information. Email addresses, phone numbers, documents, and behavioral data are stored, shared, and exploited without your control.
         </p>
       </div>
     </div>

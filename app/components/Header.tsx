@@ -235,7 +235,7 @@ export default function Header() {
               onClick={(event) => handleNavClick(event, ["#page2"])}
               className="hover:underline underline-offset-4"
             >
-              The Banking System and Wallet Paradox
+              The Digital Identity Problem
             </Link>
             <Link
               href="#page6-take-step-desktop"
@@ -254,7 +254,7 @@ export default function Header() {
               onClick={(event) => handleNavClick(event, ["#page7"])}
               className="hover:underline underline-offset-4"
             >
-              Know PORTAL
+              Know Portal
             </Link>
           </nav>
         </div>
@@ -310,7 +310,7 @@ export default function Header() {
                   onClick={(event) => handleNavClick(event, ["#page2"])}
                 >
                   <span className="text-left text-lg font-medium underline underline-offset-4">
-                    The Banking System Paradox
+                    The Digital Identity Problem
                   </span>
                   <img
                     src="/arrow.svg"

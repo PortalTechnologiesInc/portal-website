@@ -66,19 +66,19 @@ export function Page3({ scrollContainerRef }: Props) {
 
   const steps = [
     {
-      image: "/euro_symbol.svg",
-      title: "High Costs",
-      subtitle: "Commissions imposed by banks and payment processors eat into your profits, especially for small and medium-sized businesses.",
+      image: "/sentiment_sad.svg",
+      title: "Identity Harvesting",
+      subtitle: "Every service you use collects your personal information. Email addresses, phone numbers, documents, and behavioral data are stored, shared, and exploited without your control.",
     },
     {
       image: "/lock.svg",
-      title: "Technological Lock-in",
-      subtitle: "Companies are often trapped in proprietary ecosystems, which limit their freedom and make it difficult to change providers or integrate new solutions.",
+      title: "Cross-Site Tracking",
+      subtitle: "Your identity follows you everywhere online. Companies track you across websites, building detailed profiles of your behavior, preferences, and life to monetize your data.",
     },
     {
-      image: "/sentiment_sad.svg",
-      title: "Poor User Experience",
-      subtitle: "Authentication and payment systems are often clunky and unintuitive, creating friction for customers and leading to a high percentage of abandoned carts.",
+      image: "/euro_symbol.svg",
+      title: "Data Breach Exposure",
+      subtitle: "Centralized databases become targets for hackers. Every breach exposes your most sensitive information permanently. Your identity becomes a commodity on the dark web.",
     },
   ];
 

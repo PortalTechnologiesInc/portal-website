@@ -18,48 +18,48 @@ type Feature = {
 const dailyLifeFeatures: Feature[] = [
   {
     icon: "/assignment_ind.svg",
-    alt: "Identity",
-    title: "Your identity, fully secured",
+    alt: "Nostr",
+    title: "Connect to Nostr social media",
     description:
-      "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
+      "Use Portal as your gateway to the decentralized Nostr social network. Your identity, your posts, your connections - all under your control.",
   },
   {
     icon: "/confirmation_number.svg",
-    alt: "Tickets",
-    title: "Tickets? No problem",
+    alt: "Login",
+    title: "Passwordless login to services",
     description:
-      "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
+      "Say goodbye to passwords. One tap to securely authenticate with any Portal-enabled service. No more password resets or security questions.",
   },
   {
     icon: "/cached.svg",
-    alt: "Control",
-    title: "Take control of your money",
+    alt: "Age Verification",
+    title: "Private age verification",
     description:
-      "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
+      "Prove your age without revealing your identity. Access age-restricted services with complete privacy. No tracking, no data collection.",
   },
 ];
 
 const businessFeatures: Feature[] = [
   {
     icon: "/do_not_touch.svg",
-    alt: "Hand",
-    title: "Only you and your customer",
+    alt: "No Data",
+    title: "Never collect user identity data",
     description:
-      "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
+      "Portal handles identity verification without you ever touching sensitive user data. Zero liability, zero breach risk, zero compliance headaches.",
   },
   {
     icon: "/sell.svg",
-    alt: "Sell",
-    title: "Sell tickets effortlessly",
+    alt: "GDPR",
+    title: "GDPR compliant by design",
     description:
-      "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
+      "Data minimization built into the protocol. No personal data means no regulatory burden. Privacy by architecture, not afterthought.",
   },
   {
     icon: "/cached.svg",
-    alt: "Control",
-    title: "Intruders are kept out",
+    alt: "Integration",
+    title: "Simple, open-source integration",
     description:
-      "Office ipsum you must be muted. Diarize lean last base revision follow request social prioritize. Could pants cost your big up submit algorithm email. Before.",
+      "Clean APIs, clear documentation, open-source code. Integrate Portal identity services in hours, not months. Full transparency, full control.",
   },
 ];
 
@@ -173,7 +173,7 @@ export function Page6Desktop() {
           <div className="flex w-full max-w-[98rem] items-center justify-between gap-12">
             <div className="flex-1 max-w-5xl text-left">
               <h1 className="font-eurostile text-black text-7xl font-bold tracking-tight leading-tight">
-                BE THE ONE IN CONTROL, TRUST NOTHING
+                YOUR DIGITAL IDENTITY, PROTECTED BY DESIGN
               </h1>
             </div>
             <div className="relative flex-shrink-0">
@@ -196,14 +196,14 @@ export function Page6Desktop() {
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-12">
             <div className="text-left md:max-w-[45%]">
               <h2 className="font-eurostile text-4xl md:text-[3.25rem] font-bold tracking-tight">
-                Works with <br /> all currencies
+                One identity, <br /> endless possibilities
               </h2>
             </div>
             <div className="md:max-w-[51%] text-justify">
               <p className="text-xl md:text-2xl leading-relaxed">
-              From instant global authentication to secure digital interactions, we're redefining how people connect with both the digital and physical world. 
+              Use Portal for social media on Nostr, passwordless login to services, age verification, and more. Your identity stays private while unlocking the full potential of the digital world.
               <br />
-              We leverage Bitcoin as an agnostic payment network.
+              Built on cryptography and the decentralized Nostr network.
               </p>
             </div>
           </div>
@@ -220,12 +220,12 @@ export function Page6Desktop() {
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-12">
             <div className="text-left md:max-w-[45%]">
               <h2 className="font-eurostile text-4xl md:text-[3.25rem] font-bold tracking-tight">
-                Easy, Simple and secure
+                Cryptographically protected
               </h2>
             </div>
             <div className="md:max-w-[51%] text-justify">
               <p className="text-xl md:text-2xl leading-relaxed">
-              We're building Portal as the solution we wished existed: combining the security of Bitcoin, the convenience of passwordless authentication, and a user experience that feels like magic.
+              Your identity is protected by blind signature cryptography and the decentralized Nostr network. No tracking, no data harvesting, no surveillance. Just you, in control of your digital life.
               </p>
             </div>
           </div>
@@ -248,8 +248,8 @@ export function Page6Desktop() {
           <div className="flex w-full flex-col md:flex-row md:items-stretch gap-10 md:gap-16">
             <div className="flex w-full md:w-[55vw] flex-col md:h-full">
               <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight mb-10 max-w-[40rem]">
-                P+RTAL
-                Is the smartest choice for your daily life
+                Portal
+                Your gateway to the digital world
               </h2>
               <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
                 <img
@@ -272,8 +272,8 @@ export function Page6Desktop() {
           <div className="flex w-full flex-col md:flex-row md:items-stretch gap-10 md:gap-16">
             <div className="flex w-full md:w-[55vw] flex-col md:order-1 md:h-full">
               <h2 className="text-left font-eurostile text-4xl font-semibold tracking-tight mb-10 max-w-[40rem]">
-                P+RTAL
-                gives you complete control over your business
+                Portal
+                Built for businesses that respect users
               </h2>
               <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
                 <img
